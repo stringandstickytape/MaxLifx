@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{67F98E25-20D2-45B3-A466-E210916985A9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MaxLifx</RootNamespace>
+    <AssemblyName>MaxLifx</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\NAudio-master\NAudio\bin\Debug\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\HueSelector\ColourStrategy\IColourStrategy.cs" />
+    <Compile Include="Controls\HueSelector\ColourStrategy\OppositeColourStrategy.cs" />
+    <Compile Include="Controls\HueSelector\ColourStrategy\FreeColourStrategy.cs" />
+    <Compile Include="Controls\HueSelector\ColourStrategy\AnalogousColourStrategy.cs" />
+    <Compile Include="Controls\HueSelector\HueSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HueSelector\HueSelectorHandle.cs" />
+    <Compile Include="Controls\SpectrumAnalyser\SampleAggregator.cs" />
+    <Compile Include="Controls\SpectrumAnalyser\SpectrumAnalyser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SpectrumAnalyser\SpectrumAnalyser.Drawing.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SpectrumAnalyser\SpectrumAnalyser.Overrides.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SpectrumAnalyser\SpectrumAnalyserEngine.cs" />
+    <Compile Include="Controls\SpectrumAnalyser\SpectrumAnalyserHandle.cs" />
+    <Compile Include="Controls\Timeline\Timeline.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Timeline\Timeline.Overrides.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Timeline\TimelineEvent.cs" />
+    <Compile Include="Scheduler\SchedulerEvent.cs" />
+    <Compile Include="UIs\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\AssignAreaToBulbForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\AssignAreaToBulbForm.Designer.cs">
+      <DependentUpon>AssignAreaToBulbForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\EditTimelineEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\EditTimelineEvent.Designer.cs">
+      <DependentUpon>EditTimelineEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\FakeBulb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\FakeBulb.Designer.cs">
+      <DependentUpon>FakeBulb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LightControlThread.cs" />
+    <Compile Include="Processors\ProcessorSettings\ISettings.cs" />
+    <Compile Include="Processors\ProcessorSettings\ScreenColourSettings.cs" />
+    <Compile Include="Processors\ProcessorSettings\SettingsBase.cs" />
+    <Compile Include="Processors\ProcessorSettings\SoundGeneratorSettings.cs" />
+    <Compile Include="Processors\ProcessorSettings\SoundResponseSettings.cs" />
+    <Compile Include="Processors\SoundGeneratorProcessor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Processors\IProcessor.cs" />
+    <Compile Include="Processors\ProcessorBase.cs" />
+    <Compile Include="Processors\ScreenColourProcessor.cs" />
+    <Compile Include="Sound\Sound.cs" />
+    <Compile Include="UIs\ProcessorUIs\ScreenColourUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\ProcessorUIs\ScreenColourUI.Designer.cs">
+      <DependentUpon>ScreenColourUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Processors\SoundResponseProcessor.cs" />
+    <Compile Include="UIs\ProcessorUIs\SoundGeneratorUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\ProcessorUIs\SoundGeneratorUI.Designer.cs">
+      <DependentUpon>SoundGeneratorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\ProcessorUIs\SoundMessage.cs" />
+    <Compile Include="UIs\ProcessorUIs\SoundResponseUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIs\ProcessorUIs\SoundResponseUI.Designer.cs">
+      <DependentUpon>SoundResponseUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIs\UiFormBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="UIs\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\AssignAreaToBulbForm.resx">
+      <DependentUpon>AssignAreaToBulbForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\EditTimelineEvent.resx">
+      <DependentUpon>EditTimelineEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\FakeBulb.resx">
+      <DependentUpon>FakeBulb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UIs\ProcessorUIs\ScreenColourUI.resx">
+      <DependentUpon>ScreenColourUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\ProcessorUIs\SoundGeneratorUI.resx">
+      <DependentUpon>SoundGeneratorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIs\ProcessorUIs\SoundResponseUI.resx">
+      <DependentUpon>SoundResponseUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MaxLifxBulbController\MaxLifxBulbController.csproj">
+      <Project>{53625bb1-4234-4348-9952-2624e9bc9ba8}</Project>
+      <Name>MaxLifxBulbController</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Colour Wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\m %281%29.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

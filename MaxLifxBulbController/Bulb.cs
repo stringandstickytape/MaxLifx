@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MaxLifx.Controllers
+{
+    public class Bulb
+    {
+        public string MacAddress { get; set; }
+        private string _label;
+        public string Label
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_label))
+                    return MacAddress;
+                return _label;
+            }
+            set { _label = value; }
+        }
+
+        public ScreenLocation Location = ScreenLocation.All;
+    }
+
+    public enum ScreenLocation
+    {
+        TopLeft,
+        TopRight,
+        Top,
+        Left,
+        Right,
+        BottomLeft,
+        BottomRight,
+        Bottom,
+        All
+    }
+}
