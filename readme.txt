@@ -1,18 +1,20 @@
-MaxLifx Release 1
+MaxLifx v0.2
 
-Beta status - known to have minor bugs.  If this blows up your Lifx bulbs or worse, don't blame me.  Total explosions as at 1st November 2015: 0
+https://github.com/stringandstickytape/MaxLifx
+
+Beta status - known to have minor bugs.  If this blows up your Lifx bulbs or worse, don't blame me.  Total explosions as at 12th December 2015: 0
 
 Release notes
 
 1. Bulb Discovery
 =================
 
-Click "Discover" to list your Lifx bulbs.  
+Click "Discover" to list your Lifx bulbs.  You must have labelled them and updated their firmware using Android/Windows/iOS first.
 
 * If a Windows Firewall request pops up, you will need to allow it, and then click "Discover" again.
 * MaxLifx can only control bulbs which appear in the list above the "Discover" button.
 
-1.1 Click "Turn On All" or "Turn Off All" turn bulbs on or off.  MaxLifx cannot currently turn invidivual bulbs on or off.
+1.1 Click "Turn On All" or "Turn Off All" turn bulbs on or off.  MaxLifx cannot currently turn individual bulbs on or off.
 
 1.2 Hit the Panic button to turn all bulbs on, set them to white, and cease any other activity.
 
@@ -92,6 +94,9 @@ The Sound Response Thread sets bulb colour based on audio, a waveform (sine/sawt
 
 4.12 You can load and save settings as per Screen Colour above.
 
+4.13 (New in 0.2) For the Audio wave type, you can specify the frequency response range for each bulb independently using the Audio Frequency Response pane.  
+
+4.14 (New in 0.2) You can reorder the bulbs for the sake of convenience.  Click "Reorder", then use the "Up" and "Down" buttons.  When you're done, click "Reorder" again.
 
 5.  Sound Generator
 ===================
@@ -108,3 +113,26 @@ The Sound Generator does not control bulbs.  Instead it generates sound, by play
 
 5.5 You can load and save settings as per Screen Colour above.
 
+6. (New in 0.2) Bulb Monitors
+=============================
+
+Bulb monitors show the most recent colour messages sent to each bulb.  Click the button under the monitor to pop a window for that bulb's colour.
+
+6.1 Click the "[+]" button to hide the Bulb Monitors pane.
+
+7. (New in 0.2, experimental) Threadset / MP3 Sequencer
+=======================================================
+
+The Sequencer allows you to synchronize MP3 playback with bulb effects.  You should save regularly, because the sequencer is experimental and has bugs.
+
+7.1 Click "Add" to add an event.
+
+7.2 Select the event and click "Edit" to set its type - PlayMp3 or StartThreadSet.  Use the Browse button to find an MP3 or ThreadSet, as appropriate.
+
+7.3 MP3s are shown in the timeline as a waveform.  Starting a second MP3 will kill playback of the first.
+
+7.4 You can drag events to change their time.  SHIFT-dragging will create a copy of the event.  CTRL-clicking allows you to select and edit multiple events simultaneously.
+
+7.5 To be clear, a ThreadSet is a collection of one or more threads, created using the "Start ... Thread" buttons and then saved as a ThreadSet using the Save ThreadSet button.  These ThreadSets can then be sequenced.  Typically, a ThreadSet would only have one thread, but there is no limitation.
+
+7.6 Click the "[+]" button to hide the Sequencer pane.
