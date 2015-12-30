@@ -429,6 +429,11 @@ namespace MaxLifx
 
         private void bTurnOff_Click(object sender, EventArgs e)
         {
+            TurnAllBulbsOff();
+        }
+
+        private void TurnAllBulbsOff()
+        {
             var p = new SetPowerPayload(false);
 
             foreach (var b in _bulbController.Bulbs)
@@ -440,6 +445,11 @@ namespace MaxLifx
         }
 
         private void bPanic_Click(object sender, EventArgs e)
+        {
+            Panic();
+        }
+
+        private void Panic()
         {
             StopAllThreads();
             TurnAllBulbsOn();
@@ -802,6 +812,35 @@ namespace MaxLifx
                     Application.Exit();
                 }
             }
+        }
+
+        private void turnOnAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TurnAllBulbsOn();
+        }
+
+        private void turnOffAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TurnAllBulbsOff();
+        }
+
+        private void panicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Panic();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            _bulbController.DiscoverBulbs();
+
+            SaveSettings();
+
+            PopulateBulbListbox();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new About().Show();
         }
     }
 }

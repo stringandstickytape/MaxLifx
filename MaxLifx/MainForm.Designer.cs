@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.lbBulbs = new System.Windows.Forms.ListBox();
-            this.bRediscover = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -43,9 +42,6 @@
             this.bStopAll = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.bTurnOffAll = new System.Windows.Forms.Button();
-            this.bPanic = new System.Windows.Forms.Button();
             this.panelBulbColours = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
             this.bSaveSched = new System.Windows.Forms.Button();
@@ -57,52 +53,50 @@
             this.bContinue = new System.Windows.Forms.Button();
             this.gbMonitors = new System.Windows.Forms.GroupBox();
             this.gbSequencer = new System.Windows.Forms.GroupBox();
-            this.timeline1 = new MaxLifx.Controls.Timeline();
             this.bCollapseMonitors = new System.Windows.Forms.Button();
             this.bCollapseSequencer = new System.Windows.Forms.Button();
-            this.bAbout = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.bulbsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.turnOnAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.turnOffAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeline1 = new MaxLifx.Controls.Timeline();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbMonitors.SuspendLayout();
             this.gbSequencer.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbBulbs
             // 
+            this.lbBulbs.Enabled = false;
             this.lbBulbs.FormattingEnabled = true;
-            this.lbBulbs.Location = new System.Drawing.Point(15, 25);
+            this.lbBulbs.Location = new System.Drawing.Point(15, 19);
             this.lbBulbs.Name = "lbBulbs";
             this.lbBulbs.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbBulbs.Size = new System.Drawing.Size(188, 212);
+            this.lbBulbs.Size = new System.Drawing.Size(188, 199);
             this.lbBulbs.TabIndex = 2;
             this.lbBulbs.SelectedIndexChanged += new System.EventHandler(this.lbBulbs_SelectedIndexChanged);
-            // 
-            // bRediscover
-            // 
-            this.bRediscover.Location = new System.Drawing.Point(15, 249);
-            this.bRediscover.Name = "bRediscover";
-            this.bRediscover.Size = new System.Drawing.Size(188, 23);
-            this.bRediscover.TabIndex = 6;
-            this.bRediscover.Text = "Discover";
-            this.bRediscover.UseVisualStyleBackColor = true;
-            this.bRediscover.Click += new System.EventHandler(this.bRediscover_Click);
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lbBulbs);
-            this.groupBox3.Controls.Add(this.bRediscover);
-            this.groupBox3.Location = new System.Drawing.Point(12, 15);
+            this.groupBox3.Location = new System.Drawing.Point(12, 27);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(219, 290);
+            this.groupBox3.Size = new System.Drawing.Size(219, 235);
             this.groupBox3.TabIndex = 31;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Bulb Discovery";
+            this.groupBox3.Text = "Bulbs";
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(184, 19);
+            this.button6.Location = new System.Drawing.Point(6, 79);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(172, 53);
+            this.button6.Size = new System.Drawing.Size(148, 56);
             this.button6.TabIndex = 0;
             this.button6.Text = "Start Sound Response Thread";
             this.button6.UseVisualStyleBackColor = true;
@@ -110,7 +104,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(358, 263);
+            this.button7.Location = new System.Drawing.Point(358, 204);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 35;
@@ -123,10 +117,10 @@
             this.lvThreads.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.lvThreads.Location = new System.Drawing.Point(6, 78);
+            this.lvThreads.Location = new System.Drawing.Point(164, 19);
             this.lvThreads.MultiSelect = false;
             this.lvThreads.Name = "lvThreads";
-            this.lvThreads.Size = new System.Drawing.Size(508, 179);
+            this.lvThreads.Size = new System.Drawing.Size(350, 179);
             this.lvThreads.TabIndex = 36;
             this.lvThreads.UseCompatibleStateImageBehavior = false;
             this.lvThreads.View = System.Windows.Forms.View.Details;
@@ -140,10 +134,11 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "UUID";
+            this.columnHeader2.Width = 184;
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(439, 263);
+            this.button8.Location = new System.Drawing.Point(439, 204);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 37;
@@ -155,7 +150,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(6, 19);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(172, 53);
+            this.button1.Size = new System.Drawing.Size(148, 56);
             this.button1.TabIndex = 0;
             this.button1.Text = "Start Screen Colour Thread";
             this.button1.UseVisualStyleBackColor = true;
@@ -163,7 +158,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(107, 263);
+            this.button2.Location = new System.Drawing.Point(107, 204);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 23);
             this.button2.TabIndex = 38;
@@ -173,7 +168,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 263);
+            this.button3.Location = new System.Drawing.Point(6, 204);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 23);
             this.button3.TabIndex = 39;
@@ -183,7 +178,7 @@
             // 
             // bStopAll
             // 
-            this.bStopAll.Location = new System.Drawing.Point(204, 263);
+            this.bStopAll.Location = new System.Drawing.Point(204, 204);
             this.bStopAll.Name = "bStopAll";
             this.bStopAll.Size = new System.Drawing.Size(75, 23);
             this.bStopAll.TabIndex = 40;
@@ -202,64 +197,34 @@
             this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Controls.Add(this.button8);
             this.groupBox1.Controls.Add(this.button7);
-            this.groupBox1.Location = new System.Drawing.Point(237, 15);
+            this.groupBox1.Location = new System.Drawing.Point(237, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(520, 295);
+            this.groupBox1.Size = new System.Drawing.Size(527, 235);
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Threadset Manager";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(362, 19);
+            this.button4.Location = new System.Drawing.Point(6, 139);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(152, 53);
+            this.button4.Size = new System.Drawing.Size(148, 59);
             this.button4.TabIndex = 41;
             this.button4.Text = "Start Sound Generator";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(763, 15);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(207, 59);
-            this.button5.TabIndex = 43;
-            this.button5.Text = "Turn On All";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.bTurnOn_Click);
-            // 
-            // bTurnOffAll
-            // 
-            this.bTurnOffAll.Location = new System.Drawing.Point(763, 80);
-            this.bTurnOffAll.Name = "bTurnOffAll";
-            this.bTurnOffAll.Size = new System.Drawing.Size(207, 66);
-            this.bTurnOffAll.TabIndex = 44;
-            this.bTurnOffAll.Text = "Turn Off All";
-            this.bTurnOffAll.UseVisualStyleBackColor = true;
-            this.bTurnOffAll.Click += new System.EventHandler(this.bTurnOff_Click);
-            // 
-            // bPanic
-            // 
-            this.bPanic.Location = new System.Drawing.Point(763, 152);
-            this.bPanic.Name = "bPanic";
-            this.bPanic.Size = new System.Drawing.Size(207, 66);
-            this.bPanic.TabIndex = 45;
-            this.bPanic.Text = "Panic";
-            this.bPanic.UseVisualStyleBackColor = true;
-            this.bPanic.Click += new System.EventHandler(this.bPanic_Click);
             // 
             // panelBulbColours
             // 
             this.panelBulbColours.AutoScroll = true;
             this.panelBulbColours.Location = new System.Drawing.Point(6, 19);
             this.panelBulbColours.Name = "panelBulbColours";
-            this.panelBulbColours.Size = new System.Drawing.Size(941, 141);
+            this.panelBulbColours.Size = new System.Drawing.Size(735, 141);
             this.panelBulbColours.TabIndex = 46;
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(846, 247);
+            this.button10.Location = new System.Drawing.Point(639, 246);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(102, 23);
             this.button10.TabIndex = 5;
@@ -269,7 +234,7 @@
             // 
             // bSaveSched
             // 
-            this.bSaveSched.Location = new System.Drawing.Point(846, 276);
+            this.bSaveSched.Location = new System.Drawing.Point(639, 275);
             this.bSaveSched.Name = "bSaveSched";
             this.bSaveSched.Size = new System.Drawing.Size(102, 23);
             this.bSaveSched.TabIndex = 4;
@@ -280,14 +245,14 @@
             // tbSchedTime
             // 
             this.tbSchedTime.Enabled = false;
-            this.tbSchedTime.Location = new System.Drawing.Point(846, 144);
+            this.tbSchedTime.Location = new System.Drawing.Point(639, 143);
             this.tbSchedTime.Name = "tbSchedTime";
             this.tbSchedTime.Size = new System.Drawing.Size(101, 20);
             this.tbSchedTime.TabIndex = 2;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(846, 199);
+            this.button9.Location = new System.Drawing.Point(639, 198);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(101, 23);
             this.button9.TabIndex = 1;
@@ -297,7 +262,7 @@
             // 
             // bTimelineAdd
             // 
-            this.bTimelineAdd.Location = new System.Drawing.Point(846, 23);
+            this.bTimelineAdd.Location = new System.Drawing.Point(639, 22);
             this.bTimelineAdd.Name = "bTimelineAdd";
             this.bTimelineAdd.Size = new System.Drawing.Size(101, 23);
             this.bTimelineAdd.TabIndex = 49;
@@ -307,7 +272,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(846, 52);
+            this.button11.Location = new System.Drawing.Point(639, 51);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(101, 23);
             this.button11.TabIndex = 50;
@@ -317,7 +282,7 @@
             // 
             // bDelete
             // 
-            this.bDelete.Location = new System.Drawing.Point(846, 81);
+            this.bDelete.Location = new System.Drawing.Point(639, 80);
             this.bDelete.Name = "bDelete";
             this.bDelete.Size = new System.Drawing.Size(101, 23);
             this.bDelete.TabIndex = 51;
@@ -327,7 +292,7 @@
             // 
             // bContinue
             // 
-            this.bContinue.Location = new System.Drawing.Point(846, 170);
+            this.bContinue.Location = new System.Drawing.Point(639, 169);
             this.bContinue.Name = "bContinue";
             this.bContinue.Size = new System.Drawing.Size(101, 23);
             this.bContinue.TabIndex = 52;
@@ -338,9 +303,9 @@
             // gbMonitors
             // 
             this.gbMonitors.Controls.Add(this.panelBulbColours);
-            this.gbMonitors.Location = new System.Drawing.Point(10, 311);
+            this.gbMonitors.Location = new System.Drawing.Point(10, 270);
             this.gbMonitors.Name = "gbMonitors";
-            this.gbMonitors.Size = new System.Drawing.Size(960, 166);
+            this.gbMonitors.Size = new System.Drawing.Size(754, 166);
             this.gbMonitors.TabIndex = 53;
             this.gbMonitors.TabStop = false;
             this.gbMonitors.Text = "Bulb Monitors";
@@ -356,25 +321,16 @@
             this.gbSequencer.Controls.Add(this.bTimelineAdd);
             this.gbSequencer.Controls.Add(this.tbSchedTime);
             this.gbSequencer.Controls.Add(this.button9);
-            this.gbSequencer.Location = new System.Drawing.Point(9, 483);
+            this.gbSequencer.Location = new System.Drawing.Point(9, 442);
             this.gbSequencer.Name = "gbSequencer";
-            this.gbSequencer.Size = new System.Drawing.Size(961, 309);
+            this.gbSequencer.Size = new System.Drawing.Size(755, 309);
             this.gbSequencer.TabIndex = 54;
             this.gbSequencer.TabStop = false;
             this.gbSequencer.Text = "Threadset / MP3 Sequencer";
             // 
-            // timeline1
-            // 
-            this.timeline1.Location = new System.Drawing.Point(7, 19);
-            this.timeline1.Name = "timeline1";
-            this.timeline1.PlaybackTime = 0F;
-            this.timeline1.Size = new System.Drawing.Size(837, 274);
-            this.timeline1.TabIndex = 47;
-            this.timeline1.Text = "timeline1";
-            // 
             // bCollapseMonitors
             // 
-            this.bCollapseMonitors.Location = new System.Drawing.Point(-2, 305);
+            this.bCollapseMonitors.Location = new System.Drawing.Point(-2, 264);
             this.bCollapseMonitors.Name = "bCollapseMonitors";
             this.bCollapseMonitors.Size = new System.Drawing.Size(18, 23);
             this.bCollapseMonitors.TabIndex = 55;
@@ -384,7 +340,7 @@
             // 
             // bCollapseSequencer
             // 
-            this.bCollapseSequencer.Location = new System.Drawing.Point(-2, 477);
+            this.bCollapseSequencer.Location = new System.Drawing.Point(-2, 436);
             this.bCollapseSequencer.Name = "bCollapseSequencer";
             this.bCollapseSequencer.Size = new System.Drawing.Size(18, 23);
             this.bCollapseSequencer.TabIndex = 56;
@@ -392,33 +348,93 @@
             this.bCollapseSequencer.UseVisualStyleBackColor = true;
             this.bCollapseSequencer.Click += new System.EventHandler(this.bCollapseSequencer_Click);
             // 
-            // bAbout
+            // menuStrip1
             // 
-            this.bAbout.Location = new System.Drawing.Point(765, 272);
-            this.bAbout.Name = "bAbout";
-            this.bAbout.Size = new System.Drawing.Size(205, 29);
-            this.bAbout.TabIndex = 57;
-            this.bAbout.Text = "About";
-            this.bAbout.UseVisualStyleBackColor = true;
-            this.bAbout.Click += new System.EventHandler(this.bAbout_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bulbsToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(774, 24);
+            this.menuStrip1.TabIndex = 58;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // bulbsToolStripMenuItem
+            // 
+            this.bulbsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripSeparator1,
+            this.turnOnAllToolStripMenuItem,
+            this.turnOffAllToolStripMenuItem,
+            this.panicToolStripMenuItem});
+            this.bulbsToolStripMenuItem.Name = "bulbsToolStripMenuItem";
+            this.bulbsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.bulbsToolStripMenuItem.Text = "Bulbs";
+            // 
+            // turnOnAllToolStripMenuItem
+            // 
+            this.turnOnAllToolStripMenuItem.Name = "turnOnAllToolStripMenuItem";
+            this.turnOnAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.turnOnAllToolStripMenuItem.Text = "Turn On All";
+            this.turnOnAllToolStripMenuItem.Click += new System.EventHandler(this.turnOnAllToolStripMenuItem_Click);
+            // 
+            // turnOffAllToolStripMenuItem
+            // 
+            this.turnOffAllToolStripMenuItem.Name = "turnOffAllToolStripMenuItem";
+            this.turnOffAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.turnOffAllToolStripMenuItem.Text = "Turn Off All";
+            this.turnOffAllToolStripMenuItem.Click += new System.EventHandler(this.turnOffAllToolStripMenuItem_Click);
+            // 
+            // panicToolStripMenuItem
+            // 
+            this.panicToolStripMenuItem.Name = "panicToolStripMenuItem";
+            this.panicToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.panicToolStripMenuItem.Text = "Panic";
+            this.panicToolStripMenuItem.Click += new System.EventHandler(this.panicToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(133, 6);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(136, 22);
+            this.toolStripMenuItem1.Text = "Discover";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // timeline1
+            // 
+            this.timeline1.Location = new System.Drawing.Point(7, 19);
+            this.timeline1.Name = "timeline1";
+            this.timeline1.PlaybackTime = 0F;
+            this.timeline1.Size = new System.Drawing.Size(615, 274);
+            this.timeline1.TabIndex = 47;
+            this.timeline1.Text = "timeline1";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(983, 805);
-            this.Controls.Add(this.bAbout);
+            this.ClientSize = new System.Drawing.Size(774, 765);
             this.Controls.Add(this.bCollapseSequencer);
             this.Controls.Add(this.bCollapseMonitors);
             this.Controls.Add(this.gbSequencer);
             this.Controls.Add(this.gbMonitors);
-            this.Controls.Add(this.bPanic);
-            this.Controls.Add(this.bTurnOffAll);
-            this.Controls.Add(this.button5);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
-            this.MaximumSize = new System.Drawing.Size(999, 844);
-            this.MinimumSize = new System.Drawing.Size(999, 844);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.MaximumSize = new System.Drawing.Size(790, 804);
+            this.MinimumSize = new System.Drawing.Size(790, 804);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MaxLifx";
@@ -429,13 +445,15 @@
             this.gbMonitors.ResumeLayout(false);
             this.gbSequencer.ResumeLayout(false);
             this.gbSequencer.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.ListBox lbBulbs;
-        private System.Windows.Forms.Button bRediscover;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
@@ -448,9 +466,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button bStopAll;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button bTurnOffAll;
-        private System.Windows.Forms.Button bPanic;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Panel panelBulbColours;
         private System.Windows.Forms.TextBox tbSchedTime;
@@ -466,7 +481,14 @@
         private System.Windows.Forms.GroupBox gbSequencer;
         private System.Windows.Forms.Button bCollapseMonitors;
         private System.Windows.Forms.Button bCollapseSequencer;
-        private System.Windows.Forms.Button bAbout;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem bulbsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem turnOnAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem turnOffAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem panicToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
