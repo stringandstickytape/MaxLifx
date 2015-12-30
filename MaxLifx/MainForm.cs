@@ -14,25 +14,30 @@ using System.Xml.Serialization;
 using MaxLifx.Controllers;
 using MaxLifx.Controls;
 using MaxLifx.Payload;
-using MaxLifx.Scheduler;
 using MaxLifx.Threads;
 using MaxLifx.UIs;
 using NAudio.Wave;
 using Newtonsoft.Json;
+using Timer = System.Timers.Timer;
 
 namespace MaxLifx
 {
     public partial class MainForm : Form
     {
-        public readonly decimal Version = 0.2m;
-
         private readonly MaxLifxBulbController _bulbController = new MaxLifxBulbController();
-        private readonly Random r = new Random();
         private readonly bool _suspendUi = true;
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
-        private MaxLifxSettings _settings = new MaxLifxSettings();
-        private System.Timers.Timer _schedulerTimer = new System.Timers.Timer();
+        private readonly Random r = new Random();
+        private readonly int thumbSize = 100;
+        public readonly decimal Version = 0.2m;
+        private Mp3FileReader _schedulerReader;
         private DateTime _schedulerStartTime;
+        private Timer _schedulerTimer = new Timer();
+        private WaveOut _schedulerWaveOut;
+        private MaxLifxSettings _settings = new MaxLifxSettings();
+        private bool collapseSequencerToggle = true;
+        private bool collapseToggle;
+        private TimeSpan schedulerTimeElapsed;
 
         public MainForm()
         {
@@ -74,11 +79,8 @@ namespace MaxLifx
 
             _suspendUi = false;
             _bulbController.ColourSet += BulbControllerOnColourSet;
-
         }
-        delegate void BulbControllerOnColourSetDelegate(object sender, EventArgs eventArgs);
 
-        private int thumbSize = 100;
         private void BulbControllerOnColourSet(object sender, EventArgs eventArgs)
         {
             if (InvokeRequired) // Line #1
@@ -88,18 +90,18 @@ namespace MaxLifx
                 return;
             }
 
-            LabelAndColourPayload details = ((LabelAndColourPayload) sender);
+            var details = ((LabelAndColourPayload) sender);
 
-            bool pbFound = false;
+            var pbFound = false;
             foreach (var c in panelBulbColours.Controls)
             {
-                PictureBox pb = c as PictureBox;
+                var pb = c as PictureBox;
                 if (pb != null)
                 {
                     if (pb.Name == "pb" + details.Label)
                     {
-                        pb.BackColor = Utils.HsbToRgb(details.Payload.Hue, details.Payload.Saturation / 65535.0f,
-                                details.Payload.Brightness/65535.0f);
+                        pb.BackColor = Utils.HsbToRgb(details.Payload.Hue, details.Payload.Saturation/65535.0f,
+                            details.Payload.Brightness/65535.0f);
 
                         pbFound = true;
                         break;
@@ -110,25 +112,35 @@ namespace MaxLifx
             if (!pbFound)
             {
                 var controls = panelBulbColours.Controls;
-                int nextX = 0;
-                
-                if(controls.Count > 0)
+                var nextX = 0;
+
+                if (controls.Count > 0)
                     nextX = controls[controls.Count - 1].Location.X + thumbSize + 10;
 
-                Point newLocation = new Point(nextX, 0);
-                Point newLabelLocation = new Point(nextX, thumbSize + 10);
+                var newLocation = new Point(nextX, 0);
+                var newLabelLocation = new Point(nextX, thumbSize + 10);
 
-                panelBulbColours.Controls.Add(new PictureBox { Name = "pb" + details.Label, Location = newLocation, Size = new Size(thumbSize, thumbSize) });
-                Button b = new Button {Name = "lbl" + details.Label, Location = newLabelLocation, Text = details.Label, Width = 100};
+                panelBulbColours.Controls.Add(new PictureBox
+                {
+                    Name = "pb" + details.Label,
+                    Location = newLocation,
+                    Size = new Size(thumbSize, thumbSize)
+                });
+                var b = new Button
+                {
+                    Name = "lbl" + details.Label,
+                    Location = newLabelLocation,
+                    Text = details.Label,
+                    Width = 100
+                };
                 b.Click += B_Click;
                 panelBulbColours.Controls.Add(b);
-
             }
         }
 
         private void B_Click(object sender, EventArgs e)
         {
-            var fakeBulb = new FakeBulb(_bulbController, ((Button)sender).Text) { Text = ((Button)sender).Text };
+            var fakeBulb = new FakeBulb(_bulbController, ((Button) sender).Text) {Text = ((Button) sender).Text};
             fakeBulb.Show();
         }
 
@@ -197,14 +209,6 @@ namespace MaxLifx
             }
         }
 
-        private void bRediscover_Click(object sender, EventArgs e)
-        {
-            _bulbController.DiscoverBulbs();
-
-            SaveSettings();
-
-            PopulateBulbListbox();
-        }
 
         private void SaveThreads(string filename = "Threads.xml")
         {
@@ -223,8 +227,6 @@ namespace MaxLifx
                 }
             }
         }
-
-        delegate void LoadThreadsDelegate(string filename);
 
         private void LoadThreads(string filename = "Threads.xml")
         {
@@ -362,7 +364,7 @@ namespace MaxLifx
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var s = new SaveFileDialog {DefaultExt = ".MaxLifx.Threadset.xml" };
+            var s = new SaveFileDialog {DefaultExt = ".MaxLifx.Threadset.xml"};
             s.Filter = "XML files (*.MaxLifx.Threadset.xml)|*.MaxLifx.Threadset.xml";
             s.InitialDirectory = Directory.GetCurrentDirectory();
             s.AddExtension = true;
@@ -375,7 +377,7 @@ namespace MaxLifx
         {
             StopAllThreads();
 
-            var s = new OpenFileDialog {DefaultExt = ".MaxLifx.Threadset.xml" };
+            var s = new OpenFileDialog {DefaultExt = ".MaxLifx.Threadset.xml"};
             s.Filter = "XML files (*.MaxLifx.Threadset.xml)|*.MaxLifx.Threadset.xml";
             s.InitialDirectory = Directory.GetCurrentDirectory();
             s.AddExtension = true;
@@ -388,8 +390,6 @@ namespace MaxLifx
         {
             StopAllThreads();
         }
-
-        delegate void StopAllThreadsDelegate();
 
         private void StopAllThreads()
         {
@@ -410,10 +410,6 @@ namespace MaxLifx
             lvThreads.Items.Clear();
         }
 
-        private void bTurnOn_Click(object sender, EventArgs e)
-        {
-            TurnAllBulbsOn();
-        }
 
         private void TurnAllBulbsOn()
         {
@@ -427,10 +423,6 @@ namespace MaxLifx
             }
         }
 
-        private void bTurnOff_Click(object sender, EventArgs e)
-        {
-            TurnAllBulbsOff();
-        }
 
         private void TurnAllBulbsOff()
         {
@@ -444,10 +436,6 @@ namespace MaxLifx
             }
         }
 
-        private void bPanic_Click(object sender, EventArgs e)
-        {
-            Panic();
-        }
 
         private void Panic()
         {
@@ -480,7 +468,6 @@ namespace MaxLifx
 
         private void button9_Click(object sender, EventArgs e)
         {
-            
             foreach (var evt in timeline1.TimelineEvents)
                 evt.Fired = false;
 
@@ -490,26 +477,26 @@ namespace MaxLifx
             _schedulerStartTime = DateTime.Now;
         }
 
-        private WaveOut _schedulerWaveOut;
-        private Mp3FileReader _schedulerReader;
         private void OnSchedulerElapsed(object sender, ElapsedEventArgs e)
         {
             var elapsedTime = DateTime.Now - _schedulerStartTime;
             SetSchedulerTimeTextBox(elapsedTime);
 
-            timeline1.PlaybackTime = (float)(elapsedTime.TotalMilliseconds);
+            timeline1.PlaybackTime = (float) (elapsedTime.TotalMilliseconds);
 
-            if ((timeline1.PlaybackTime > (timeline1.ViewableWindowSize / 2 + timeline1.ViewableWindow.X))
+            if ((timeline1.PlaybackTime > (timeline1.ViewableWindowSize/2 + timeline1.ViewableWindow.X))
                 ||
-                (timeline1.PlaybackTime < ( timeline1.ViewableWindow.X - timeline1.ViewableWindowSize / 2)))
+                (timeline1.PlaybackTime < (timeline1.ViewableWindow.X - timeline1.ViewableWindowSize/2)))
             {
                 var windowSize = timeline1.ViewableWindowSize;
-                
-                timeline1.ViewableWindow.X = timeline1.PlaybackTime - windowSize / 2;
-                timeline1.ViewableWindow.Y = timeline1.PlaybackTime + windowSize / 2;
+
+                timeline1.ViewableWindow.X = timeline1.PlaybackTime - windowSize/2;
+                timeline1.ViewableWindow.Y = timeline1.PlaybackTime + windowSize/2;
             }
 
-            foreach (var evt in timeline1.TimelineEvents.Where(x => x.Fired == false && x.Time < elapsedTime.TotalMilliseconds))
+            foreach (
+                var evt in
+                    timeline1.TimelineEvents.Where(x => x.Fired == false && x.Time < elapsedTime.TotalMilliseconds))
             {
                 evt.Fired = true;
 
@@ -524,9 +511,7 @@ namespace MaxLifx
                         break;
                     case TimelineEventAction.Unspecified:
                         break;
-
                 }
-
             }
         }
 
@@ -550,13 +535,10 @@ namespace MaxLifx
             _schedulerWaveOut = new WaveOut(); // or WaveOutEvent()
 
             _schedulerReader.CurrentTime = startTime;
-            
+
             _schedulerWaveOut.Init(_schedulerReader);
             _schedulerWaveOut.Play();
         }
-
-        delegate void SetSchedulerTimeTextBoxDelegate(TimeSpan elapsedTime);
-
 
         private void SetSchedulerTimeTextBox(TimeSpan elapsedTime)
         {
@@ -566,15 +548,7 @@ namespace MaxLifx
                 Invoke(d, elapsedTime);
                 return;
             }
-            tbSchedTime.Text = ((((int)elapsedTime.TotalMilliseconds)/100)/10f).ToString();
-        }
-
-        private TimeSpan schedulerTimeElapsed;
-        private void bStopSched_Click(object sender, EventArgs e)
-        {
-
-
-
+            tbSchedTime.Text = ((((int) elapsedTime.TotalMilliseconds)/100)/10f).ToString();
         }
 
         private void bSaveSched_Click(object sender, EventArgs e)
@@ -601,7 +575,7 @@ namespace MaxLifx
 
         private void button10_Click(object sender, EventArgs e)
         {
-            var s = new OpenFileDialog { DefaultExt = ".MaxLifx.Sequence.xml" };
+            var s = new OpenFileDialog {DefaultExt = ".MaxLifx.Sequence.xml"};
             s.Filter = "XML files (*.MaxLifx.Sequence.xml)|*.MaxLifx.Sequence.xml";
             s.InitialDirectory = Directory.GetCurrentDirectory();
             s.AddExtension = true;
@@ -620,12 +594,11 @@ namespace MaxLifx
             }
         }
 
-
         private void bTimelineAdd_Click(object sender, EventArgs e)
         {
             var evt = new TimelineEvent
             {
-                Time = (long)timeline1.PlaybackTime,
+                Time = (long) timeline1.PlaybackTime,
                 Parameter = @"",
                 Action = TimelineEventAction.Unspecified
             };
@@ -635,7 +608,7 @@ namespace MaxLifx
         private void button11_Click(object sender, EventArgs e)
         {
             TimelineEvent eventToEdit;
-            bool editMultiple = false;
+            var editMultiple = false;
 
             if (timeline1.SelectedEvents.Count != 1)
             {
@@ -657,7 +630,7 @@ namespace MaxLifx
                 }
             }
             else timeline1.PopulateBitmapCache(f.EditEvent);
-           
+
             timeline1.Invalidate();
         }
 
@@ -697,7 +670,7 @@ namespace MaxLifx
                 schedulerTimeElapsed = DateTime.Now - _schedulerStartTime;
                 _schedulerTimer.Enabled = false;
                 _schedulerTimer.Dispose();
-                _schedulerTimer = new System.Timers.Timer();
+                _schedulerTimer = new Timer();
 
                 if (_schedulerWaveOut != null)
                 {
@@ -715,7 +688,6 @@ namespace MaxLifx
             }
         }
 
-        private bool collapseToggle = false;
         private void bCollapseMonitors_Click(object sender, EventArgs e)
         {
             if (collapseToggle)
@@ -725,7 +697,8 @@ namespace MaxLifx
                 MaximumSize = new Size(Size.Width, Size.Height + 146);
                 MinimumSize = new Size(Size.Width, Size.Height + 146);
                 Size = new Size(Size.Width, Size.Height + 146);
-                bCollapseSequencer.Location = new Point(bCollapseSequencer.Location.X, bCollapseSequencer.Location.Y + 146);
+                bCollapseSequencer.Location = new Point(bCollapseSequencer.Location.X,
+                    bCollapseSequencer.Location.Y + 146);
             }
             else
             {
@@ -733,14 +706,14 @@ namespace MaxLifx
                 gbSequencer.Location = new Point(gbSequencer.Location.X, gbSequencer.Location.Y - 146);
                 MinimumSize = new Size(Size.Width, Size.Height - 146);
                 MaximumSize = new Size(Size.Width, Size.Height - 146);
-                Size = new Size(Size.Width, Size.Height- 146);
-                bCollapseSequencer.Location = new Point(bCollapseSequencer.Location.X, bCollapseSequencer.Location.Y - 146);
+                Size = new Size(Size.Width, Size.Height - 146);
+                bCollapseSequencer.Location = new Point(bCollapseSequencer.Location.X,
+                    bCollapseSequencer.Location.Y - 146);
             }
 
             collapseToggle = !collapseToggle;
         }
 
-        private bool collapseSequencerToggle = true;
         private void bCollapseSequencer_Click(object sender, EventArgs e)
         {
             if (collapseSequencerToggle)
@@ -761,30 +734,25 @@ namespace MaxLifx
             collapseSequencerToggle = !collapseSequencerToggle;
         }
 
-        private void bAbout_Click(object sender, EventArgs e)
-        {
-            new About().Show();
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             string sURL;
             sURL = @"https://api.github.com/repos/stringandstickytape/MaxLifx/releases";
             string response;
 
-            HttpWebRequest webRequest = System.Net.WebRequest.Create(sURL) as HttpWebRequest;
+            var webRequest = WebRequest.Create(sURL) as HttpWebRequest;
             webRequest.Method = "GET";
             webRequest.ServicePoint.Expect100Continue = false;
             webRequest.UserAgent = "YourAppName";
 
             decimal maxVersion = -1;
 
-            using (StreamReader responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+            using (var responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
                 response = responseReader.ReadToEnd();
 
             dynamic data = JsonConvert.DeserializeObject<dynamic>(response);
 
-            var ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            var ci = (CultureInfo) CultureInfo.CurrentCulture.Clone();
             ci.NumberFormat.CurrencyDecimalSeparator = ".";
 
             dynamic releaseDetails = null;
@@ -803,8 +771,11 @@ namespace MaxLifx
 
             if (Version < maxVersion)
             {
-                var dialogResult = MessageBox.Show("Newer version found! Quit MaxLifx and browse to GitHub to download it?\r\n\r\nv" + maxVersion + ":\r\n" + releaseDetails.body, "Update?",
-                    MessageBoxButtons.YesNo);
+                var dialogResult =
+                    MessageBox.Show(
+                        "Newer version found! Quit MaxLifx and browse to GitHub to download it?\r\n\r\nv" + maxVersion +
+                        ":\r\n" + releaseDetails.body, "Update?",
+                        MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -842,5 +813,13 @@ namespace MaxLifx
         {
             new About().Show();
         }
+
+        private delegate void BulbControllerOnColourSetDelegate(object sender, EventArgs eventArgs);
+
+        private delegate void LoadThreadsDelegate(string filename);
+
+        private delegate void StopAllThreadsDelegate();
+
+        private delegate void SetSchedulerTimeTextBoxDelegate(TimeSpan elapsedTime);
     }
 }
