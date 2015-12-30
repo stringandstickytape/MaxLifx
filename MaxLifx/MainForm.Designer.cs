@@ -323,7 +323,7 @@
             this.gbSequencer.Controls.Add(this.button9);
             this.gbSequencer.Location = new System.Drawing.Point(9, 442);
             this.gbSequencer.Name = "gbSequencer";
-            this.gbSequencer.Size = new System.Drawing.Size(755, 309);
+            this.gbSequencer.Size = new System.Drawing.Size(753, 18);
             this.gbSequencer.TabIndex = 54;
             this.gbSequencer.TabStop = false;
             this.gbSequencer.Text = "Threadset / MP3 Sequencer";
@@ -424,7 +424,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 765);
+            this.ClientSize = new System.Drawing.Size(774, 466);
             this.Controls.Add(this.bCollapseSequencer);
             this.Controls.Add(this.bCollapseMonitors);
             this.Controls.Add(this.gbSequencer);
@@ -433,8 +433,8 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(790, 804);
-            this.MinimumSize = new System.Drawing.Size(790, 804);
+            this.MaximumSize = new System.Drawing.Size(790, 505);
+            this.MinimumSize = new System.Drawing.Size(790, 505);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MaxLifx";

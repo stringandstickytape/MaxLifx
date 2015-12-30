@@ -720,7 +720,7 @@ namespace MaxLifx
         {
             if (collapseToggle)
             {
-                gbMonitors.Size = new Size(960, 166);
+                gbMonitors.Size = new Size(753, 166);
                 gbSequencer.Location = new Point(gbSequencer.Location.X, gbSequencer.Location.Y + 146);
                 MaximumSize = new Size(Size.Width, Size.Height + 146);
                 MinimumSize = new Size(Size.Width, Size.Height + 146);
@@ -729,7 +729,7 @@ namespace MaxLifx
             }
             else
             {
-                gbMonitors.Size = new Size(960, 18);
+                gbMonitors.Size = new Size(753, 18);
                 gbSequencer.Location = new Point(gbSequencer.Location.X, gbSequencer.Location.Y - 146);
                 MinimumSize = new Size(Size.Width, Size.Height - 146);
                 MaximumSize = new Size(Size.Width, Size.Height - 146);
@@ -740,19 +740,19 @@ namespace MaxLifx
             collapseToggle = !collapseToggle;
         }
 
-        private bool collapseSequencerToggle;
+        private bool collapseSequencerToggle = true;
         private void bCollapseSequencer_Click(object sender, EventArgs e)
         {
             if (collapseSequencerToggle)
             {
-                gbSequencer.Size = new Size(961, 309);
+                gbSequencer.Size = new Size(753, 309);
                 MaximumSize = new Size(Size.Width, Size.Height + 291);
                 MinimumSize = new Size(Size.Width, Size.Height + 291);
                 Size = new Size(Size.Width, Size.Height + 291);
             }
             else
             {
-                gbSequencer.Size = new Size(961, 18);
+                gbSequencer.Size = new Size(753, 18);
                 MinimumSize = new Size(Size.Width, Size.Height - 291);
                 MaximumSize = new Size(Size.Width, Size.Height - 291);
                 Size = new Size(Size.Width, Size.Height - 291);
