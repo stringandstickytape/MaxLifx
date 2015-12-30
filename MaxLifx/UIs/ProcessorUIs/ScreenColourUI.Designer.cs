@@ -53,6 +53,8 @@
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.cbConfigs = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbBrightnessMin = new System.Windows.Forms.TextBox();
+            this.tbSaturationMin = new System.Windows.Forms.TextBox();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -123,6 +125,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.tbBrightnessMin);
+            this.groupBox4.Controls.Add(this.tbSaturationMin);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.delay);
@@ -135,9 +139,9 @@
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.saturation);
-            this.groupBox4.Location = new System.Drawing.Point(142, 228);
+            this.groupBox4.Location = new System.Drawing.Point(119, 228);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(184, 103);
+            this.groupBox4.Size = new System.Drawing.Size(232, 103);
             this.groupBox4.TabIndex = 33;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Parameters";
@@ -199,7 +203,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(117, 84);
+            this.label12.Location = new System.Drawing.Point(155, 84);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(52, 13);
             this.label12.TabIndex = 27;
@@ -216,7 +220,7 @@
             // 
             // brightness
             // 
-            this.brightness.Location = new System.Drawing.Point(79, 59);
+            this.brightness.Location = new System.Drawing.Point(117, 59);
             this.brightness.Name = "brightness";
             this.brightness.Size = new System.Drawing.Size(37, 20);
             this.brightness.TabIndex = 23;
@@ -226,7 +230,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(117, 63);
+            this.label11.Location = new System.Drawing.Point(155, 63);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(52, 13);
             this.label11.TabIndex = 26;
@@ -243,7 +247,7 @@
             // 
             // saturation
             // 
-            this.saturation.Location = new System.Drawing.Point(79, 81);
+            this.saturation.Location = new System.Drawing.Point(117, 81);
             this.saturation.Name = "saturation";
             this.saturation.Size = new System.Drawing.Size(37, 20);
             this.saturation.TabIndex = 25;
@@ -306,6 +310,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Screen Area To Capture";
             // 
+            // tbBrightnessMin
+            // 
+            this.tbBrightnessMin.Location = new System.Drawing.Point(79, 59);
+            this.tbBrightnessMin.Name = "tbBrightnessMin";
+            this.tbBrightnessMin.Size = new System.Drawing.Size(37, 20);
+            this.tbBrightnessMin.TabIndex = 30;
+            this.tbBrightnessMin.Text = "0";
+            this.tbBrightnessMin.TextChanged += new System.EventHandler(this.pos_TextChanged);
+            // 
+            // tbSaturationMin
+            // 
+            this.tbSaturationMin.Location = new System.Drawing.Point(79, 81);
+            this.tbSaturationMin.Name = "tbSaturationMin";
+            this.tbSaturationMin.Size = new System.Drawing.Size(37, 20);
+            this.tbSaturationMin.TabIndex = 31;
+            this.tbSaturationMin.Text = "0";
+            this.tbSaturationMin.TextChanged += new System.EventHandler(this.pos_TextChanged);
+            // 
             // ScreenColourUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,5 +374,7 @@
         private System.Windows.Forms.ListBox lbLabels;
         private System.Windows.Forms.ComboBox cbConfigs;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tbBrightnessMin;
+        private System.Windows.Forms.TextBox tbSaturationMin;
     }
 }

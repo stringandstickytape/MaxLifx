@@ -12,6 +12,8 @@ namespace MaxLifx.Processors.ProcessorSettings
         public int Fade = 400;
         public List<LabelAndLocationType> LabelsAndLocations = new List<LabelAndLocationType>();
         public int Saturation = 65535;
+        public int MinSaturation = 0;
+        public int MinBrightness = 0;
         public Point TopLeft = new Point(0, 0);
     }
 }

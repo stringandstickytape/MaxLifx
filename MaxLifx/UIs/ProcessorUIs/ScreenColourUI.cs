@@ -118,7 +118,9 @@ namespace MaxLifx.UIs
                 fadeval = 400,
                 delayval = 50,
                 brightval = 32767,
-                satval = 32767;
+                satval = 32767,
+                minbrightval  = 0,
+                minsatval = 0;
 
             int.TryParse(tlx.Text, out tlxval);
             int.TryParse(tly.Text, out tlyval);
@@ -128,6 +130,8 @@ namespace MaxLifx.UIs
             int.TryParse(delay.Text, out delayval);
             int.TryParse(saturation.Text, out satval);
             int.TryParse(brightness.Text, out brightval);
+            int.TryParse(tbSaturationMin.Text, out minsatval);
+            int.TryParse(tbBrightnessMin.Text, out minbrightval);
 
             Settings.TopLeft = new Point(tlxval, tlyval);
             Settings.BottomRight = new Point(brxval, bryval);
@@ -135,6 +139,8 @@ namespace MaxLifx.UIs
             Settings.Delay = delayval;
             Settings.Saturation = satval;
             Settings.Brightness = brightval;
+            Settings.MinSaturation = minsatval;
+            Settings.MinBrightness = minbrightval;
 
             SuspendUI = false;
 

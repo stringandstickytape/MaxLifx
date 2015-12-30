@@ -133,8 +133,8 @@ namespace MaxLifx
                     }
 
                     var hue = (int) (avgColour.GetHue());
-                    var saturation = (ushort) (avgColour.GetSaturation()*SettingsCast.Saturation);
-                    var brightness = (ushort) (avgColour.GetBrightness()*SettingsCast.Brightness);
+                    var saturation = (ushort) (avgColour.GetSaturation()*(SettingsCast.Saturation-SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
+                    var brightness = (ushort) (avgColour.GetBrightness()*(SettingsCast.Brightness-SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
 
                     payload = new SetColourPayload
                     {
