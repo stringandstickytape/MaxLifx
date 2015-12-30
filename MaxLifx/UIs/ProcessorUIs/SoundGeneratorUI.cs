@@ -18,15 +18,12 @@ namespace MaxLifx.UIs
         private readonly SoundGeneratorSettings _settings;
         private int _currentRowHeight;
         private Point _currentSoundControl;
-        private bool _suspendUi;
 
         public SoundGeneratorUI(SoundGeneratorSettings settings)
         {
             InitializeComponent();
             _settings = settings;
-            _suspendUi = true;
             SetupUI();
-            _suspendUi = false;
         }
 
         private void SetupUI()
@@ -274,7 +271,6 @@ namespace MaxLifx.UIs
             var s = new SoundGeneratorSettings();
             ProcessorBase.LoadSettings(ref s, cbConfigs.SelectedItem + "." + _settings.FileExtension);
 
-            _suspendUi = true;
             _settings.SelectedLabels = s.SelectedLabels;
             _settings.OnTimes = s.OnTimes;
             _settings.OffTimes = s.OffTimes;
@@ -288,7 +284,6 @@ namespace MaxLifx.UIs
             }
 
             SetupUI();
-            _suspendUi = false;
         }
 
         private void tbOffTimes_TextChanged(object sender, EventArgs e)
