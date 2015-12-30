@@ -71,12 +71,12 @@ namespace MaxLifx.UIs
             nTransition.Value = _settings.TransitionDuration;
             nWaveDuration.Value = _settings.WaveDuration;
 
-            cbConfigs.Items.Clear();
-            foreach (var x in Directory.GetFiles(".", "*." + _settings.FileExtension))
-            {
-                var fileName = x.Replace(".\\", "").Replace("." + _settings.FileExtension, "").Replace(".xml", "");
-                cbConfigs.Items.Add(fileName);
-            }
+            //cbConfigs.Items.Clear();
+            //foreach (var x in Directory.GetFiles(".", "*." + _settings.FileExtension))
+            //{
+            //    var fileName = x.Replace(".\\", "").Replace("." + _settings.FileExtension, "").Replace(".xml", "");
+            //    cbConfigs.Items.Add(fileName);
+            //}
 
             UpdateHueSelectorHandleCount();
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
@@ -221,39 +221,39 @@ namespace MaxLifx.UIs
             t.Start();
         }
 
-        private void cbConfigs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var s = new SoundResponseSettings();
-            ProcessorBase.LoadSettings(ref s, cbConfigs.SelectedItem + "." + _settings.FileExtension);
-
-            _suspendUi = true;
-            _settings.WaveType = s.WaveType;
-            _settings.WaveDuration = s.WaveDuration;
-            _settings.SelectedLabels = s.SelectedLabels;
-            _settings.Delay = s.Delay;
-            _settings.Kelvin = s.Kelvin;
-            _settings.MaxBrightness = s.MaxBrightness;
-            _settings.MinBrightness = s.MinBrightness;
-            _settings.Hues = s.Hues;
-            _settings.HueRanges = s.HueRanges;
-            _settings.Saturations = s.Saturations;
-            _settings.SaturationRanges = s.SaturationRanges;
-            _settings.TransitionDuration = s.TransitionDuration;
-            _settings.BrightnessInvert = s.BrightnessInvert;
-            _settings.SaturationInvert = s.SaturationInvert;
-            _settings.HueInvert = s.HueInvert;
-            _settings.LinkRanges = s.LinkRanges;
-            _settings.OnTimes = s.OnTimes;
-            _settings.OffTimes = s.OffTimes;
-            _settings.PerBulb = s.PerBulb;
-            _settings.Bins = s.Bins;
-            _settings.Levels = s.Levels;
-            _settings.LevelRanges = s.LevelRanges;
-
-            SetupLabels(lbLabels, null, _settings);
-            SetupUI();
-            _suspendUi = false;
-        }
+        //private void cbConfigs_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    var s = new SoundResponseSettings();
+        //    ProcessorBase.LoadSettings(ref s, cbConfigs.SelectedItem + "." + _settings.FileExtension);
+        //
+        //    _suspendUi = true;
+        //    _settings.WaveType = s.WaveType;
+        //    _settings.WaveDuration = s.WaveDuration;
+        //    _settings.SelectedLabels = s.SelectedLabels;
+        //    _settings.Delay = s.Delay;
+        //    _settings.Kelvin = s.Kelvin;
+        //    _settings.MaxBrightness = s.MaxBrightness;
+        //    _settings.MinBrightness = s.MinBrightness;
+        //    _settings.Hues = s.Hues;
+        //    _settings.HueRanges = s.HueRanges;
+        //    _settings.Saturations = s.Saturations;
+        //    _settings.SaturationRanges = s.SaturationRanges;
+        //    _settings.TransitionDuration = s.TransitionDuration;
+        //    _settings.BrightnessInvert = s.BrightnessInvert;
+        //    _settings.SaturationInvert = s.SaturationInvert;
+        //    _settings.HueInvert = s.HueInvert;
+        //    _settings.LinkRanges = s.LinkRanges;
+        //    _settings.OnTimes = s.OnTimes;
+        //    _settings.OffTimes = s.OffTimes;
+        //    _settings.PerBulb = s.PerBulb;
+        //    _settings.Bins = s.Bins;
+        //    _settings.Levels = s.Levels;
+        //    _settings.LevelRanges = s.LevelRanges;
+        //
+        //    SetupLabels(lbLabels, null, _settings);
+        //    SetupUI();
+        //    _suspendUi = false;
+        //}
 
         private void cbBrightnessInvert_CheckedChanged(object sender, EventArgs e)
         {

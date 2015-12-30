@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundResponseUI));
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy5 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy6 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy7 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy8 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy1 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy2 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy3 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy4 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -64,8 +64,6 @@
             this.cbLinkRanges = new System.Windows.Forms.CheckBox();
             this.hueSelector1 = new MaxLifx.Controls.HueSelector();
             this.button2 = new System.Windows.Forms.Button();
-            this.cbConfigs = new System.Windows.Forms.ComboBox();
-            this.bSave = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
@@ -77,6 +75,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabHues = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbMaxBrightness)).BeginInit();
@@ -91,6 +90,7 @@
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox4
@@ -112,7 +112,7 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.nWaveDuration);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Location = new System.Drawing.Point(801, 63);
+            this.groupBox4.Location = new System.Drawing.Point(801, 31);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(248, 418);
             this.groupBox4.TabIndex = 106;
@@ -468,7 +468,7 @@
             this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
             this.hueSelector1.Brightness = 0D;
             this.hueSelector1.Free = false;
-            this.hueSelector1.GenericColourStrategy = analogousColourStrategy5;
+            this.hueSelector1.GenericColourStrategy = analogousColourStrategy1;
             this.hueSelector1.HandleCount = 1;
             this.hueSelector1.Invert = false;
             this.hueSelector1.LinkRanges = false;
@@ -476,9 +476,9 @@
             this.hueSelector1.Margin = new System.Windows.Forms.Padding(0);
             this.hueSelector1.Name = "hueSelector1";
             this.hueSelector1.PerBulb = false;
-            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy6;
-            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy7;
-            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy8;
+            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
+            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
+            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
             this.hueSelector1.Size = new System.Drawing.Size(517, 514);
             this.hueSelector1.TabIndex = 107;
             this.hueSelector1.Text = "z";
@@ -494,32 +494,13 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // cbConfigs
-            // 
-            this.cbConfigs.FormattingEnabled = true;
-            this.cbConfigs.Location = new System.Drawing.Point(12, 12);
-            this.cbConfigs.Name = "cbConfigs";
-            this.cbConfigs.Size = new System.Drawing.Size(224, 21);
-            this.cbConfigs.TabIndex = 100;
-            this.cbConfigs.SelectedIndexChanged += new System.EventHandler(this.cbConfigs_SelectedIndexChanged);
-            // 
-            // bSave
-            // 
-            this.bSave.Location = new System.Drawing.Point(242, 10);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(75, 23);
-            this.bSave.TabIndex = 99;
-            this.bSave.Text = "Save As";
-            this.bSave.UseVisualStyleBackColor = true;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
-            // 
             // lbLabels
             // 
             this.lbLabels.FormattingEnabled = true;
-            this.lbLabels.Location = new System.Drawing.Point(13, 93);
+            this.lbLabels.Location = new System.Drawing.Point(4, 16);
             this.lbLabels.Name = "lbLabels";
             this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbLabels.Size = new System.Drawing.Size(101, 485);
+            this.lbLabels.Size = new System.Drawing.Size(101, 459);
             this.lbLabels.TabIndex = 86;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
@@ -563,7 +544,7 @@
             // bUp
             // 
             this.bUp.Enabled = false;
-            this.bUp.Location = new System.Drawing.Point(16, 40);
+            this.bUp.Location = new System.Drawing.Point(6, 506);
             this.bUp.Name = "bUp";
             this.bUp.Size = new System.Drawing.Size(44, 23);
             this.bUp.TabIndex = 111;
@@ -574,7 +555,7 @@
             // bDown
             // 
             this.bDown.Enabled = false;
-            this.bDown.Location = new System.Drawing.Point(66, 40);
+            this.bDown.Location = new System.Drawing.Point(56, 506);
             this.bDown.Name = "bDown";
             this.bDown.Size = new System.Drawing.Size(44, 23);
             this.bDown.TabIndex = 112;
@@ -585,7 +566,7 @@
             // cbReorder
             // 
             this.cbReorder.AutoSize = true;
-            this.cbReorder.Location = new System.Drawing.Point(19, 72);
+            this.cbReorder.Location = new System.Drawing.Point(6, 483);
             this.cbReorder.Name = "cbReorder";
             this.cbReorder.Size = new System.Drawing.Size(64, 17);
             this.cbReorder.TabIndex = 113;
@@ -597,7 +578,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabHues);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(120, 41);
+            this.tabControl1.Location = new System.Drawing.Point(120, 9);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(675, 539);
@@ -633,18 +614,26 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Audio Frequency Response";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbReorder);
+            this.groupBox1.Controls.Add(this.bDown);
+            this.groupBox1.Controls.Add(this.bUp);
+            this.groupBox1.Controls.Add(this.lbLabels);
+            this.groupBox1.Location = new System.Drawing.Point(2, 9);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(112, 535);
+            this.groupBox1.TabIndex = 115;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Active Bulbs";
+            // 
             // SoundResponseUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1057, 586);
+            this.ClientSize = new System.Drawing.Size(1056, 556);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.cbReorder);
-            this.Controls.Add(this.bDown);
-            this.Controls.Add(this.bUp);
-            this.Controls.Add(this.cbConfigs);
-            this.Controls.Add(this.bSave);
-            this.Controls.Add(this.lbLabels);
             this.Controls.Add(this.groupBox4);
             this.MaximumSize = new System.Drawing.Size(1451, 756);
             this.Name = "SoundResponseUI";
@@ -668,8 +657,9 @@
             this.tabHues.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -692,8 +682,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown nWaveDuration;
-        private System.Windows.Forms.Button bSave;
-        private System.Windows.Forms.ComboBox cbConfigs;
         private System.Windows.Forms.CheckBox cbBrightnessInvert;
         private System.Windows.Forms.CheckBox cbSaturationInvert;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -718,5 +706,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabHues;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
