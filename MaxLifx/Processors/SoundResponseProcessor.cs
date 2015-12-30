@@ -91,7 +91,7 @@ namespace MaxLifx
                 {
                     var t = new Thread(() =>
                     {
-                        var form = new SoundResponseUI(SettingsCast, bulbController.Bulbs.Select(x => x.Label).ToList());
+                        var form = new SoundResponseUI(SettingsCast, bulbController.Bulbs.Select(x => x.Label).ToList(), r);
                             /* (SettingsCast, bulbController.Bulbs);*/
                         form.ShowDialog();
                     });

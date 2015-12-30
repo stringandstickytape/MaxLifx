@@ -74,6 +74,9 @@
             this.cbReorder = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabHues = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pThemes = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4.SuspendLayout();
@@ -89,6 +92,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -486,7 +490,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(528, 247);
+            this.button2.Location = new System.Drawing.Point(528, 120);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(93, 23);
             this.button2.TabIndex = 109;
@@ -587,6 +591,8 @@
             // tabHues
             // 
             this.tabHues.BackColor = System.Drawing.SystemColors.Control;
+            this.tabHues.Controls.Add(this.groupBox3);
+            this.tabHues.Controls.Add(this.button4);
             this.tabHues.Controls.Add(this.cbFree);
             this.tabHues.Controls.Add(this.cbPerBulb);
             this.tabHues.Controls.Add(this.button2);
@@ -600,6 +606,34 @@
             this.tabHues.Size = new System.Drawing.Size(667, 513);
             this.tabHues.TabIndex = 0;
             this.tabHues.Text = "Hues";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.pThemes);
+            this.groupBox3.Location = new System.Drawing.Point(525, 183);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(135, 323);
+            this.groupBox3.TabIndex = 113;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Themes";
+            // 
+            // pThemes
+            // 
+            this.pThemes.AutoScroll = true;
+            this.pThemes.Location = new System.Drawing.Point(9, 20);
+            this.pThemes.Name = "pThemes";
+            this.pThemes.Size = new System.Drawing.Size(119, 299);
+            this.pThemes.TabIndex = 0;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(528, 149);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 112;
+            this.button4.Text = "Theme";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // tabPage2
             // 
@@ -655,6 +689,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabHues.ResumeLayout(false);
             this.tabHues.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -707,5 +742,8 @@
         private System.Windows.Forms.TabPage tabHues;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Panel pThemes;
     }
 }

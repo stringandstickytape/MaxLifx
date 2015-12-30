@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using MaxLifx.ColourThemes;
 using MaxLifx.Controls;
 using MaxLifx.Processors.ProcessorSettings;
 using MaxLifx.SoundToken;
@@ -16,8 +19,9 @@ namespace MaxLifx.UIs
     {
         private readonly SoundResponseSettings _settings;
         private bool _suspendUi;
+        private Random r;
 
-        public SoundResponseUI(SoundResponseSettings settings, List<string> labels)
+        public SoundResponseUI(SoundResponseSettings settings, List<string> labels, Random R)
         {
             InitializeComponent();
             _settings = settings;
@@ -28,7 +32,38 @@ namespace MaxLifx.UIs
             _suspendUi = false;
             Load += SoundResponseUI_Load;
             spectrumAnalyser1.SelectionChanged += SpectrumAnalyser1_SelectionChanged;
+            r = R;
+
+            pThemes.Controls.Clear();
+            var type = typeof(IColourTheme);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.ToString().EndsWith("Base"));
+
+            int yCtr = 0;
             
+            foreach (var t in types)
+            {
+                var newButtonName = Regex.Replace(t.Name.Replace("ColourTheme", ""), "([a-z])([A-Z])", "$1 $2");
+                var newButton = new Button {Text = newButtonName, Location = new Point(0, yCtr), Size = new Size(pThemes.Size.Width - 20,23), Tag = t};
+                newButton.Click += ColourThemeClick;
+                pThemes.Controls.Add(newButton);
+                yCtr += newButton.Size.Height + 5;
+            }
+            
+        }
+
+        private void ColourThemeClick(object sender, EventArgs eventArgs)
+        {
+            var button = ((Button) (sender));
+            var type = (Type) (button.Tag);
+            var colourTheme = (IColourTheme) Activator.CreateInstance(type);
+
+            colourTheme.SetColours(r, _settings.Hues, _settings.HueRanges, _settings.Saturations,
+                _settings.SaturationRanges);
+
+            hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
+                _settings.SaturationRanges);
         }
 
         private void SpectrumAnalyser1_SelectionChanged(object sender, EventArgs e)
@@ -406,6 +441,16 @@ namespace MaxLifx.UIs
         private void cbUpdateAudioResponse_CheckedChanged(object sender, EventArgs e)
         {
             spectrumAnalyser1.ShowUpdates = cbUpdateAudioResponse.Checked;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var colourTheme = new BlueAndOrangeColourTheme();
+            colourTheme.SetColours(r, _settings.Hues, _settings.HueRanges, _settings.Saturations,
+                _settings.SaturationRanges);
+
+            hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
+                _settings.SaturationRanges);
         }
     }
 }
