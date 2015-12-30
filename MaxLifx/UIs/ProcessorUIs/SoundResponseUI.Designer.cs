@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundResponseUI));
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy1 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy2 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy3 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy4 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy5 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy6 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy7 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy8 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -58,7 +58,6 @@
             this.nWaveDuration = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.cbSaturationInvert = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbFree = new System.Windows.Forms.CheckBox();
             this.cbPerBulb = new System.Windows.Forms.CheckBox();
             this.cbHueInvert = new System.Windows.Forms.CheckBox();
@@ -71,11 +70,13 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
             this.button3 = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
             this.bUp = new System.Windows.Forms.Button();
             this.bDown = new System.Windows.Forms.Button();
             this.cbReorder = new System.Windows.Forms.CheckBox();
-            this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabHues = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbMaxBrightness)).BeginInit();
@@ -86,9 +87,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTransition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nWaveDuration)).BeginInit();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
-            this.groupBox3.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabHues.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox4
@@ -110,7 +112,7 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.nWaveDuration);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Location = new System.Drawing.Point(1175, 41);
+            this.groupBox4.Location = new System.Drawing.Point(801, 63);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(248, 418);
             this.groupBox4.TabIndex = 106;
@@ -221,7 +223,7 @@
             // 
             this.tbOnTimes.Location = new System.Drawing.Point(95, 166);
             this.tbOnTimes.Name = "tbOnTimes";
-            this.tbOnTimes.Size = new System.Drawing.Size(100, 20);
+            this.tbOnTimes.Size = new System.Drawing.Size(99, 20);
             this.tbOnTimes.TabIndex = 100;
             this.tbOnTimes.TextChanged += new System.EventHandler(this.tbOnTimes_TextChanged);
             // 
@@ -262,7 +264,7 @@
             0,
             0});
             this.nDelay.Name = "nDelay";
-            this.nDelay.Size = new System.Drawing.Size(120, 20);
+            this.nDelay.Size = new System.Drawing.Size(100, 20);
             this.nDelay.TabIndex = 88;
             this.nDelay.Value = new decimal(new int[] {
             100,
@@ -276,7 +278,7 @@
             this.cbWaveType.FormattingEnabled = true;
             this.cbWaveType.Location = new System.Drawing.Point(95, 84);
             this.cbWaveType.Name = "cbWaveType";
-            this.cbWaveType.Size = new System.Drawing.Size(121, 21);
+            this.cbWaveType.Size = new System.Drawing.Size(101, 21);
             this.cbWaveType.TabIndex = 87;
             this.cbWaveType.SelectedIndexChanged += new System.EventHandler(this.cbWaveType_SelectedIndexChanged);
             // 
@@ -299,7 +301,7 @@
             0,
             0});
             this.nTransition.Name = "nTransition";
-            this.nTransition.Size = new System.Drawing.Size(120, 20);
+            this.nTransition.Size = new System.Drawing.Size(100, 20);
             this.nTransition.TabIndex = 89;
             this.nTransition.Value = new decimal(new int[] {
             100,
@@ -329,7 +331,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(222, 113);
+            this.label12.Location = new System.Drawing.Point(199, 113);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(20, 13);
             this.label12.TabIndex = 98;
@@ -338,7 +340,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(221, 21);
+            this.label10.Location = new System.Drawing.Point(199, 21);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(20, 13);
             this.label10.TabIndex = 92;
@@ -356,7 +358,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(221, 47);
+            this.label9.Location = new System.Drawing.Point(199, 47);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(20, 13);
             this.label9.TabIndex = 93;
@@ -381,7 +383,7 @@
             0,
             0});
             this.nWaveDuration.Name = "nWaveDuration";
-            this.nWaveDuration.Size = new System.Drawing.Size(120, 20);
+            this.nWaveDuration.Size = new System.Drawing.Size(100, 20);
             this.nWaveDuration.TabIndex = 96;
             this.nWaveDuration.Value = new decimal(new int[] {
             100,
@@ -402,7 +404,7 @@
             // cbSaturationInvert
             // 
             this.cbSaturationInvert.AutoSize = true;
-            this.cbSaturationInvert.Location = new System.Drawing.Point(6, 503);
+            this.cbSaturationInvert.Location = new System.Drawing.Point(528, 74);
             this.cbSaturationInvert.Name = "cbSaturationInvert";
             this.cbSaturationInvert.Size = new System.Drawing.Size(133, 17);
             this.cbSaturationInvert.TabIndex = 102;
@@ -410,26 +412,10 @@
             this.cbSaturationInvert.UseVisualStyleBackColor = true;
             this.cbSaturationInvert.CheckedChanged += new System.EventHandler(this.cbSaturationInvert_CheckedChanged);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.cbFree);
-            this.groupBox1.Controls.Add(this.cbPerBulb);
-            this.groupBox1.Controls.Add(this.cbHueInvert);
-            this.groupBox1.Controls.Add(this.cbLinkRanges);
-            this.groupBox1.Controls.Add(this.cbSaturationInvert);
-            this.groupBox1.Controls.Add(this.hueSelector1);
-            this.groupBox1.Location = new System.Drawing.Point(120, 41);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(523, 536);
-            this.groupBox1.TabIndex = 103;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Hue Range";
-            // 
             // cbFree
             // 
-            this.cbFree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFree.AutoSize = true;
-            this.cbFree.Location = new System.Drawing.Point(6, 89);
+            this.cbFree.Location = new System.Drawing.Point(528, 97);
             this.cbFree.Name = "cbFree";
             this.cbFree.Size = new System.Drawing.Size(47, 17);
             this.cbFree.TabIndex = 111;
@@ -443,7 +429,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPerBulb.AutoSize = true;
-            this.cbPerBulb.Location = new System.Drawing.Point(6, 43);
+            this.cbPerBulb.Location = new System.Drawing.Point(528, 51);
             this.cbPerBulb.Name = "cbPerBulb";
             this.cbPerBulb.Size = new System.Drawing.Size(99, 17);
             this.cbPerBulb.TabIndex = 108;
@@ -457,7 +443,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbHueInvert.AutoSize = true;
-            this.cbHueInvert.Location = new System.Drawing.Point(6, 19);
+            this.cbHueInvert.Location = new System.Drawing.Point(528, 8);
             this.cbHueInvert.Margin = new System.Windows.Forms.Padding(460, 460, 3, 3);
             this.cbHueInvert.Name = "cbHueInvert";
             this.cbHueInvert.Size = new System.Drawing.Size(111, 17);
@@ -468,9 +454,8 @@
             // 
             // cbLinkRanges
             // 
-            this.cbLinkRanges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbLinkRanges.AutoSize = true;
-            this.cbLinkRanges.Location = new System.Drawing.Point(6, 66);
+            this.cbLinkRanges.Location = new System.Drawing.Point(528, 31);
             this.cbLinkRanges.Name = "cbLinkRanges";
             this.cbLinkRanges.Size = new System.Drawing.Size(86, 17);
             this.cbLinkRanges.TabIndex = 110;
@@ -480,33 +465,30 @@
             // 
             // hueSelector1
             // 
-            this.hueSelector1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
             this.hueSelector1.Brightness = 0D;
             this.hueSelector1.Free = false;
-            this.hueSelector1.GenericColourStrategy = analogousColourStrategy1;
+            this.hueSelector1.GenericColourStrategy = analogousColourStrategy5;
             this.hueSelector1.HandleCount = 1;
             this.hueSelector1.Invert = false;
             this.hueSelector1.LinkRanges = false;
-            this.hueSelector1.Location = new System.Drawing.Point(4, 16);
+            this.hueSelector1.Location = new System.Drawing.Point(0, 0);
             this.hueSelector1.Margin = new System.Windows.Forms.Padding(0);
             this.hueSelector1.Name = "hueSelector1";
             this.hueSelector1.PerBulb = false;
-            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
-            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
-            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
-            this.hueSelector1.Size = new System.Drawing.Size(514, 514);
+            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy6;
+            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy7;
+            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy8;
+            this.hueSelector1.Size = new System.Drawing.Size(517, 514);
             this.hueSelector1.TabIndex = 107;
             this.hueSelector1.Text = "z";
             this.hueSelector1.HuesChanged += new System.EventHandler(this.colourControl1_HuesChanged);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(120, 583);
+            this.button2.Location = new System.Drawing.Point(528, 247);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(99, 23);
+            this.button2.Size = new System.Drawing.Size(93, 23);
             this.button2.TabIndex = 109;
             this.button2.Text = "Reset Ranges";
             this.button2.UseVisualStyleBackColor = true;
@@ -537,7 +519,7 @@
             this.lbLabels.Location = new System.Drawing.Point(13, 93);
             this.lbLabels.Name = "lbLabels";
             this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbLabels.Size = new System.Drawing.Size(101, 511);
+            this.lbLabels.Size = new System.Drawing.Size(101, 485);
             this.lbLabels.TabIndex = 86;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
@@ -548,7 +530,7 @@
             // 
             // spectrumAnalyser1
             // 
-            this.spectrumAnalyser1.Location = new System.Drawing.Point(4, 19);
+            this.spectrumAnalyser1.Location = new System.Drawing.Point(0, 0);
             this.spectrumAnalyser1.Name = "spectrumAnalyser1";
             this.spectrumAnalyser1.Size = new System.Drawing.Size(512, 512);
             this.spectrumAnalyser1.TabIndex = 107;
@@ -556,25 +538,27 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(649, 583);
+            this.button3.Location = new System.Drawing.Point(518, 42);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(135, 23);
+            this.button3.Size = new System.Drawing.Size(94, 23);
             this.button3.TabIndex = 108;
             this.button3.Text = "Reset Ranges";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // groupBox3
+            // cbUpdateAudioResponse
             // 
-            this.groupBox3.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox3.Controls.Add(this.cbUpdateAudioResponse);
-            this.groupBox3.Controls.Add(this.spectrumAnalyser1);
-            this.groupBox3.Location = new System.Drawing.Point(649, 41);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(520, 536);
-            this.groupBox3.TabIndex = 110;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Audio Frequency Response";
+            this.cbUpdateAudioResponse.AutoSize = true;
+            this.cbUpdateAudioResponse.BackColor = System.Drawing.Color.Transparent;
+            this.cbUpdateAudioResponse.Checked = true;
+            this.cbUpdateAudioResponse.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(518, 6);
+            this.cbUpdateAudioResponse.Name = "cbUpdateAudioResponse";
+            this.cbUpdateAudioResponse.Size = new System.Drawing.Size(121, 30);
+            this.cbUpdateAudioResponse.TabIndex = 114;
+            this.cbUpdateAudioResponse.Text = "update in real \r\ntime (CPU intensive)";
+            this.cbUpdateAudioResponse.UseVisualStyleBackColor = false;
+            this.cbUpdateAudioResponse.CheckedChanged += new System.EventHandler(this.cbUpdateAudioResponse_CheckedChanged);
             // 
             // bUp
             // 
@@ -609,37 +593,60 @@
             this.cbReorder.UseVisualStyleBackColor = true;
             this.cbReorder.CheckedChanged += new System.EventHandler(this.cbReorder_CheckedChanged);
             // 
-            // cbUpdateAudioResponse
+            // tabControl1
             // 
-            this.cbUpdateAudioResponse.AutoSize = true;
-            this.cbUpdateAudioResponse.Checked = true;
-            this.cbUpdateAudioResponse.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(145, -1);
-            this.cbUpdateAudioResponse.Name = "cbUpdateAudioResponse";
-            this.cbUpdateAudioResponse.Size = new System.Drawing.Size(188, 17);
-            this.cbUpdateAudioResponse.TabIndex = 114;
-            this.cbUpdateAudioResponse.Text = "update in real time (CPU intensive)";
-            this.cbUpdateAudioResponse.UseVisualStyleBackColor = true;
-            this.cbUpdateAudioResponse.CheckedChanged += new System.EventHandler(this.cbUpdateAudioResponse_CheckedChanged);
+            this.tabControl1.Controls.Add(this.tabHues);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(120, 41);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(675, 539);
+            this.tabControl1.TabIndex = 114;
+            // 
+            // tabHues
+            // 
+            this.tabHues.BackColor = System.Drawing.SystemColors.Control;
+            this.tabHues.Controls.Add(this.cbFree);
+            this.tabHues.Controls.Add(this.cbPerBulb);
+            this.tabHues.Controls.Add(this.button2);
+            this.tabHues.Controls.Add(this.cbHueInvert);
+            this.tabHues.Controls.Add(this.cbLinkRanges);
+            this.tabHues.Controls.Add(this.cbSaturationInvert);
+            this.tabHues.Controls.Add(this.hueSelector1);
+            this.tabHues.Location = new System.Drawing.Point(4, 22);
+            this.tabHues.Name = "tabHues";
+            this.tabHues.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHues.Size = new System.Drawing.Size(667, 513);
+            this.tabHues.TabIndex = 0;
+            this.tabHues.Text = "Hues";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.cbUpdateAudioResponse);
+            this.tabPage2.Controls.Add(this.spectrumAnalyser1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(667, 513);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Audio Frequency Response";
             // 
             // SoundResponseUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1435, 617);
+            this.ClientSize = new System.Drawing.Size(1057, 586);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.cbReorder);
             this.Controls.Add(this.bDown);
             this.Controls.Add(this.bUp);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cbConfigs);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.lbLabels);
             this.Controls.Add(this.groupBox4);
-            this.MaximumSize = new System.Drawing.Size(1451, 656);
-            this.MinimumSize = new System.Drawing.Size(1451, 656);
+            this.MaximumSize = new System.Drawing.Size(1451, 756);
             this.Name = "SoundResponseUI";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SoundResponseUI";
@@ -655,11 +662,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.nDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTransition)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nWaveDuration)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabHues.ResumeLayout(false);
+            this.tabHues.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -688,7 +696,6 @@
         private System.Windows.Forms.ComboBox cbConfigs;
         private System.Windows.Forms.CheckBox cbBrightnessInvert;
         private System.Windows.Forms.CheckBox cbSaturationInvert;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox cbHueInvert;
@@ -704,10 +711,12 @@
         private System.Windows.Forms.CheckBox cbFree;
         private Controls.SpectrumAnalyser spectrumAnalyser1;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button bUp;
         private System.Windows.Forms.Button bDown;
         private System.Windows.Forms.CheckBox cbReorder;
         private System.Windows.Forms.CheckBox cbUpdateAudioResponse;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabHues;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
