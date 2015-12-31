@@ -41,8 +41,8 @@ namespace MaxLifx.UIs
                 .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.ToString().EndsWith("Base"));
 
             int yCtr = 0;
-            
-            foreach (var t in types)
+
+            foreach (var t in types.OrderBy(x => x.Name)) 
             {
                 var newButtonName = Regex.Replace(t.Name.Replace("ColourTheme", ""), "([a-z])([A-Z])", "$1 $2");
                 var newButton = new Button {Text = newButtonName, Location = new Point(0, yCtr), Size = new Size(pThemes.Size.Width - 20,23), Tag = t};
@@ -65,7 +65,7 @@ namespace MaxLifx.UIs
             {
                 if(_settings.Brightnesses[index] + _settings.BrightnessRanges[index] > 1)
                     _settings.BrightnessRanges[index] = 1 - _settings.Brightnesses[index];
-                else if (_settings.Brightnesses[index] - _settings.BrightnessRanges[index] < 0)
+                if (_settings.Brightnesses[index] - _settings.BrightnessRanges[index] < 0)
                     _settings.BrightnessRanges[index] = _settings.Brightnesses[index];
             }
 
@@ -73,7 +73,7 @@ namespace MaxLifx.UIs
             {
                 if (_settings.Saturations[index] + _settings.SaturationRanges[index] > 1)
                     _settings.SaturationRanges[index] = 1 - _settings.Saturations[index];
-                else if (_settings.Saturations[index] - _settings.SaturationRanges[index] < 0)
+                if (_settings.Saturations[index] - _settings.SaturationRanges[index] < 0)
                     _settings.SaturationRanges[index] = _settings.Saturations[index];
             }
 
@@ -462,7 +462,7 @@ namespace MaxLifx.UIs
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            hueSelector1.ResetRanges(0);
+            hueSelector1.ResetRanges(0,0);
             brightnessSelector1.ResetRanges(0);
             UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
         }

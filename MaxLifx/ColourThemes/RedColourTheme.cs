@@ -20,7 +20,7 @@ namespace MaxLifx.ColourThemes
                 saturations[index] = r.NextDouble() / 4 + .75f;
 
             for (int index = 0; index < saturationRanges.Count; index++)
-                saturationRanges[index] = 0;
+                saturationRanges[index] = r.NextDouble() / 4;
 
             for (int index = 0; index < brightnesses.Count; index++)
                 brightnesses[index] = (float)(r.NextDouble());

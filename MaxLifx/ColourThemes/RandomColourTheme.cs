@@ -6,38 +6,27 @@ using System.Threading.Tasks;
 
 namespace MaxLifx.ColourThemes
 {
-    public class RedAndOrangeColourTheme : IColourTheme
+    public class RandomColourTheme : IColourTheme
     {
         public new void SetColours(Random r, List<int> hues, List<int> hueRanges, List<double> saturations, List<double> saturationRanges, List<float> brightnesses, List<float> brightnessRanges)
         {
             for (int index = 0; index < hues.Count; index++)
-            {
-                switch (r.Next(2))
-                {
-                    case 0:
-                        hues[index] = r.Next(30) - 15; // red
-                        break;
-                    case 1:
-                        hues[index] = r.Next(30) + 15; // orange
-                        break;
-                }
-                
-            }
+                hues[index] = r.Next(360);
 
             for (int index = 0; index < hueRanges.Count; index++)
-                hueRanges[index] = r.Next(30)-15;
+                hueRanges[index] = r.Next(180);
 
             for (int index = 0; index < saturations.Count; index++)
-                saturations[index] = r.NextDouble() / 4 + .75f;
+                saturations[index] = r.NextDouble();
 
             for (int index = 0; index < saturationRanges.Count; index++)
-                saturationRanges[index] = r.NextDouble() / 4;
+                saturationRanges[index] = r.NextDouble();
 
             for (int index = 0; index < brightnesses.Count; index++)
-                brightnesses[index] = (float) r.NextDouble();
+                brightnesses[index] = (float)(r.NextDouble());
 
             for (int index = 0; index < brightnessRanges.Count; index++)
-                brightnessRanges[index] = (float)(r.NextDouble() / 4);
+                brightnessRanges[index] = (float)(r.NextDouble());
         }
     }
 }

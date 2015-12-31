@@ -57,10 +57,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColourThemes\RandomColourTheme.cs" />
     <Compile Include="ColourThemes\RainbowColourTheme.cs" />
     <Compile Include="ColourThemes\IColourTheme.cs" />
     <Compile Include="ColourThemes\BlueAndOrangeColourTheme.cs" />
+    <Compile Include="ColourThemes\SpokesColourTheme.cs" />
     <Compile Include="ColourThemes\RedAndOrangeColourTheme.cs" />
+    <Compile Include="ColourThemes\BlueColourTheme.cs" />
+    <Compile Include="ColourThemes\GreenColourTheme.cs" />
     <Compile Include="ColourThemes\RedColourTheme.cs" />
     <Compile Include="Controls\BrightnessSelector\BrightnessSelector.cs">
       <SubType>Component</SubType>

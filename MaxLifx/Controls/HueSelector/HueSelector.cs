@@ -307,6 +307,9 @@ namespace MaxLifx.Controls
                             previousSaturation);
                         break;
                 }
+
+            foreach(var handle in Handles)
+                PreventSaturationHandlesExceedingLimits(handle);
         }
 
         #region Overrides
@@ -387,7 +390,7 @@ namespace MaxLifx.Controls
 
         private void DrawHandles(PaintEventArgs e)
         {
-            var linePen = new Pen(Color.LightGray, 3);
+            var linePen = new Pen(Color.FromArgb(127,0,0,0), 3);
             var handleClientRectangle = new Rectangle(ClientRectangle.X + 10, ClientRectangle.Y + 10,
                 ClientRectangle.Width - 20, ClientRectangle.Height - 20);
             foreach (var handle in Handles.OrderByDescending(x => x.HandleNumber))
