@@ -50,7 +50,6 @@ namespace MaxLifx.UIs
                 pThemes.Controls.Add(newButton);
                 yCtr += newButton.Size.Height + 5;
             }
-            
         }
 
         private void ColourThemeClick(object sender, EventArgs eventArgs)
@@ -60,10 +59,19 @@ namespace MaxLifx.UIs
             var colourTheme = (IColourTheme) Activator.CreateInstance(type);
 
             colourTheme.SetColours(r, _settings.Hues, _settings.HueRanges, _settings.Saturations,
-                _settings.SaturationRanges);
+                _settings.SaturationRanges, _settings.Brightnesses, _settings.BrightnessRanges);
+
+            for (int index = 0; index < _settings.Brightnesses.Count; index++)
+            {
+                if(_settings.Brightnesses[index] + _settings.BrightnessRanges[index] > 1)
+                    _settings.BrightnessRanges[index] = 1 - _settings.Brightnesses[index];
+                else if (_settings.Brightnesses[index] - _settings.BrightnessRanges[index] < 0)
+                    _settings.BrightnessRanges[index] = _settings.Brightnesses[index];
+            }
 
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
+            brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);
         }
 
         private void SpectrumAnalyser1_SelectionChanged(object sender, EventArgs e)
@@ -79,14 +87,11 @@ namespace MaxLifx.UIs
             spectrumAnalyser1.StartCapture();
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
+            brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);
         }
 
         private void SetupUI()
         {
-            
-            tbMinBrightness.Value = _settings.MinBrightness;
-            tbMaxBrightness.Value = _settings.MaxBrightness;
-
             cbWaveType.Items.Clear();
             foreach (var s in Enum.GetNames(typeof (WaveTypes)))
             {
@@ -116,10 +121,12 @@ namespace MaxLifx.UIs
             UpdateHueSelectorHandleCount();
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
+            brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);
             cbPerBulb.Checked = _settings.PerBulb;
 
             UpdateHueSelectorFromHuesAndSaturations();
             hueSelector1.LinkRanges = _settings.LinkRanges;
+            brightnessSelector1.LinkRanges = _settings.LinkRanges;
 
             cbHueInvert.Checked = _settings.HueInvert;
             cbBrightnessInvert.Checked = _settings.BrightnessInvert;
@@ -139,28 +146,6 @@ namespace MaxLifx.UIs
 
             tbOnTimes.Text = _settings.OnTimes;
             tbOffTimes.Text = _settings.OffTimes;
-        }
-
-        private void tbMinBrightness_ValueChanged(object sender, EventArgs e)
-        {
-            _settings.MinBrightness = (ushort) (tbMinBrightness.Value);
-            if (_settings.MaxBrightness < _settings.MinBrightness)
-            {
-                tbMaxBrightness.Value = tbMinBrightness.Value;
-                _settings.MaxBrightness = _settings.MinBrightness;
-            }
-
-            hueSelector1.Brightness = (double) (_settings.MinBrightness + _settings.MaxBrightness)/(65536*2);
-        }
-
-        private void tbMaxBrightness_ValueChanged(object sender, EventArgs e)
-        {
-            _settings.MaxBrightness = (ushort) (tbMaxBrightness.Value);
-            if (_settings.MaxBrightness < _settings.MinBrightness)
-            {
-                tbMinBrightness.Value = tbMaxBrightness.Value;
-                _settings.MinBrightness = _settings.MaxBrightness;
-            }
         }
 
         private void lbLabels_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,7 +175,10 @@ namespace MaxLifx.UIs
         {
             //int count;
             if (_settings.PerBulb)
+            {
                 hueSelector1.HandleCount = _settings.SelectedLabels.Count();
+                brightnessSelector1.HandleCount = _settings.SelectedLabels.Count();
+            }
 
             var count = (_settings.PerBulb ? _settings.SelectedLabels.Count() : 1) - _settings.Bins.Count();
             if (count > 0)
@@ -323,28 +311,44 @@ namespace MaxLifx.UIs
             }
         }
 
+        private void BrightnessesChanged(object sender, EventArgs eventArgs)
+        {
+            if (!_suspendUi)
+            {
+                UpdateHuesFromHueSelector();
+            }
+        }
+
         private void UpdateHuesFromHueSelector()
         {
             List<int> hues, hueRanges;
             List<double> saturations, saturationRanges;
+            List<float> brightnesses, brightnessRanges;
             hueSelector1.GetHues(out hues, out hueRanges, out saturations, out saturationRanges);
+            brightnessSelector1.GetBrightnesses(out brightnesses, out brightnessRanges);
 
             _settings.Hues = hues;
             _settings.HueRanges = hueRanges;
             _settings.Saturations = saturations;
             _settings.SaturationRanges = saturationRanges;
+            _settings.Brightnesses = brightnesses;
+            _settings.BrightnessRanges = brightnessRanges;
+
         }
 
         private void UpdateHueSelectorFromHuesAndSaturations()
         {
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
+
+            brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);
         }
 
         private void cbPerBulb_CheckedChanged(object sender, EventArgs e)
         {
             _settings.PerBulb = cbPerBulb.Checked;
             hueSelector1.PerBulb = _settings.PerBulb;
+            brightnessSelector1.PerBulb = _settings.PerBulb;
             UpdateHueSelectorHandleCount();
             UpdateHuesFromHueSelector();
         }
@@ -352,18 +356,22 @@ namespace MaxLifx.UIs
         private void button2_Click(object sender, EventArgs e)
         {
             hueSelector1.ResetRanges();
+            brightnessSelector1.ResetRanges();
         }
 
         private void cbLinkRanges_CheckedChanged(object sender, EventArgs e)
         {
             _settings.LinkRanges = cbLinkRanges.Checked;
             hueSelector1.LinkRanges = _settings.LinkRanges;
+            brightnessSelector1.LinkRanges = _settings.LinkRanges;
         }
 
         private void cbFree_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Free = cbFree.Checked;
             hueSelector1.Free = _settings.Free;
+            brightnessSelector1.Free = _settings.Free;
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -445,12 +453,12 @@ namespace MaxLifx.UIs
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var colourTheme = new BlueAndOrangeColourTheme();
-            colourTheme.SetColours(r, _settings.Hues, _settings.HueRanges, _settings.Saturations,
-                _settings.SaturationRanges);
+            brightnessSelector1.ResetRanges();
+        }
 
-            hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
-                _settings.SaturationRanges);
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

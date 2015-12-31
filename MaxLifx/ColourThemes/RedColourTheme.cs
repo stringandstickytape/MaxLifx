@@ -8,7 +8,7 @@ namespace MaxLifx.ColourThemes
 {
     public class RedColourTheme : IColourTheme
     {
-        public new void SetColours(Random r, List<int> hues, List<int> hueRanges, List<double> saturations, List<double> saturationRanges)
+        public new void SetColours(Random r, List<int> hues, List<int> hueRanges, List<double> saturations, List<double> saturationRanges, List<float> brightnesses, List<float> brightnessRanges)
         {
             for (int index = 0; index < hues.Count; index++)
                 hues[index] = r.Next(30) - 15;
@@ -21,6 +21,12 @@ namespace MaxLifx.ColourThemes
 
             for (int index = 0; index < saturationRanges.Count; index++)
                 saturationRanges[index] = 0;
+
+            for (int index = 0; index < brightnesses.Count; index++)
+                brightnesses[index] = (float)(r.NextDouble());
+
+            for (int index = 0; index < brightnessRanges.Count; index++)
+                brightnessRanges[index] = (float)(r.NextDouble() / 4);
         }
     }
 }

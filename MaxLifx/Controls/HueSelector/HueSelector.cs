@@ -13,7 +13,6 @@ namespace MaxLifx.Controls
 {
     public class HueSelector : Control
     {
-        private double _brightness;
         private bool _free;
         private int _handleCount;
 
@@ -103,16 +102,6 @@ namespace MaxLifx.Controls
 
                     Initialise();
                 }
-            }
-        }
-
-        public double Brightness
-        {
-            get { return _brightness; }
-            set
-            {
-                _brightness = value;
-                Invalidate();
             }
         }
 
@@ -321,8 +310,8 @@ namespace MaxLifx.Controls
                 theta += dtheta;
             }
 
-            var h = (int) (255*Brightness);
-            var m = (int) (127*Brightness);
+            var h = 255;
+            var m = 127;
 
             // Make a path gradient brush.
             using (var path_brush =

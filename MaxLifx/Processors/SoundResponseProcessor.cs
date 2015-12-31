@@ -62,6 +62,8 @@ namespace MaxLifx
                 SettingsCast.HueRanges.Add(0);
                 SettingsCast.Saturations.Add(0);
                 SettingsCast.SaturationRanges.Add(0);
+                SettingsCast.Brightnesses.Add(.9f);
+                SettingsCast.BrightnessRanges.Add(.1f);
                 SettingsCast.Levels.Add(50);
                 SettingsCast.LevelRanges.Add(25);
                 SettingsCast.Bins.Add(10);
@@ -193,8 +195,11 @@ namespace MaxLifx
                             {
                                 brightness =
                                     (ushort)
-                                        ((SettingsCast.BrightnessInvert ? 1 - floatValueB : floatValueB)*
-                                         SettingsCast.BrightnessRange + SettingsCast.MinBrightness);
+                                        (((SettingsCast.BrightnessInvert ? 1 - floatValueB : floatValueB) *
+                                          SettingsCast.BrightnessRanges[bulbNumber] * 2 +
+                                          (SettingsCast.Brightnesses[bulbNumber] -
+                                           SettingsCast.BrightnessRanges[bulbNumber])) *
+                                         65535);
                                 saturation =
                                     (ushort)
                                         (((SettingsCast.SaturationInvert ? 1 - floatValueS : floatValueS)*

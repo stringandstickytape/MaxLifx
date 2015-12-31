@@ -13,8 +13,6 @@ namespace MaxLifx.Processors.ProcessorSettings
         public ushort Kelvin = 3500;
 
         public bool LinkRanges = true;
-        public ushort MaxBrightness = 65535;
-        public ushort MinBrightness = 32767;
         public bool PerBulb = false;
         public bool SaturationInvert = false;
         //public long TransitionDuration = 200;
@@ -25,6 +23,8 @@ namespace MaxLifx.Processors.ProcessorSettings
         [XmlIgnore]
         public DateTime WaveStartTime { get; set; }
 
+        public List<float> BrightnessRanges { get; set; } = new List<float>();
+        public List<float> Brightnesses { get; set; } = new List<float>();
         public List<int> HueRanges { get; set; } = new List<int>();
         public List<int> Hues { get; set; } = new List<int>();
         public List<double> SaturationRanges { get; set; } = new List<double>();
@@ -34,7 +34,5 @@ namespace MaxLifx.Processors.ProcessorSettings
         public List<int> Levels { get; set; } = new List<int>();
         public List<int> Bins { get; set; } = new List<int>();
 
-        [XmlIgnore]
-        public int BrightnessRange => MaxBrightness - MinBrightness;
     }
 }

@@ -117,46 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pictureBox5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAL4AAAAKCAIAAACFTXOpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAZ9JREFUWEft0pHWVQsUgNEf0zANr4ZpmIZXwzRMwzRMwzRMw6vh1TA9NcaejfGt
-        vc4j7PkM8+F2uz389Wh6vDxZnt7zz/Jseb68uOfl8mr5d3l9z5vl7fJueb98uOfj8mn5vHy55+vybfm+
-        /HfPj+X/5efya/mTZLvqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseVk6vO4Ev4ErJMvoQv4UvI
-        MvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/hS/gSx5WTq87gS/gSsky+
-        hC/hS8gy+RK+hC8hy+RL+BK+hC9xXDm56gy+hC8hy+RL+BK+hCyTL+FL+BKyTL6EL+FL+BLHlZOrzuBL
-        +BKyTL6EL+FLyDL5Er6ELyHL5Ev4Er6EL3FcObnqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseV
-        k6vO4Ev4ErJMvoQv4UvIMvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/h
-        S/gSx5XhdvsNDEBnyksXid4AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="pictureBox7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAL4AAAAKCAIAAACFTXOpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAZ9JREFUWEft0pHWVQsUgNEf0zANr4ZpmIZXwzRMwzRMwzRMw6vh1TA9NcaejfGt
-        vc4j7PkM8+F2uz389Wh6vDxZnt7zz/Jseb68uOfl8mr5d3l9z5vl7fJueb98uOfj8mn5vHy55+vybfm+
-        /HfPj+X/5efya/mTZLvqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseVk6vO4Ev4ErJMvoQv4UvI
-        MvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/hS/gSx5WTq87gS/gSsky+
-        hC/hS8gy+RK+hC8hy+RL+BK+hC9xXDm56gy+hC8hy+RL+BK+hCyTL+FL+BKyTL6EL+FL+BLHlZOrzuBL
-        +BKyTL6EL+FLyDL5Er6ELyHL5Ev4Er6EL3FcObnqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseV
-        k6vO4Ev4ErJMvoQv4UvIMvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/h
-        S/gSx5XhdvsNDEBnyksXid4AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="pictureBox6.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAL4AAAAKCAIAAACFTXOpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAZ9JREFUWEft0pHWVQsUgNEf0zANr4ZpmIZXwzRMwzRMwzRMw6vh1TA9NcaejfGt
-        vc4j7PkM8+F2uz389Wh6vDxZnt7zz/Jseb68uOfl8mr5d3l9z5vl7fJueb98uOfj8mn5vHy55+vybfm+
-        /HfPj+X/5efya/mTZLvqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseVk6vO4Ev4ErJMvoQv4UvI
-        MvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/hS/gSx5WTq87gS/gSsky+
-        hC/hS8gy+RK+hC8hy+RL+BK+hC9xXDm56gy+hC8hy+RL+BK+hCyTL+FL+BKyTL6EL+FL+BLHlZOrzuBL
-        +BKyTL6EL+FLyDL5Er6ELyHL5Ev4Er6EL3FcObnqDL6ELyHL5Ev4Er6ELJMv4Uv4ErJMvoQv4Uv4EseV
-        k6vO4Ev4ErJMvoQv4UvIMvkSvoQvIcvkS/gSvoQvcVw5ueoMvoQvIcvkS/gSvoQsky/hS/gSsky+hC/h
-        S/gSx5XhdvsNDEBnyksXid4AAAAASUVORK5CYII=
-</value>
-  </data>
   <metadata name="fileSystemWatcher1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

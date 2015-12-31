@@ -73,7 +73,7 @@ namespace MaxLifx
                     case 5:
                         return RawRgbToRgb(b, b1, b2);
                     default:
-                        throw new ArgumentException("Hue must be between 0 and 360");
+                        throw new ArgumentException("Brightness must be between 0 and 360");
                 }
             }
         }

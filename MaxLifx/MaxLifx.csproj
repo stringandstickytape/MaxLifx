@@ -62,6 +62,10 @@
     <Compile Include="ColourThemes\BlueAndOrangeColourTheme.cs" />
     <Compile Include="ColourThemes\RedAndOrangeColourTheme.cs" />
     <Compile Include="ColourThemes\RedColourTheme.cs" />
+    <Compile Include="Controls\BrightnessSelector\BrightnessSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\BrightnessSelector\BrightnessSelectorHandle.cs" />
     <Compile Include="Controls\HueSelector\ColourStrategy\IColourStrategy.cs" />
     <Compile Include="Controls\HueSelector\ColourStrategy\OppositeColourStrategy.cs" />
     <Compile Include="Controls\HueSelector\ColourStrategy\FreeColourStrategy.cs" />
