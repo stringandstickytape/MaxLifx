@@ -358,11 +358,11 @@ namespace MaxLifx.Controls
             }
         }
 
-        public void ResetRanges()
+        public void ResetRanges(float dflt = .1f)
         {
             foreach (var handle in Handles)
             {
-                handle.BrightnessRange = .1f;
+                handle.BrightnessRange = dflt;
                 if (handle.Brightness + handle.BrightnessRange > 1) handle.BrightnessRange = 1 - handle.Brightness;
                 else if (handle.Brightness - handle.BrightnessRange < 0) handle.BrightnessRange = handle.Brightness;
             }

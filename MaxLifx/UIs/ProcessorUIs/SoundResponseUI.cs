@@ -124,7 +124,7 @@ namespace MaxLifx.UIs
             brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);
             cbPerBulb.Checked = _settings.PerBulb;
 
-            UpdateHueSelectorFromHuesAndSaturations();
+            UpdateHueSelectorFromHuesAndSaturationsAndBrightnessSelectorFromBrightnesses();
             hueSelector1.LinkRanges = _settings.LinkRanges;
             brightnessSelector1.LinkRanges = _settings.LinkRanges;
 
@@ -168,7 +168,7 @@ namespace MaxLifx.UIs
             }
 
             UpdateHueSelectorHandleCount();
-            UpdateHueSelectorFromHuesAndSaturations();
+            UpdateHueSelectorFromHuesAndSaturationsAndBrightnessSelectorFromBrightnesses();
         }
 
         private void UpdateHueSelectorHandleCount()
@@ -307,7 +307,7 @@ namespace MaxLifx.UIs
         {
             if (!_suspendUi)
             {
-                UpdateHuesFromHueSelector();
+                UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
             }
         }
 
@@ -315,11 +315,11 @@ namespace MaxLifx.UIs
         {
             if (!_suspendUi)
             {
-                UpdateHuesFromHueSelector();
+                UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
             }
         }
 
-        private void UpdateHuesFromHueSelector()
+        private void UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector()
         {
             List<int> hues, hueRanges;
             List<double> saturations, saturationRanges;
@@ -336,7 +336,7 @@ namespace MaxLifx.UIs
 
         }
 
-        private void UpdateHueSelectorFromHuesAndSaturations()
+        private void UpdateHueSelectorFromHuesAndSaturationsAndBrightnessSelectorFromBrightnesses()
         {
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
@@ -350,13 +350,14 @@ namespace MaxLifx.UIs
             hueSelector1.PerBulb = _settings.PerBulb;
             brightnessSelector1.PerBulb = _settings.PerBulb;
             UpdateHueSelectorHandleCount();
-            UpdateHuesFromHueSelector();
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             hueSelector1.ResetRanges();
             brightnessSelector1.ResetRanges();
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
         }
 
         private void cbLinkRanges_CheckedChanged(object sender, EventArgs e)
@@ -451,14 +452,11 @@ namespace MaxLifx.UIs
             spectrumAnalyser1.ShowUpdates = cbUpdateAudioResponse.Checked;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click_1(object sender, EventArgs e)
         {
-            brightnessSelector1.ResetRanges();
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
+            hueSelector1.ResetRanges(0);
+            brightnessSelector1.ResetRanges(0);
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
         }
     }
 }

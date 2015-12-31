@@ -454,11 +454,11 @@ namespace MaxLifx.Controls
             }
         }
 
-        public void ResetRanges()
+        public void ResetRanges(int dflt = 20)
         {
             foreach (var handle in Handles)
             {
-                handle.HueRange = 50;
+                handle.HueRange = dflt;
             }
             Invalidate();
         }

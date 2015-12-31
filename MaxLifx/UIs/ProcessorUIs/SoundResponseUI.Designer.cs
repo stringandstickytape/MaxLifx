@@ -30,15 +30,14 @@ namespace MaxLifx.UIs
         /// </summary>
         private void InitializeComponent()
         {
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy9 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy10 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy11 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy12 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy13 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy14 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy15 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy16 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            this.brightnessSelector1 = new MaxLifx.Controls.BrightnessSelector();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy1 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy2 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy3 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy4 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy5 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy6 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy7 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy8 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbReorder = new System.Windows.Forms.CheckBox();
             this.bDown = new System.Windows.Forms.Button();
@@ -54,11 +53,9 @@ namespace MaxLifx.UIs
             this.cbHueInvert = new System.Windows.Forms.CheckBox();
             this.cbLinkRanges = new System.Windows.Forms.CheckBox();
             this.cbSaturationInvert = new System.Windows.Forms.CheckBox();
-            this.hueSelector1 = new MaxLifx.Controls.HueSelector();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
             this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
-            this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -78,6 +75,10 @@ namespace MaxLifx.UIs
             this.nWaveDuration = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.brightnessSelector1 = new MaxLifx.Controls.BrightnessSelector();
+            this.hueSelector1 = new MaxLifx.Controls.HueSelector();
+            this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
@@ -89,25 +90,6 @@ namespace MaxLifx.UIs
             ((System.ComponentModel.ISupportInitialize)(this.nWaveDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // brightnessSelector1
-            // 
-            this.brightnessSelector1.Brightness = 0D;
-            this.brightnessSelector1.Free = false;
-            this.brightnessSelector1.GenericColourStrategy = analogousColourStrategy9;
-            this.brightnessSelector1.HandleCount = 1;
-            this.brightnessSelector1.Invert = false;
-            this.brightnessSelector1.LinkRanges = false;
-            this.brightnessSelector1.Location = new System.Drawing.Point(530, 10);
-            this.brightnessSelector1.Name = "brightnessSelector1";
-            this.brightnessSelector1.PerBulb = false;
-            this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy10;
-            this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy11;
-            this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy12;
-            this.brightnessSelector1.Size = new System.Drawing.Size(162, 492);
-            this.brightnessSelector1.TabIndex = 116;
-            this.brightnessSelector1.Text = "brightnessSelector1";
-            this.brightnessSelector1.BrightnessesChanged += new System.EventHandler(this.BrightnessesChanged);
             // 
             // groupBox1
             // 
@@ -121,7 +103,6 @@ namespace MaxLifx.UIs
             this.groupBox1.TabIndex = 115;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Active Bulbs";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // cbReorder
             // 
@@ -179,6 +160,7 @@ namespace MaxLifx.UIs
             // tabHues
             // 
             this.tabHues.BackColor = System.Drawing.SystemColors.Control;
+            this.tabHues.Controls.Add(this.button4);
             this.tabHues.Controls.Add(this.groupBox3);
             this.tabHues.Controls.Add(this.brightnessSelector1);
             this.tabHues.Controls.Add(this.cbBrightnessInvert);
@@ -199,9 +181,9 @@ namespace MaxLifx.UIs
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.pThemes);
-            this.groupBox3.Location = new System.Drawing.Point(705, 151);
+            this.groupBox3.Location = new System.Drawing.Point(705, 184);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(135, 357);
+            this.groupBox3.Size = new System.Drawing.Size(135, 324);
             this.groupBox3.TabIndex = 113;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Themes";
@@ -211,7 +193,7 @@ namespace MaxLifx.UIs
             this.pThemes.AutoScroll = true;
             this.pThemes.Location = new System.Drawing.Point(9, 20);
             this.pThemes.Name = "pThemes";
-            this.pThemes.Size = new System.Drawing.Size(119, 331);
+            this.pThemes.Size = new System.Drawing.Size(119, 288);
             this.pThemes.TabIndex = 0;
             // 
             // cbFree
@@ -286,26 +268,6 @@ namespace MaxLifx.UIs
             this.cbSaturationInvert.UseVisualStyleBackColor = true;
             this.cbSaturationInvert.CheckedChanged += new System.EventHandler(this.cbSaturationInvert_CheckedChanged);
             // 
-            // hueSelector1
-            // 
-            this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
-            this.hueSelector1.Free = false;
-            this.hueSelector1.GenericColourStrategy = analogousColourStrategy13;
-            this.hueSelector1.HandleCount = 1;
-            this.hueSelector1.Invert = false;
-            this.hueSelector1.LinkRanges = false;
-            this.hueSelector1.Location = new System.Drawing.Point(0, 0);
-            this.hueSelector1.Margin = new System.Windows.Forms.Padding(0);
-            this.hueSelector1.Name = "hueSelector1";
-            this.hueSelector1.PerBulb = false;
-            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy14;
-            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy15;
-            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy16;
-            this.hueSelector1.Size = new System.Drawing.Size(517, 514);
-            this.hueSelector1.TabIndex = 107;
-            this.hueSelector1.Text = "z";
-            this.hueSelector1.HuesChanged += new System.EventHandler(this.colourControl1_HuesChanged);
-            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
@@ -342,14 +304,6 @@ namespace MaxLifx.UIs
             this.cbUpdateAudioResponse.Text = "update in real \r\ntime (CPU intensive)";
             this.cbUpdateAudioResponse.UseVisualStyleBackColor = false;
             this.cbUpdateAudioResponse.CheckedChanged += new System.EventHandler(this.cbUpdateAudioResponse_CheckedChanged);
-            // 
-            // spectrumAnalyser1
-            // 
-            this.spectrumAnalyser1.Location = new System.Drawing.Point(0, 0);
-            this.spectrumAnalyser1.Name = "spectrumAnalyser1";
-            this.spectrumAnalyser1.Size = new System.Drawing.Size(512, 512);
-            this.spectrumAnalyser1.TabIndex = 107;
-            this.spectrumAnalyser1.Text = "spectrumAnalyser1";
             // 
             // groupBox4
             // 
@@ -592,6 +546,63 @@ namespace MaxLifx.UIs
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
+            // brightnessSelector1
+            // 
+            this.brightnessSelector1.Brightness = 0D;
+            this.brightnessSelector1.Free = false;
+            this.brightnessSelector1.GenericColourStrategy = analogousColourStrategy1;
+            this.brightnessSelector1.HandleCount = 1;
+            this.brightnessSelector1.Invert = false;
+            this.brightnessSelector1.LinkRanges = false;
+            this.brightnessSelector1.Location = new System.Drawing.Point(530, 10);
+            this.brightnessSelector1.Name = "brightnessSelector1";
+            this.brightnessSelector1.PerBulb = false;
+            this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
+            this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
+            this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
+            this.brightnessSelector1.Size = new System.Drawing.Size(162, 492);
+            this.brightnessSelector1.TabIndex = 116;
+            this.brightnessSelector1.Text = "brightnessSelector1";
+            this.brightnessSelector1.BrightnessesChanged += new System.EventHandler(this.BrightnessesChanged);
+            // 
+            // hueSelector1
+            // 
+            this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
+            this.hueSelector1.Free = false;
+            this.hueSelector1.GenericColourStrategy = analogousColourStrategy5;
+            this.hueSelector1.HandleCount = 1;
+            this.hueSelector1.Invert = false;
+            this.hueSelector1.LinkRanges = false;
+            this.hueSelector1.Location = new System.Drawing.Point(0, 0);
+            this.hueSelector1.Margin = new System.Windows.Forms.Padding(0);
+            this.hueSelector1.Name = "hueSelector1";
+            this.hueSelector1.PerBulb = false;
+            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy6;
+            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy7;
+            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy8;
+            this.hueSelector1.Size = new System.Drawing.Size(517, 514);
+            this.hueSelector1.TabIndex = 107;
+            this.hueSelector1.Text = "z";
+            this.hueSelector1.HuesChanged += new System.EventHandler(this.colourControl1_HuesChanged);
+            // 
+            // spectrumAnalyser1
+            // 
+            this.spectrumAnalyser1.Location = new System.Drawing.Point(0, 0);
+            this.spectrumAnalyser1.Name = "spectrumAnalyser1";
+            this.spectrumAnalyser1.Size = new System.Drawing.Size(512, 512);
+            this.spectrumAnalyser1.TabIndex = 107;
+            this.spectrumAnalyser1.Text = "spectrumAnalyser1";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(708, 151);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(93, 23);
+            this.button4.TabIndex = 117;
+            this.button4.Text = "Zero Ranges";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
             // SoundResponseUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -665,5 +676,6 @@ namespace MaxLifx.UIs
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel pThemes;
         private Controls.BrightnessSelector brightnessSelector1;
+        private System.Windows.Forms.Button button4;
     }
 }
