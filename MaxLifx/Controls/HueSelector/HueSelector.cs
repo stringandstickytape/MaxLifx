@@ -197,27 +197,47 @@ namespace MaxLifx.Controls
 
         private void UpdateHueAndSaturationFromMouse(EventArgs e)
         {
-            var mouseEv = (MouseEventArgs) (e);
-            var v = new Vector((mouseEv.X - Size.Width/2)*Size.Height, (mouseEv.Y - Size.Height/2)*Size.Width);
+            var mouseEv = (MouseEventArgs)(e);
+            var v = new Vector((mouseEv.X - Size.Width / 2) * Size.Height, (mouseEv.Y - Size.Height / 2) * Size.Width);
 
             var up = new Vector(0, -1);
 
             var handleToChange = Handles.Single(x => x.HandleNumber == _currentHandle);
             var previousHue = handleToChange.Hue;
-            handleToChange.Hue = (Vector.AngleBetween(up, v) + 360)%360;
+            handleToChange.Hue = (Vector.AngleBetween(up, v) + 360) % 360;
 
-            var halfWidth = (ClientRectangle.Width)/2;
-            var halfHeight = (ClientRectangle.Height)/2;
-            var dist = Math.Sqrt(Math.Pow(halfWidth - mouseEv.X, 2) + Math.Pow(halfHeight - mouseEv.Y, 2))/
+            var halfWidth = (ClientRectangle.Width) / 2;
+            var halfHeight = (ClientRectangle.Height) / 2;
+            var dist = Math.Sqrt(Math.Pow(halfWidth - mouseEv.X, 2) + Math.Pow(halfHeight - mouseEv.Y, 2)) /
                        (halfWidth - 10);
             if (dist > 1) dist = 1;
 
             var previousSaturation = handleToChange.Saturation;
             handleToChange.Saturation = dist;
 
+            PreventSaturationHandlesExceedingLimits(handleToChange);
+
             SetDependentHues(_currentHandle, previousHue, previousSaturation);
             Invalidate();
             HuesChanged(null, null);
+        }
+
+        private static void PreventSaturationHandlesExceedingLimits(HueSelectorHandle handleToChange)
+        {
+            if (handleToChange.SaturationRange > 0)
+            {
+                if (handleToChange.SaturationRange + handleToChange.Saturation > 1)
+                    handleToChange.SaturationRange = 1 - handleToChange.Saturation;
+                else if (handleToChange.Saturation - handleToChange.SaturationRange < 0)
+                    handleToChange.SaturationRange = handleToChange.Saturation;
+            }
+            else
+            {
+                if (handleToChange.Saturation - handleToChange.SaturationRange > 1)
+                    handleToChange.SaturationRange = -1 + handleToChange.Saturation;
+                else if (handleToChange.Saturation + handleToChange.SaturationRange < 0)
+                    handleToChange.SaturationRange = handleToChange.Saturation;
+            }
         }
 
         private void UpdateRangeFromMouse(EventArgs e)
@@ -226,8 +246,24 @@ namespace MaxLifx.Controls
             var v = new Vector((mouseEv.X - Size.Width/2)*Size.Height, (mouseEv.Y - Size.Height/2)*Size.Width);
 
             var up = new Vector(0, -1);
-            var handleInQuestion = Handles.Single(x => x.HandleNumber == _currentRangeHandle);
-            handleInQuestion.HueRange = handleInQuestion.Hue - (Vector.AngleBetween(up, v) + 360)%360;
+            var handleToChange = Handles.Single(x => x.HandleNumber == _currentRangeHandle);
+            handleToChange.HueRange = handleToChange.Hue - (Vector.AngleBetween(up, v) + 360)%360;
+
+            if (handleToChange.HueRange > 180)
+                handleToChange.HueRange = handleToChange.HueRange - 360;
+            else if (handleToChange.HueRange < -180)
+                handleToChange.HueRange = handleToChange.HueRange + 360;
+
+            Console.WriteLine(handleToChange.HueRange);
+
+            var halfWidth = (ClientRectangle.Width) / 2;
+            var halfHeight = (ClientRectangle.Height) / 2;
+            var dist = Math.Sqrt(Math.Pow(halfWidth - mouseEv.X, 2) + Math.Pow(halfHeight - mouseEv.Y, 2)) /
+                       (halfWidth - 10);
+            if (dist > 1) dist = 1;
+            handleToChange.SaturationRange = handleToChange.Saturation - dist;
+
+            PreventSaturationHandlesExceedingLimits(handleToChange);
 
             SetDependentRanges(_currentRangeHandle);
             Invalidate();
@@ -240,7 +276,12 @@ namespace MaxLifx.Controls
             {
                 var thisHandle = Handles.Single(x => x.HandleNumber == fromHandleNumber);
                 foreach (var handle in Handles.Where(x => x.HandleNumber != fromHandleNumber))
+                {
                     handle.HueRange = thisHandle.HueRange;
+                    handle.SaturationRange = thisHandle.SaturationRange;
+
+                    PreventSaturationHandlesExceedingLimits(handle);
+                }
             }
         }
 
@@ -346,25 +387,38 @@ namespace MaxLifx.Controls
 
         private void DrawHandles(PaintEventArgs e)
         {
+            var linePen = new Pen(Color.LightGray, 3);
             var handleClientRectangle = new Rectangle(ClientRectangle.X + 10, ClientRectangle.Y + 10,
                 ClientRectangle.Width - 20, ClientRectangle.Height - 20);
             foreach (var handle in Handles.OrderByDescending(x => x.HandleNumber))
             {
-                //var rectSize = .615 + (PerBulb ? handle.HandleNumber : 1) * .150;
-                var rectSize = handle.Saturation;
-                var rectMargin = (1 - rectSize)/2;
+                var dottedLineDotRectangle = new Rectangle(0,0,5,5);
 
-                var arcRect = new Rectangle((int) (handleClientRectangle.X + (handleClientRectangle.Width*rectMargin)),
-                    (int) (handleClientRectangle.Y + (handleClientRectangle.Height*rectMargin)),
-                    (int) ((handleClientRectangle.Width)*rectSize),
-                    (int) ((handleClientRectangle.Height)*rectSize));
+                var dots = (int)(Math.Abs(handle.HueRange) + 3);
 
-                var c = Color.FromArgb(128, 255, 255, 255);
-                if (handle.Saturation != 0 && arcRect.Width > 0 && arcRect.Height > 0)
-                    DrawArc(e, handle, arcRect, c, 6);
+                System.Drawing.Point prevPt = new System.Drawing.Point();
 
-                if (handle.Saturation != 0 && arcRect.Width > 0 && arcRect.Height > 0)
-                    DrawArc(e, handle, arcRect, Color.Black, 2);
+                for (int i = 0; i < dots+1; i++)
+                {
+                    var h = handle.Hue - handle.HueRange + handle.HueRange * 2 * i / dots;
+                    var s = handle.Saturation - handle.SaturationRange + handle.SaturationRange * 2 * i / dots;
+
+                    var controlCentre = handle.GetControlCentre(ClientRectangle);
+                    var handleRect = new Rectangle(controlCentre.X - 2,
+                        controlCentre.Y - 2,
+                        4,
+                        4);
+
+                    dottedLineDotRectangle.X = (int)((handleRect.X + Math.Sin(h * Math.PI / 180) * (ClientRectangle.Width - 20) / 2 * s));
+                    dottedLineDotRectangle.Y = (int)((handleRect.Y - Math.Cos(h * Math.PI / 180) * (ClientRectangle.Height - 20) / 2 * s));
+                    var newPt = new System.Drawing.Point(dottedLineDotRectangle.X, dottedLineDotRectangle.Y);
+                    //e.Graphics.DrawEllipse(Pens.LightGray, dottedLineDotRectangle);
+                    if(i != 0)
+                        e.Graphics.DrawLine(linePen, prevPt, newPt);
+
+                    prevPt = newPt;
+
+                }
 
                 DrawHandles(e, handle, true);
                 DrawHandles(e, handle, false);
@@ -454,11 +508,12 @@ namespace MaxLifx.Controls
             }
         }
 
-        public void ResetRanges(int dflt = 20)
+        public void ResetRanges(int dfltHueRange = 20, float dfltSatRange = .1f)
         {
             foreach (var handle in Handles)
             {
-                handle.HueRange = dflt;
+                handle.HueRange = dfltHueRange;
+                handle.SaturationRange = dfltSatRange;
             }
             Invalidate();
         }

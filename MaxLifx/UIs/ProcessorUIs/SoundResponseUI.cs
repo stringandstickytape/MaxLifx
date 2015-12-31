@@ -69,6 +69,14 @@ namespace MaxLifx.UIs
                     _settings.BrightnessRanges[index] = _settings.Brightnesses[index];
             }
 
+            for (int index = 0; index < _settings.Saturations.Count; index++)
+            {
+                if (_settings.Saturations[index] + _settings.SaturationRanges[index] > 1)
+                    _settings.SaturationRanges[index] = 1 - _settings.Saturations[index];
+                else if (_settings.Saturations[index] - _settings.SaturationRanges[index] < 0)
+                    _settings.SaturationRanges[index] = _settings.Saturations[index];
+            }
+
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
             brightnessSelector1.SetBrightnesses(_settings.Brightnesses, _settings.BrightnessRanges);

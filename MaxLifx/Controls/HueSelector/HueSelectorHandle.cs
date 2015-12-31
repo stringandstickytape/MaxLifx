@@ -51,8 +51,10 @@ namespace MaxLifx.Controls
 
             var angle = positive ? Hue + HueRange : Hue - HueRange;
 
-            handleRect.X = (int) (handleRect.X + Math.Sin(angle*Math.PI/180)*(clientRectangle.Width - 20)/2*Saturation);
-            handleRect.Y = (int) (handleRect.Y - Math.Cos(angle*Math.PI/180)*(clientRectangle.Height - 20)/2*Saturation);
+            var satLevel = positive ? Saturation + SaturationRange : Saturation - SaturationRange;
+
+            handleRect.X = (int) (handleRect.X + Math.Sin(angle*Math.PI/180)*(clientRectangle.Width - 20)/2*satLevel);
+            handleRect.Y = (int) (handleRect.Y - Math.Cos(angle*Math.PI/180)*(clientRectangle.Height - 20)/2* satLevel);
 
             return handleRect;
         }
