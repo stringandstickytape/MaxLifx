@@ -50,6 +50,13 @@ namespace MaxLifx.UIs
                 pThemes.Controls.Add(newButton);
                 yCtr += newButton.Size.Height + 5;
             }
+
+            hueSelector1.Free = _settings.Free;
+            brightnessSelector1.Free = _settings.Free;
+            hueSelector1.PerBulb = _settings.PerBulb;
+            brightnessSelector1.PerBulb = _settings.PerBulb;
+            UpdateHueSelectorHandleCount();
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
         }
 
         private void ColourThemeClick(object sender, EventArgs eventArgs)
@@ -59,7 +66,8 @@ namespace MaxLifx.UIs
             var colourTheme = (IColourTheme) Activator.CreateInstance(type);
 
             colourTheme.SetColours(r, _settings.Hues, _settings.HueRanges, _settings.Saturations,
-                _settings.SaturationRanges, _settings.Brightnesses, _settings.BrightnessRanges);
+                _settings.SaturationRanges, _settings.Brightnesses, _settings.BrightnessRanges,
+                cbPastelThemes.Checked, cbLockBrightness.Checked);
 
             for (int index = 0; index < _settings.Brightnesses.Count; index++)
             {
@@ -176,6 +184,7 @@ namespace MaxLifx.UIs
             }
 
             UpdateHueSelectorHandleCount();
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
             UpdateHueSelectorFromHuesAndSaturationsAndBrightnessSelectorFromBrightnesses();
         }
 
@@ -192,9 +201,11 @@ namespace MaxLifx.UIs
             if (count > 0)
                 for (int i = 0; i < count; i++)
                 {
-                    _settings.Bins.Add(50);
-                    _settings.Levels.Add(100);
-                    _settings.LevelRanges.Add(25);
+                    var bin = (_settings.Bins.Count - i)*(80) + 16;
+                    if (bin > 512) bin = 512;
+                    _settings.Bins.Add(bin);
+                    _settings.Levels.Add(110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
+                    _settings.LevelRanges.Add(45);
                 }
             else
             if (count < 0)
@@ -377,7 +388,7 @@ namespace MaxLifx.UIs
 
         private void cbFree_CheckedChanged(object sender, EventArgs e)
         {
-            _settings.Free = cbFree.Checked;
+            _settings.Free = !cbFree.Checked;
             hueSelector1.Free = _settings.Free;
             brightnessSelector1.Free = _settings.Free;
 
@@ -465,6 +476,11 @@ namespace MaxLifx.UIs
             hueSelector1.ResetRanges(0,0);
             brightnessSelector1.ResetRanges(0);
             UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
+        }
+
+        private void SoundResponseUI_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            spectrumAnalyser1.StopCapture();
         }
     }
 }

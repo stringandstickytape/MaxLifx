@@ -14,25 +14,25 @@ namespace MaxLifx
         {
         }
 
-        public LightControlThread(Thread Thread, string Name, IProcessor Processor)
+        public LightControlThread(Thread thread, string name, IProcessor processor)
         {
-            m_Thread = Thread;
-            UUID = Guid.NewGuid().ToString();
-            m_Name = Name;
-            m_Processor = Processor;
+            Thread = thread;
+            Uuid = Guid.NewGuid().ToString();
+            Name = name;
+            Processor = processor;
         }
 
-        private Thread m_Thread { get; }
-        public string UUID { get; set; }
-        public string m_Name { get; set; }
+        private Thread Thread { get; }
+        public string Uuid { get; set; }
+        public string Name { get; set; }
 
         [XmlIgnore]
-        public IProcessor m_Processor { get; private set; }
+        public IProcessor Processor { get; private set; }
 
-        [XmlElement("m_Processor")]
+        [XmlElement("Processor")]
         public string ProcessorSerialized
         {
-            get { return m_Processor.SettingsAsXml; }
+            get { return Processor.SettingsAsXml; }
             set
             {
                 var xmlDocument = new XmlDocument();
@@ -44,22 +44,22 @@ namespace MaxLifx
                 var processorName = "MaxLifx." + typeName.Replace("Settings", "Processor");
                 var processorType = Type.GetType(processorName);
                 var processorConstructor = processorType.GetConstructor(Type.EmptyTypes);
-                m_Processor = (IProcessor) (processorConstructor.Invoke(new object[] {}));
+                Processor = (IProcessor) (processorConstructor.Invoke(new object[] {}));
 
-                m_Processor.SettingsAsXml = value;
+                Processor.SettingsAsXml = value;
             }
         }
 
         public void Abort()
         {
-            m_Processor.TerminateThread = true;
+            Processor.TerminateThread = true;
         }
 
         public void Start()
         {
-            m_Thread.Start();
+            Thread.Start();
             //Thread.Sleep(10);
-            //m_Processor.ShowUI = true;
+            //Processor.ShowUI = true;
         }
     }
 
@@ -72,21 +72,21 @@ namespace MaxLifx
 
         public List<LightControlThread> LightControlThreads { get; set; }
 
-        public LightControlThread AddThread(Thread Thread, string Name, IProcessor Processor)
+        public LightControlThread AddThread(Thread thread, string name, IProcessor processor)
         {
-            var _lightControlThread = new LightControlThread(Thread, Name, Processor);
-            LightControlThreads.Add(_lightControlThread);
-            return (_lightControlThread);
+            var lightControlThread = new LightControlThread(thread, name, processor);
+            LightControlThreads.Add(lightControlThread);
+            return (lightControlThread);
         }
 
-        public LightControlThread GetThread(string ThreadUUID)
+        public LightControlThread GetThread(string threadUuid)
         {
-            return (LightControlThreads.SingleOrDefault(x => x.UUID == ThreadUUID));
+            return (LightControlThreads.SingleOrDefault(x => x.Uuid == threadUuid));
         }
 
-        public void RemoveThread(string ThreadUUID)
+        public void RemoveThread(string threadUuid)
         {
-            LightControlThreads.Remove(LightControlThreads.Single(x => x.UUID == ThreadUUID));
+            LightControlThreads.Remove(LightControlThreads.Single(x => x.Uuid == threadUuid));
         }
     }
 }

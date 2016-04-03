@@ -10,7 +10,7 @@ namespace MaxLifx
     {
         public List<LabelAndLocationType> LabelsAndLocations;
         public LabelAndLocationType SelectedLabelAndLocation;
-        private bool SuspendUI;
+        private bool _suspendUi;
 
         public AssignAreaToBulbForm(List<LabelAndLocationType> labelsAndLocations)
         {
@@ -30,8 +30,8 @@ namespace MaxLifx
 
         private void lbBulbs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SuspendUI) return;
-            SuspendUI = true;
+            if (_suspendUi) return;
+            _suspendUi = true;
             if (lbBulbs.SelectedItem == null)
             {
                 cbArea.Enabled = false;
@@ -47,13 +47,13 @@ namespace MaxLifx
 
             cbArea.Enabled = true;
 
-            SuspendUI = false;
+            _suspendUi = false;
         }
 
         private void cbArea_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SuspendUI) return;
-            SuspendUI = true;
+            if (_suspendUi) return;
+            _suspendUi = true;
 
             LabelsAndLocations.Remove(LabelsAndLocations.Single(x => x.Label == SelectedLabelAndLocation.Label));
             var l = new LabelAndLocationType();
@@ -61,7 +61,7 @@ namespace MaxLifx
             l.ScreenLocation =
                 (ScreenLocation) (Enum.Parse(typeof (ScreenLocation), ((ComboBox) sender).SelectedItem.ToString()));
             LabelsAndLocations.Add(l);
-            SuspendUI = false;
+            _suspendUi = false;
         }
     }
 }

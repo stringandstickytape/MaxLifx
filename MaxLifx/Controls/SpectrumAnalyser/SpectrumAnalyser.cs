@@ -28,6 +28,13 @@ namespace MaxLifx.Controls
             _updateSpectrumTimer.Enabled = true;
         }
 
+        public void StopCapture()
+        {
+            _spectrumEngine.StopCapture();
+            _updateSpectrumTimer.Elapsed += UpdateSpectrumTimer_Elapsed;
+            _updateSpectrumTimer.Enabled = false;
+        }
+
         private void UpdateSpectrumTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Invalidate();

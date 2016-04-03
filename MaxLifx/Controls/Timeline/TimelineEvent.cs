@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace MaxLifx.Controls
 {
     public class TimelineEvent
     {
-        public string UUID;
+        public string Uuid;
         public float Time { get; set; }
         [XmlIgnore]
         public bool Fired { get; set; }
@@ -32,7 +28,7 @@ namespace MaxLifx.Controls
             Action = action;
             Parameter = parameter;
             Time = time;
-            UUID = Guid.NewGuid().ToString();
+            Uuid = Guid.NewGuid().ToString();
         }
 
         public override string ToString()

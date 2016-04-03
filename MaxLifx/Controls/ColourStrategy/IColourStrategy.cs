@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MaxLifx.Controls.HueSelector;
 
 namespace MaxLifx.Controls.ColourStrategy
 {

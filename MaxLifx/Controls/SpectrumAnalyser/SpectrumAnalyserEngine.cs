@@ -13,8 +13,8 @@ namespace MaxLifx.Controls
         // Based on the nAudio source code
 
         // Other inputs are also usable. Just look through the NAudio library.
-        private static readonly int fftLength = 1024; // NAudio fft wants powers of two!
-        private readonly SampleAggregator _sampleAggregator = new SampleAggregator(fftLength);
+        private static readonly int FftLength = 1024; // NAudio fft wants powers of two!
+        private readonly SampleAggregator _sampleAggregator = new SampleAggregator(FftLength);
         public int Bins = 512; // guess a 1024 size FFT, bins is half FFT size
         public List<PointF> LatestPoints;
         public int SelectedBin = 10;
@@ -68,9 +68,9 @@ namespace MaxLifx.Controls
             // not entirely sure whether the multiplier should be 10 or 20 in this case.
             // going with 10 from here http://stackoverflow.com/a/10636698/7532
             var intensityDb = 10*Math.Log10(Math.Sqrt(c.X*c.X + c.Y*c.Y));
-            double minDB = -90;
-            if (intensityDb < minDB) intensityDb = minDB;
-            var percent = intensityDb/minDB;
+            double minDb = -90;
+            if (intensityDb < minDb) intensityDb = minDb;
+            var percent = intensityDb/minDb;
             // we want 0dB to be at the top (i.e. yPos = 0)
             var yPos = percent*200;
             return yPos;
@@ -95,6 +95,11 @@ namespace MaxLifx.Controls
                 var sample32 = BitConverter.ToSingle(buffer, index);
                 _sampleAggregator.Add(sample32);
             }
+        }
+
+        public void StopCapture()
+        {
+            _waveIn?.StopRecording();
         }
     }
 }

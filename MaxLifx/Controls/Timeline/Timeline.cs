@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Linq;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Timers;
 using System.Windows;
 using NAudio.Wave;
 

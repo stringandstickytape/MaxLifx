@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace MaxLifx.Controls
+namespace MaxLifx.Controls.HueSelector
 {
     public class HueSelectorHandle
     {
@@ -25,17 +25,17 @@ namespace MaxLifx.Controls
         public double Saturation { get; set; } = 0;
         public double SaturationRange { get; set; } = 0;
 
-        public Rectangle GetHandleRectangle(Rectangle ClientRectangle, int halfHandleSizeX, int halfHandleSizeY,
+        public Rectangle GetHandleRectangle(Rectangle clientRectangle, int halfHandleSizeX, int halfHandleSizeY,
             int ring, bool shadow)
         {
-            var controlCentre = GetControlCentre(ClientRectangle);
+            var controlCentre = GetControlCentre(clientRectangle);
             var handleRect = new Rectangle(controlCentre.X - halfHandleSizeX,
                 controlCentre.Y - halfHandleSizeY,
                 halfHandleSizeX*2,
                 halfHandleSizeY*2);
 
-            handleRect.X = (int) (handleRect.X + Math.Sin(Hue*Math.PI/180)*(ClientRectangle.Width - 20)/2*Saturation);
-            handleRect.Y = (int) (handleRect.Y - Math.Cos(Hue*Math.PI/180)*(ClientRectangle.Height - 20)/2*Saturation);
+            handleRect.X = (int) (handleRect.X + Math.Sin(Hue*Math.PI/180)*(clientRectangle.Width - 20)/2*Saturation);
+            handleRect.Y = (int) (handleRect.Y - Math.Cos(Hue*Math.PI/180)*(clientRectangle.Height - 20)/2*Saturation);
 
             return handleRect;
         }

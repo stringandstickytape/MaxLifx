@@ -12,8 +12,8 @@ namespace MaxLifx.Processors.ProcessorSettings
         public bool HueInvert = false;
         public ushort Kelvin = 3500;
 
-        public bool LinkRanges = true;
-        public bool PerBulb = false;
+        public bool LinkRanges = false;
+        public bool PerBulb = true;
         public bool SaturationInvert = false;
         //public long TransitionDuration = 200;
         public long TransitionDuration = 300;

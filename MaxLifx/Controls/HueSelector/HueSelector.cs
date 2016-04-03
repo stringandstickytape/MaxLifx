@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using MaxLifx.Controls.ColourStrategy;
 using Size = System.Drawing.Size;
 
-namespace MaxLifx.Controls
+namespace MaxLifx.Controls.HueSelector
 {
     public class HueSelector : Control
     {
@@ -189,8 +189,8 @@ namespace MaxLifx.Controls
                 for (var i = Handles.Count; i < HandleCount; i++)
                     Handles.Add(new HueSelectorHandle(i));
             else if (HandleCount < Handles.Count)
-                for (var i = HandleCount; i < Handles.Count; i++)
-                    Handles.RemoveAt(i);
+                while(HandleCount < Handles.Count)
+                    Handles.RemoveAt(HandleCount);
 
             Invalidate();
         }
@@ -358,12 +358,12 @@ namespace MaxLifx.Controls
             var m = 127;
 
             // Make a path gradient brush.
-            using (var path_brush =
+            using (var pathBrush =
                 new PathGradientBrush(pts))
             {
                 // Define the center and surround colors.
-                path_brush.CenterColor = Color.FromArgb(255, h, h, h);
-                path_brush.SurroundColors = new[]
+                pathBrush.CenterColor = Color.FromArgb(255, h, h, h);
+                pathBrush.SurroundColors = new[]
                 {
                     Color.FromArgb(255, h, 0, 0), Color.FromArgb(255, h, m, 0), Color.FromArgb(255, h, h, 0),
                     Color.FromArgb(255, m, h, 0),
@@ -374,7 +374,7 @@ namespace MaxLifx.Controls
                 };
 
                 // Fill the hexagon.
-                e.Graphics.FillEllipse(path_brush, ClientRectangle);
+                e.Graphics.FillEllipse(pathBrush, ClientRectangle);
             }
 
             var rect = new Rectangle(ClientRectangle.Location.X + 5, ClientRectangle.Location.Y + 5,
@@ -466,9 +466,11 @@ namespace MaxLifx.Controls
             if (label)
                 using (var font1 = new Font("Segoe UI", ClientRectangle.Width/30, System.Drawing.FontStyle.Bold, GraphicsUnit.Point))
                 {
-                    var stringFormat = new StringFormat();
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
+                    var stringFormat = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
                     e.Graphics.DrawString(handle.HandleNumber.ToString(), font1, Brushes.White, handleRect, stringFormat);
                 }
         }

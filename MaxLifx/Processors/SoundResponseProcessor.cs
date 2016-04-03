@@ -245,6 +245,8 @@ namespace MaxLifx
                 }
                 Thread.Sleep(SettingsCast.Delay);
             }
+
+            spectrumEngine.StopCapture();
         }
     }
 }

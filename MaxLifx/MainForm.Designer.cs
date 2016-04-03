@@ -472,7 +472,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button bSaveSched;
         private System.Windows.Forms.Button button10;
-        private Controls.Timeline timeline1;
+        private MaxLifx.Controls.Timeline timeline1;
         private System.Windows.Forms.Button bTimelineAdd;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button bDelete;

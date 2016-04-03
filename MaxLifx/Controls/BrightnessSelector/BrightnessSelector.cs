@@ -4,12 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Windows;
 using System.Windows.Forms;
 using MaxLifx.Controls.ColourStrategy;
 using Size = System.Drawing.Size;
 
-namespace MaxLifx.Controls
+namespace MaxLifx.Controls.BrightnessSelector
 {
     public class BrightnessSelector : Control
     {
@@ -313,9 +312,11 @@ namespace MaxLifx.Controls
             if (label)
                 using (var font1 = new Font("Segoe UI", ClientRectangle.Width/12, System.Drawing.FontStyle.Bold, GraphicsUnit.Point))
                 {
-                    var stringFormat = new StringFormat();
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
+                    var stringFormat = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
                     e.Graphics.DrawString(handle.HandleNumber.ToString(), font1, Brushes.White, handleRect, stringFormat);
                 }
         }

@@ -26,7 +26,7 @@ namespace MaxLifx
             get { return ((ScreenColourSettings) (Settings)).ToXmlString(); }
             set
             {
-                var s = new ScreenColourSettings();
+                ScreenColourSettings s;
 
                 using (var st = new StringReader(value))
                 {

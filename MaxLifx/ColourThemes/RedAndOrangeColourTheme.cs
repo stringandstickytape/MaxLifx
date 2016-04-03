@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MaxLifx.ColourThemes
 {
     public class RedAndOrangeColourTheme : IColourTheme
     {
-        public new void SetColours(Random r, List<int> hues, List<int> hueRanges, List<double> saturations, List<double> saturationRanges, List<float> brightnesses, List<float> brightnessRanges)
+        public new void SetColours(Random r, List<int> hues, List<int> hueRanges, List<double> saturations, List<double> saturationRanges, List<float> brightnesses, List<float> brightnessRanges, bool pastel, bool lockBrightness)
         {
             for (int index = 0; index < hues.Count; index++)
             {
@@ -33,11 +30,22 @@ namespace MaxLifx.ColourThemes
             for (int index = 0; index < saturationRanges.Count; index++)
                 saturationRanges[index] = r.NextDouble() / 4;
 
-            for (int index = 0; index < brightnesses.Count; index++)
+            if (!lockBrightness)
+                for (int index = 0; index < brightnesses.Count; index++)
                 brightnesses[index] = (float) r.NextDouble();
 
-            for (int index = 0; index < brightnessRanges.Count; index++)
+            if (!lockBrightness)
+                for (int index = 0; index < brightnessRanges.Count; index++)
                 brightnessRanges[index] = (float)(r.NextDouble() / 4);
+
+            if (pastel)
+            {
+                for (int index = 0; index < saturations.Count; index++)
+                    saturations[index] = saturations[index] / 2;
+
+                for (int index = 0; index < brightnesses.Count; index++)
+                    brightnesses[index] = (brightnesses[index] * 2 < 1f ? brightnesses[index] * 2 : 1f);
+            }
         }
     }
 }

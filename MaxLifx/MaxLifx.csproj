@@ -70,10 +70,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\BrightnessSelector\BrightnessSelectorHandle.cs" />
-    <Compile Include="Controls\HueSelector\ColourStrategy\IColourStrategy.cs" />
-    <Compile Include="Controls\HueSelector\ColourStrategy\OppositeColourStrategy.cs" />
-    <Compile Include="Controls\HueSelector\ColourStrategy\FreeColourStrategy.cs" />
-    <Compile Include="Controls\HueSelector\ColourStrategy\AnalogousColourStrategy.cs" />
+    <Compile Include="Controls\ColourStrategy\IColourStrategy.cs" />
+    <Compile Include="Controls\ColourStrategy\OppositeColourStrategy.cs" />
+    <Compile Include="Controls\ColourStrategy\FreeColourStrategy.cs" />
+    <Compile Include="Controls\ColourStrategy\AnalogousColourStrategy.cs" />
     <Compile Include="Controls\HueSelector\HueSelector.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -14,7 +14,7 @@ namespace MaxLifx.UIs
     public partial class ScreenColourUI : UiFormBase
     {
         private readonly ScreenColourSettings Settings;
-        private Form2 f;
+        private Form2 _f;
 
         public ScreenColourUI(ScreenColourSettings settings)
         {
@@ -24,12 +24,6 @@ namespace MaxLifx.UIs
             Settings = settings;
             SetPositionTextBoxesFromSettings();
             SetupLabels(lbLabels, Settings.LabelsAndLocations.Select(x => x.Label).ToList(), Settings);
-            cbConfigs.Items.Clear();
-            foreach (var x in Directory.GetFiles(".", "*" + Settings.FileExtension))
-            {
-                var fileName = x.Replace(".\\", "").Replace("." + Settings.FileExtension, "").Replace(".xml", "");
-                cbConfigs.Items.Add(fileName);
-            }
             SuspendUI = false;
         }
 
@@ -37,19 +31,19 @@ namespace MaxLifx.UIs
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (f != null) return;
-            f = new Form2();
-            f.Opacity = .5;
-            f.ResizeEnd += F_ResizeEnd;
-            f.Move += F_ResizeEnd;
-            f.FormClosed += F_FormClosed;
-            f.Show();
+            if (_f != null) return;
+            _f = new Form2();
+            _f.Opacity = .5;
+            _f.ResizeEnd += F_ResizeEnd;
+            _f.Move += F_ResizeEnd;
+            _f.FormClosed += F_FormClosed;
+            _f.Show();
         }
 
         private void F_FormClosed(object sender, FormClosedEventArgs e)
         {
-            f.Dispose();
-            f = null;
+            _f.Dispose();
+            _f = null;
         }
 
         private void F_ResizeEnd(object sender, EventArgs e)
@@ -57,8 +51,8 @@ namespace MaxLifx.UIs
             if (MouseButtons == MouseButtons.Left) return;
 
             SuspendUI = true;
-            Settings.TopLeft = new Point(f.Location.X + 7, f.Location.Y);
-            Settings.BottomRight = new Point(f.Location.X + f.Size.Width - 6, f.Location.Y + f.Size.Height - 6);
+            Settings.TopLeft = new Point(_f.Location.X + 7, _f.Location.Y);
+            Settings.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
             SetPositionTextBoxesFromSettings();
             SuspendUI = false;
 
@@ -158,26 +152,6 @@ namespace MaxLifx.UIs
 
                 Settings.SelectedLabels = selectedLabels;
             }
-        }
-
-        private void cbConfigs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var s = new ScreenColourSettings();
-            ProcessorBase.LoadSettings(ref s, cbConfigs.SelectedItem + "." + Settings.FileExtension);
-
-            Settings.LabelsAndLocations = s.LabelsAndLocations;
-            Settings.BottomRight = s.BottomRight;
-            Settings.Brightness = s.Brightness;
-            Settings.Delay = s.Delay;
-            Settings.Fade = s.Fade;
-            Settings.Saturation = s.Saturation;
-            Settings.TopLeft = s.TopLeft;
-            Settings.SelectedLabels = s.SelectedLabels;
-
-            SuspendUI = true;
-            SetupLabels(lbLabels, null, Settings);
-            SetPositionTextBoxesFromSettings();
-            SuspendUI = false;
         }
     }
 

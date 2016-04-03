@@ -25,19 +25,18 @@ namespace MaxLifx
     public partial class MainForm : Form
     {
         private readonly MaxLifxBulbController _bulbController = new MaxLifxBulbController();
-        private readonly bool _suspendUi = true;
+        private bool _suspendUi = true;
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
-        private readonly Random r = new Random();
-        private readonly int thumbSize = 100;
+        private readonly Random _r = new Random();
+        private readonly int _thumbSize = 100;
         public readonly decimal Version = 0.2m;
         private Mp3FileReader _schedulerReader;
         private DateTime _schedulerStartTime;
         private Timer _schedulerTimer = new Timer();
         private WaveOut _schedulerWaveOut;
         private MaxLifxSettings _settings = new MaxLifxSettings();
-        private bool collapseSequencerToggle = true;
-        private bool collapseToggle;
-        private TimeSpan schedulerTimeElapsed;
+        private bool _collapseSequencerToggle = true;
+        private bool _collapseToggle;
 
         public MainForm()
         {
@@ -75,6 +74,32 @@ namespace MaxLifx
                 for (var i = 0; i < lbBulbs.Items.Count; i++)
                     if (_settings.SelectedLabels.Contains(lbBulbs.Items[i].ToString()))
                         lbBulbs.SelectedItems.Add(lbBulbs.Items[i]);
+            }
+
+            if (_bulbController.Bulbs.Count == 0)
+            {
+                var dialogResult =
+                    MessageBox.Show(
+                        "No bulbs discovered.  Run bulb discovery now?  The app willl hang for about ten seconds."
+                        , "Discover bulbs?",
+                        MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+
+                    _bulbController.DiscoverBulbs();
+
+                    if (_bulbController.Bulbs.Count == 0)
+                    {
+                        MessageBox.Show("No bulbs found. ..");
+                    }
+
+                    PopulateBulbListbox();
+                    _suspendUi = false;
+                    SaveSettings();
+                    _suspendUi = true;
+
+                }
             }
 
             _suspendUi = false;
@@ -115,16 +140,16 @@ namespace MaxLifx
                 var nextX = 0;
 
                 if (controls.Count > 0)
-                    nextX = controls[controls.Count - 1].Location.X + thumbSize + 10;
+                    nextX = controls[controls.Count - 1].Location.X + _thumbSize + 10;
 
                 var newLocation = new Point(nextX, 0);
-                var newLabelLocation = new Point(nextX, thumbSize + 10);
+                var newLabelLocation = new Point(nextX, _thumbSize + 10);
 
                 panelBulbColours.Controls.Add(new PictureBox
                 {
                     Name = "pb" + details.Label,
                     Location = newLocation,
-                    Size = new Size(thumbSize, thumbSize)
+                    Size = new Size(_thumbSize, _thumbSize)
                 });
                 var b = new Button
                 {
@@ -149,12 +174,12 @@ namespace MaxLifx
             //thread.SetApartmentState(ApartmentState.STA);
 
             var newThread = thread;
-            var _newLightThread = _threadCollection.AddThread(newThread, threadName, processor);
+            var newLightThread = _threadCollection.AddThread(newThread, threadName, processor);
 
-            var lvi = new ListViewItem(_newLightThread.m_Name);
-            lvi.SubItems.Add(_newLightThread.UUID);
+            var lvi = new ListViewItem(newLightThread.Name);
+            lvi.SubItems.Add(newLightThread.Uuid);
             lvThreads.Items.Add(lvi);
-            _newLightThread.Start();
+            newLightThread.Start();
         }
 
         private void LoadSettings(string filename = "Settings.xml")
@@ -190,7 +215,7 @@ namespace MaxLifx
         private void button1_Click(object sender, EventArgs e)
         {
             var processor = new ScreenColourProcessor();
-            var thread = new Thread(() => processor.ScreenColour(_bulbController, new Random(r.Next())));
+            var thread = new Thread(() => processor.ScreenColour(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Screen Colour Thread", processor);
         }
 
@@ -261,35 +286,34 @@ namespace MaxLifx
                         foreach (var lightThread in loadedThreadCollection.LightControlThreads)
                         {
                             Thread t = null;
-                            var threadName = "";
 
-                            switch (lightThread.m_Processor.GetType().ToString())
+                            switch (lightThread.Processor.GetType().ToString())
                             {
                                 case "MaxLifx.SoundResponseProcessor":
                                     t =
                                         new Thread(
                                             () =>
-                                                ((SoundResponseProcessor) (lightThread.m_Processor)).SoundResponse(
-                                                    _bulbController, new Random(r.Next())));
+                                                ((SoundResponseProcessor) (lightThread.Processor)).SoundResponse(
+                                                    _bulbController, new Random(_r.Next())));
                                     break;
                                 case "MaxLifx.ScreenColourProcessor":
                                     t =
                                         new Thread(
                                             () =>
-                                                ((ScreenColourProcessor) (lightThread.m_Processor)).ScreenColour(
-                                                    _bulbController, new Random(r.Next())));
+                                                ((ScreenColourProcessor) (lightThread.Processor)).ScreenColour(
+                                                    _bulbController, new Random(_r.Next())));
                                     break;
                                 case "MaxLifx.SoundGeneratorProcessor":
                                     t =
                                         new Thread(
                                             () =>
-                                                ((SoundGeneratorProcessor) (lightThread.m_Processor)).SoundGenerator(
-                                                    _bulbController, new Random(r.Next())));
+                                                ((SoundGeneratorProcessor) (lightThread.Processor)).SoundGenerator(
+                                                    _bulbController, new Random(_r.Next())));
                                     break;
                             }
 
-                            threadName = lightThread.m_Name;
-                            StartNewThread(t, threadName, lightThread.m_Processor);
+                            var threadName = lightThread.Name;
+                            StartNewThread(t, threadName, lightThread.Processor);
                         }
 
                         read.Close();
@@ -326,18 +350,18 @@ namespace MaxLifx
         private void button6_Click(object sender, EventArgs e)
         {
             var s = new SoundResponseProcessor();
-            var thread = new Thread(() => s.SoundResponse(_bulbController, new Random(r.Next())));
+            var thread = new Thread(() => s.SoundResponse(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Sound Response Thread", s);
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             if (lvThreads.SelectedItems.Count == 0) return;
-            var selectedThreadUUID = lvThreads.SelectedItems[0].SubItems[1].Text;
+            var selectedThreadUuid = lvThreads.SelectedItems[0].SubItems[1].Text;
             if (lvThreads == null) return;
-            var thread = _threadCollection.GetThread(selectedThreadUUID);
+            var thread = _threadCollection.GetThread(selectedThreadUuid);
             thread.Abort();
-            _threadCollection.RemoveThread(selectedThreadUUID);
+            _threadCollection.RemoveThread(selectedThreadUuid);
             lvThreads.Items.Remove(lvThreads.SelectedItems[0]);
         }
 
@@ -347,19 +371,19 @@ namespace MaxLifx
 
         private void button8_Click(object sender, EventArgs e)
         {
-            string selectedThreadUUID;
+            string selectedThreadUuid;
             if (lvThreads.SelectedItems.Count == 0)
             {
                 if (lvThreads.Items.Count == 1)
                 {
-                    selectedThreadUUID = lvThreads.Items[0].SubItems[1].Text;
+                    selectedThreadUuid = lvThreads.Items[0].SubItems[1].Text;
                 }
                 else return;
             }
-            else selectedThreadUUID = lvThreads.SelectedItems[0].SubItems[1].Text;
+            else selectedThreadUuid = lvThreads.SelectedItems[0].SubItems[1].Text;
             if (lvThreads == null) return;
-            var thread = _threadCollection.GetThread(selectedThreadUUID);
-            thread.m_Processor.ShowUI = true;
+            var thread = _threadCollection.GetThread(selectedThreadUuid);
+            thread.Processor.ShowUI = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -401,11 +425,11 @@ namespace MaxLifx
 
             for (var i = 0; i < lvThreads.Items.Count; i++)
             {
-                var selectedThreadUUID = lvThreads.Items[i].SubItems[1].Text;
-                var thread = _threadCollection.GetThread(selectedThreadUUID);
+                var selectedThreadUuid = lvThreads.Items[i].SubItems[1].Text;
+                var thread = _threadCollection.GetThread(selectedThreadUuid);
                 thread.Abort();
 
-                _threadCollection.RemoveThread(selectedThreadUUID);
+                _threadCollection.RemoveThread(selectedThreadUuid);
             }
             lvThreads.Items.Clear();
         }
@@ -462,7 +486,7 @@ namespace MaxLifx
         private void button4_Click(object sender, EventArgs e)
         {
             var s = new SoundGeneratorProcessor();
-            var thread = new Thread(() => s.SoundGenerator(_bulbController, new Random(r.Next())));
+            var thread = new Thread(() => s.SoundGenerator(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Sound Generator Thread", s);
         }
 
@@ -667,7 +691,6 @@ namespace MaxLifx
             }
             else
             {
-                schedulerTimeElapsed = DateTime.Now - _schedulerStartTime;
                 _schedulerTimer.Enabled = false;
                 _schedulerTimer.Dispose();
                 _schedulerTimer = new Timer();
@@ -690,7 +713,7 @@ namespace MaxLifx
 
         private void bCollapseMonitors_Click(object sender, EventArgs e)
         {
-            if (collapseToggle)
+            if (_collapseToggle)
             {
                 gbMonitors.Size = new Size(753, 166);
                 gbSequencer.Location = new Point(gbSequencer.Location.X, gbSequencer.Location.Y + 146);
@@ -711,12 +734,12 @@ namespace MaxLifx
                     bCollapseSequencer.Location.Y - 146);
             }
 
-            collapseToggle = !collapseToggle;
+            _collapseToggle = !_collapseToggle;
         }
 
         private void bCollapseSequencer_Click(object sender, EventArgs e)
         {
-            if (collapseSequencerToggle)
+            if (_collapseSequencerToggle)
             {
                 gbSequencer.Size = new Size(753, 309);
                 MaximumSize = new Size(Size.Width, Size.Height + 291);
@@ -731,57 +754,64 @@ namespace MaxLifx
                 Size = new Size(Size.Width, Size.Height - 291);
             }
 
-            collapseSequencerToggle = !collapseSequencerToggle;
+            _collapseSequencerToggle = !_collapseSequencerToggle;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string sURL;
-            sURL = @"https://api.github.com/repos/stringandstickytape/MaxLifx/releases";
-            string response;
-
-            var webRequest = WebRequest.Create(sURL) as HttpWebRequest;
-            webRequest.Method = "GET";
-            webRequest.ServicePoint.Expect100Continue = false;
-            webRequest.UserAgent = "YourAppName";
-
-            decimal maxVersion = -1;
-
-            using (var responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
-                response = responseReader.ReadToEnd();
-
-            dynamic data = JsonConvert.DeserializeObject<dynamic>(response);
-
-            var ci = (CultureInfo) CultureInfo.CurrentCulture.Clone();
-            ci.NumberFormat.CurrencyDecimalSeparator = ".";
-
-            dynamic releaseDetails = null;
-
-            foreach (var x in data)
+            try
             {
-                string release = x.tag_name;
+                string sURL;
+                sURL = @"https://api.github.com/repos/stringandstickytape/MaxLifx/releases";
+                string response;
 
-                var thisVersion = decimal.Parse(release, NumberStyles.Any, ci);
-                if (maxVersion < thisVersion)
+                var webRequest = WebRequest.Create(sURL) as HttpWebRequest;
+                webRequest.Method = "GET";
+                webRequest.ServicePoint.Expect100Continue = false;
+                webRequest.UserAgent = "YourAppName";
+
+                decimal maxVersion = -1;
+
+                using (var responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream()))
+                    response = responseReader.ReadToEnd();
+
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response);
+
+                var ci = (CultureInfo) CultureInfo.CurrentCulture.Clone();
+                ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
+                dynamic releaseDetails = null;
+
+                foreach (var x in data)
                 {
-                    maxVersion = thisVersion;
-                    releaseDetails = x;
+                    string release = x.tag_name;
+
+                    var thisVersion = decimal.Parse(release, NumberStyles.Any, ci);
+                    if (maxVersion < thisVersion)
+                    {
+                        maxVersion = thisVersion;
+                        releaseDetails = x;
+                    }
+                }
+
+                if (Version < maxVersion)
+                {
+                    var dialogResult =
+                        MessageBox.Show(
+                            "Newer version found! Quit MaxLifx and browse to GitHub to download it?\r\n\r\nv" +
+                            maxVersion +
+                            ":\r\n" + releaseDetails.body, "Update?",
+                            MessageBoxButtons.YesNo);
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        Process.Start(@"https://github.com/stringandstickytape/MaxLifx/releases");
+                        Application.Exit();
+                    }
                 }
             }
-
-            if (Version < maxVersion)
+            catch
             {
-                var dialogResult =
-                    MessageBox.Show(
-                        "Newer version found! Quit MaxLifx and browse to GitHub to download it?\r\n\r\nv" + maxVersion +
-                        ":\r\n" + releaseDetails.body, "Update?",
-                        MessageBoxButtons.YesNo);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Process.Start(@"https://github.com/stringandstickytape/MaxLifx/releases");
-                    Application.Exit();
-                }
             }
         }
 
@@ -804,9 +834,15 @@ namespace MaxLifx
         {
             _bulbController.DiscoverBulbs();
 
-            SaveSettings();
-
+            if (_bulbController.Bulbs.Count == 0)
+            {
+                MessageBox.Show("No bulbs found. ..");
+            }
             PopulateBulbListbox();
+
+            _suspendUi = false;
+            SaveSettings();
+            _suspendUi = true;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
