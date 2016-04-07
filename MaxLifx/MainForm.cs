@@ -29,7 +29,7 @@ namespace MaxLifx
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
         private readonly Random _r = new Random();
         private readonly int _thumbSize = 100;
-        public readonly decimal Version = 0.2m;
+        public readonly decimal Version = 0.3m;
         private Mp3FileReader _schedulerReader;
         private DateTime _schedulerStartTime;
         private Timer _schedulerTimer = new Timer();
@@ -40,6 +40,8 @@ namespace MaxLifx
 
         public MainForm()
         {
+           // this.Icon = new System.Drawing.Icon("Resources\\Image1.ico");
+
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MaxLifx"))
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MaxLifx");
 
@@ -91,7 +93,7 @@ namespace MaxLifx
 
                     if (_bulbController.Bulbs.Count == 0)
                     {
-                        MessageBox.Show("No bulbs found. ..");
+                        MessageBox.Show("No bulbs found. If you have just received a Windows Firewall popup, try Bulbs -> Discover Bulbs now.");
                     }
 
                     PopulateBulbListbox();
@@ -125,8 +127,10 @@ namespace MaxLifx
                 {
                     if (pb.Name == "pb" + details.Label)
                     {
-                        pb.BackColor = Utils.HsbToRgb(details.Payload.Hue, details.Payload.Saturation/65535.0f,
+                        var col = Utils.HsvToRgb(details.Payload.Hue, details.Payload.Saturation/65535.0f,
                             details.Payload.Brightness/65535.0f);
+
+                        pb.BackColor = col;
 
                         pbFound = true;
                         break;
@@ -836,7 +840,7 @@ namespace MaxLifx
 
             if (_bulbController.Bulbs.Count == 0)
             {
-                MessageBox.Show("No bulbs found. ..");
+                MessageBox.Show("No bulbs found. If you have just received a Windows Firewall popup, try Bulbs -> Discover Bulbs now.");
             }
             PopulateBulbListbox();
 

@@ -30,14 +30,14 @@ namespace MaxLifx.UIs
         /// </summary>
         private void InitializeComponent()
         {
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy9 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy10 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy11 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy12 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy13 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy14 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy15 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
-            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy16 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy1 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy2 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy3 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy4 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy5 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy6 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy7 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
+            MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy analogousColourStrategy8 = new MaxLifx.Controls.ColourStrategy.AnalogousColourStrategy();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbReorder = new System.Windows.Forms.CheckBox();
             this.bDown = new System.Windows.Forms.Button();
@@ -47,6 +47,7 @@ namespace MaxLifx.UIs
             this.tabHues = new System.Windows.Forms.TabPage();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbLockBrightness = new System.Windows.Forms.CheckBox();
             this.cbPastelThemes = new System.Windows.Forms.CheckBox();
             this.pThemes = new System.Windows.Forms.Panel();
             this.brightnessSelector1 = new MaxLifx.Controls.BrightnessSelector.BrightnessSelector();
@@ -80,7 +81,6 @@ namespace MaxLifx.UIs
             this.nWaveDuration = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.cbLockBrightness = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
@@ -202,6 +202,16 @@ namespace MaxLifx.UIs
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Themes";
             // 
+            // cbLockBrightness
+            // 
+            this.cbLockBrightness.AutoSize = true;
+            this.cbLockBrightness.Location = new System.Drawing.Point(11, 37);
+            this.cbLockBrightness.Name = "cbLockBrightness";
+            this.cbLockBrightness.Size = new System.Drawing.Size(102, 17);
+            this.cbLockBrightness.TabIndex = 2;
+            this.cbLockBrightness.Text = "Lock Brightness";
+            this.cbLockBrightness.UseVisualStyleBackColor = true;
+            // 
             // cbPastelThemes
             // 
             this.cbPastelThemes.AutoSize = true;
@@ -224,16 +234,16 @@ namespace MaxLifx.UIs
             // 
             this.brightnessSelector1.Brightness = 0D;
             this.brightnessSelector1.Free = false;
-            this.brightnessSelector1.GenericColourStrategy = analogousColourStrategy9;
+            this.brightnessSelector1.GenericColourStrategy = analogousColourStrategy1;
             this.brightnessSelector1.HandleCount = 1;
             this.brightnessSelector1.Invert = false;
             this.brightnessSelector1.LinkRanges = false;
             this.brightnessSelector1.Location = new System.Drawing.Point(530, 10);
             this.brightnessSelector1.Name = "brightnessSelector1";
             this.brightnessSelector1.PerBulb = false;
-            this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy10;
-            this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy11;
-            this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy12;
+            this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
+            this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
+            this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
             this.brightnessSelector1.Size = new System.Drawing.Size(162, 492);
             this.brightnessSelector1.TabIndex = 116;
             this.brightnessSelector1.Text = "brightnessSelector1";
@@ -328,7 +338,7 @@ namespace MaxLifx.UIs
             // 
             this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
             this.hueSelector1.Free = false;
-            this.hueSelector1.GenericColourStrategy = analogousColourStrategy13;
+            this.hueSelector1.GenericColourStrategy = analogousColourStrategy5;
             this.hueSelector1.HandleCount = 1;
             this.hueSelector1.Invert = false;
             this.hueSelector1.LinkRanges = false;
@@ -336,9 +346,9 @@ namespace MaxLifx.UIs
             this.hueSelector1.Margin = new System.Windows.Forms.Padding(0);
             this.hueSelector1.Name = "hueSelector1";
             this.hueSelector1.PerBulb = false;
-            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy14;
-            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy15;
-            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy16;
+            this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy6;
+            this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy7;
+            this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy8;
             this.hueSelector1.Size = new System.Drawing.Size(517, 514);
             this.hueSelector1.TabIndex = 107;
             this.hueSelector1.Text = "z";
@@ -619,16 +629,6 @@ namespace MaxLifx.UIs
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // cbLockBrightness
-            // 
-            this.cbLockBrightness.AutoSize = true;
-            this.cbLockBrightness.Location = new System.Drawing.Point(11, 37);
-            this.cbLockBrightness.Name = "cbLockBrightness";
-            this.cbLockBrightness.Size = new System.Drawing.Size(102, 17);
-            this.cbLockBrightness.TabIndex = 2;
-            this.cbLockBrightness.Text = "Lock Brightness";
-            this.cbLockBrightness.UseVisualStyleBackColor = true;
-            // 
             // SoundResponseUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -637,7 +637,7 @@ namespace MaxLifx.UIs
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox4);
-            this.MaximumSize = new System.Drawing.Size(1451, 756);
+            this.MaximumSize = new System.Drawing.Size(1151, 595);
             this.Name = "SoundResponseUI";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SoundResponseUI";

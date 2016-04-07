@@ -41,13 +41,18 @@ namespace MaxLifx.Controllers
         public void SendPayloadToMacAddress(IPayload Payload, string macAddress)
         {
             var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
-            Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress sendToAddress = IPAddress.Parse(_localIp);
             IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
 
             byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(targetMacAddress, Payload));
-            sendingSocket.SendTo(sendData, sendingEndPoint);
-            sendingSocket.Dispose();
+            //sendingSocket.SendTo(sendData, sendingEndPoint);
+            //sendingSocket.Dispose();
+
+            var a = new UdpClient();
+            a.Connect(sendingEndPoint);
+            a.Send(sendData, sendData.Length);
+            a.Close();
         }
 
         // The following is based on https://github.com/PhilWheat/LIFX-Control
@@ -56,8 +61,13 @@ namespace MaxLifx.Controllers
             // Send discovery packet
             GetServicePayload payload = new GetServicePayload();
             byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(new byte[8], payload));
-            
-            _sendingSocket.SendTo(sendData, _sendingEndPoint);
+
+            var a = new UdpClient();
+            a.Connect(_sendingEndPoint);
+            a.Send(sendData, sendData.Length);
+            a.Close();
+
+            //_sendingSocket.SendTo(sendData, _sendingEndPoint);
 
             // Listen for replies
             IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -92,7 +102,13 @@ namespace MaxLifx.Controllers
             {
                 // Send label request to a specific bulb
                 sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), labelPayload));
-                _sendingSocket.SendTo(sendData, _sendingEndPoint);
+
+                a = new UdpClient();
+                a.Connect(_sendingEndPoint);
+                a.Send(sendData, sendData.Length);
+                a.Close();
+
+                //_sendingSocket.SendTo(sendData, _sendingEndPoint);
 
                 Thread.Sleep(1000);
 
@@ -120,9 +136,11 @@ namespace MaxLifx.Controllers
             _localIp = _localIp + ".255";
 
             // Set up UDP connection
-            _sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //_sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
             _sendToAddress = IPAddress.Parse(_localIp);
             _sendingEndPoint = new IPEndPoint(_sendToAddress, 56700);
+
         }
     }
 }
