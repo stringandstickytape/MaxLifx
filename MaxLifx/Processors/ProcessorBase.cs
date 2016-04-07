@@ -62,9 +62,6 @@ namespace MaxLifx.Threads
             if (!File.Exists(filename))
                 return;
 
-            //SuspendUI = true;
-            var attributeXml = string.Empty;
-
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(filename);
             var xmlString = xmlDocument.OuterXml;

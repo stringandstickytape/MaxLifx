@@ -14,7 +14,7 @@ using MaxLifx.UIs;
 
 namespace MaxLifx
 {
-    public class ScreenColourProcessor : ProcessorBase, IProcessor
+    public class ScreenColourProcessor : ProcessorBase
     {
         [XmlIgnore]
         public ScreenColourSettings SettingsCast => ((ScreenColourSettings) Settings);
@@ -150,8 +150,6 @@ namespace MaxLifx
                 }
             }
 
-            var interval = DateTime.Now - start;
-
             Thread.Sleep(SettingsCast.Delay);
         }
 
@@ -201,7 +199,7 @@ namespace MaxLifx
                         //var retval = BitBlt(hDC, 0, 0, width, height, hSrcDC, 0, 0,
                         //    (int) CopyPixelOperation.SourceCopy);
                         SetStretchBltMode(hDC, 0x04);
-                        var retval = StretchBlt(hDC, 0, 0, thumbSize.Width, thumbSize.Height, hSrcDC, tl.X, tl.Y, width, height, 
+                        StretchBlt(hDC, 0, 0, thumbSize.Width, thumbSize.Height, hSrcDC, tl.X, tl.Y, width, height, 
                             (int)CopyPixelOperation.SourceCopy);
                         
                         gdest.ReleaseHdc();

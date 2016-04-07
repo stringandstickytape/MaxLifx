@@ -23,7 +23,7 @@ namespace MaxLifx
         Noise
     }
 
-    public class SoundResponseProcessor : ProcessorBase, IProcessor
+    public class SoundResponseProcessor : ProcessorBase
     {
         private Random r;
 
@@ -234,7 +234,7 @@ namespace MaxLifx
                                 Thread.Sleep(1);
                             }
                         }
-                        catch (ArgumentOutOfRangeException e)
+                        catch (ArgumentOutOfRangeException)
                         {
                             Thread.Sleep(1);
                         }

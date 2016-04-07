@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace MaxLifx.Controls
 {
-    public partial class SpectrumAnalyser : Control
+    public partial class SpectrumAnalyser
     {
         protected override CreateParams CreateParams
         {

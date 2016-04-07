@@ -264,15 +264,11 @@ namespace MaxLifx.Controls.BrightnessSelector
                Color.FromArgb(255, 0, 0, 0),
                Color.FromArgb(255, 255, 255, 255));
 
-            Pen pen = new Pen(linGrBrush);
-
             e.Graphics.FillRectangle(linGrBrush, new Rectangle(System.Drawing.Point.Empty, Size));
         }
 
         private void DrawHandles(PaintEventArgs e)
         {
-            var handleClientRectangle = new Rectangle(ClientRectangle.X + 10, ClientRectangle.Y + 10,
-                ClientRectangle.Width - 20, ClientRectangle.Height - 20);
             foreach (var handle in Handles.OrderByDescending(x => x.HandleNumber))
                 DrawHandles(e, handle);
         }

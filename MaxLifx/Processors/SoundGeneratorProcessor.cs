@@ -86,7 +86,7 @@ namespace MaxLifx
             }
 
             var de = new MMDeviceEnumerator();
-            var device = de.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            de.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
 
             DoMainLoop();
         }

@@ -33,7 +33,6 @@ namespace MaxLifx.Controllers
         {
             var bulb = Bulbs.Single(x => x.Label == label);
             SendPayloadToMacAddress(payload, bulb.MacAddress);
-            var e = new EventArgs();
 
             ColourSet?.Invoke(new LabelAndColourPayload() { Label = label, Payload = payload }, null);
         }
@@ -83,7 +82,7 @@ namespace MaxLifx.Controllers
             {
                 // Get the outstanding bytes
                 receivebytes = _receivingUdpClient.Receive(ref remoteIpEndPoint);
-                var q = Utils.ByteArrayToString(receivebytes);
+
                 // Get the MAC address of the bulb replying
                 var macAddress = Utils.ByteArrayToString(receivebytes).Substring(16, 12);
                 if (macAddress != "000000000000")

@@ -391,8 +391,6 @@ namespace MaxLifx.Controls.HueSelector
         private void DrawHandles(PaintEventArgs e)
         {
             var linePen = new Pen(Color.FromArgb(127,0,0,0), 3);
-            var handleClientRectangle = new Rectangle(ClientRectangle.X + 10, ClientRectangle.Y + 10,
-                ClientRectangle.Width - 20, ClientRectangle.Height - 20);
             foreach (var handle in Handles.OrderByDescending(x => x.HandleNumber))
             {
                 var dottedLineDotRectangle = new Rectangle(0,0,5,5);
@@ -425,21 +423,6 @@ namespace MaxLifx.Controls.HueSelector
 
                 DrawHandles(e, handle, true);
                 DrawHandles(e, handle, false);
-            }
-        }
-
-        private void DrawArc(PaintEventArgs e, HueSelectorHandle handle, Rectangle arcRect, Color penColor, int penWidth)
-        {
-            var p = new Pen(penColor, penWidth);
-
-            try
-            {
-                e.Graphics.DrawArc(p, arcRect, (float) (handle.Hue) - 90, (float) (handle.HueRange));
-                e.Graphics.DrawArc(p, arcRect, (float) (handle.Hue) - 90, 0 - (float) (handle.HueRange));
-            }
-            catch (OutOfMemoryException ex)
-            { 
-                // ..?
             }
         }
 

@@ -244,60 +244,7 @@ namespace MaxLifx.UIs
             _settings.WaveDuration = (int) nWaveDuration.Value;
         }
 
-        private void bSave_Click(object sender, EventArgs e)
-        {
-            var t = new Thread(() =>
-            {
-                var s = new SaveFileDialog {DefaultExt = _settings.FileExtension};
-                s.Filter = "XML files (*." + _settings.FileExtension + ")|*." + _settings.FileExtension;
-                s.InitialDirectory = Directory.GetCurrentDirectory();
-                s.AddExtension = true;
-
-                var result = s.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    ProcessorBase.SaveSettings(_settings, s.FileName);
-                }
-            });
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-        }
-
-        //private void cbConfigs_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    var s = new SoundResponseSettings();
-        //    ProcessorBase.LoadSettings(ref s, cbConfigs.SelectedItem + "." + _settings.FileExtension);
-        //
-        //    _suspendUi = true;
-        //    _settings.WaveType = s.WaveType;
-        //    _settings.WaveDuration = s.WaveDuration;
-        //    _settings.SelectedLabels = s.SelectedLabels;
-        //    _settings.Delay = s.Delay;
-        //    _settings.Kelvin = s.Kelvin;
-        //    _settings.MaxBrightness = s.MaxBrightness;
-        //    _settings.MinBrightness = s.MinBrightness;
-        //    _settings.Hues = s.Hues;
-        //    _settings.HueRanges = s.HueRanges;
-        //    _settings.Saturations = s.Saturations;
-        //    _settings.SaturationRanges = s.SaturationRanges;
-        //    _settings.TransitionDuration = s.TransitionDuration;
-        //    _settings.BrightnessInvert = s.BrightnessInvert;
-        //    _settings.SaturationInvert = s.SaturationInvert;
-        //    _settings.HueInvert = s.HueInvert;
-        //    _settings.LinkRanges = s.LinkRanges;
-        //    _settings.OnTimes = s.OnTimes;
-        //    _settings.OffTimes = s.OffTimes;
-        //    _settings.PerBulb = s.PerBulb;
-        //    _settings.Bins = s.Bins;
-        //    _settings.Levels = s.Levels;
-        //    _settings.LevelRanges = s.LevelRanges;
-        //
-        //    SetupLabels(lbLabels, null, _settings);
-        //    SetupUI();
-        //    _suspendUi = false;
-        //}
-
-        private void cbBrightnessInvert_CheckedChanged(object sender, EventArgs e)
+       private void cbBrightnessInvert_CheckedChanged(object sender, EventArgs e)
         {
             _settings.BrightnessInvert = cbBrightnessInvert.Checked;
         }

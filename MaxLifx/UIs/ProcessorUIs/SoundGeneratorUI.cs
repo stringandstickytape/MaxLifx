@@ -125,7 +125,6 @@ namespace MaxLifx.UIs
         private void PanChanged(object sender, EventArgs e)
         {
             var uuid = ((TrackBar) sender).Tag.ToString();
-            var sound = _settings.GetSoundFromUUID(uuid);
             lock (_settings.Messages)
             {
                 _settings.Messages.Add(new SoundMessage
@@ -152,7 +151,6 @@ namespace MaxLifx.UIs
         private void VolumeChanged(object sender, EventArgs e)
         {
             var uuid = ((TrackBar) sender).Tag.ToString();
-            var sound = _settings.GetSoundFromUUID(uuid);
             lock (_settings.Messages)
             {
                 _settings.Messages.Add(new SoundMessage

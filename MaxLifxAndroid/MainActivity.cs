@@ -20,7 +20,6 @@ namespace MaxLifxAndroid
     {
         int count = 1;
         private Button button, button2;
-        private Random r = new Random();
         private SeekBar seekBar1, seekBar2;
         private TextView textView1;
         private bool bulbControllerSetUp, bulbDiscoveryDone;
@@ -98,11 +97,6 @@ namespace MaxLifxAndroid
 
             Thread thread = new Thread(() => SetBulbColour(seekBar1.Progress));
             thread.Start();
-        }
-
-        private void Target()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void OnPause()
@@ -208,7 +202,7 @@ namespace MaxLifxAndroid
                                 total = total + currval;
 
                         }
-                        int level = max - 62719;
+                        //int level = max - 62719;
                         
                         //RunOnUiThread(() => seekBar2.Progress = (int) level);
                         //Console.WriteLine(level*23);

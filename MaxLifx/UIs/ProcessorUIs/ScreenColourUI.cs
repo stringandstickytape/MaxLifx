@@ -80,25 +80,6 @@ namespace MaxLifx.UIs
             ProcessorBase.SaveSettings(Settings, null);
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            var t = new Thread(() =>
-            {
-                var s = new SaveFileDialog {DefaultExt = ".maxlifx.ScreenColourSettings.xml"};
-                s.Filter = "XML files (*.maxlifx.ScreenColourSettings.xml)|*.maxlifx.ScreenColourSettings.xml";
-                s.AddExtension = true;
-
-                var result = s.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    ProcessorBase.SaveSettings(Settings, s.FileName);
-                }
-            });
-
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-        }
-
         private void pos_TextChanged(object sender, EventArgs e)
         {
             if (SuspendUI) return;
@@ -180,8 +161,6 @@ namespace MaxLifx.UIs
         {
             if (PaintOver != null)
                 PaintOver(this, e);
-
-            var myPen = new Pen(Color.Aqua);
 
             var newSize = new Size((int) (Size.Width*.9/6), (int) (Size.Height*.15));
 
