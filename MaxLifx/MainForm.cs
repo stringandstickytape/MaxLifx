@@ -40,7 +40,9 @@ namespace MaxLifx
 
         public MainForm()
         {
-           // this.Icon = new System.Drawing.Icon("Resources\\Image1.ico");
+            // this.Icon = new System.Drawing.Icon("Resources\\Image1.ico");
+            Bitmap bmp = MaxLifx.Properties.Resources.m__1_;
+            this.Icon = Icon.FromHandle(bmp.GetHicon());
 
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MaxLifx"))
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MaxLifx");
@@ -861,5 +863,45 @@ namespace MaxLifx
         private delegate void StopAllThreadsDelegate();
 
         private delegate void SetSchedulerTimeTextBoxDelegate(TimeSpan elapsedTime);
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                ShowInTaskbar = false;
+                if (notifyIcon1.Icon == null)
+                {
+                    Bitmap bmp = MaxLifx.Properties.Resources.m__1_;
+                    notifyIcon1.Icon = Icon.FromHandle(bmp.GetHicon());
+                }
+                notifyIcon1.Visible = true;
+            }
+            else if (FormWindowState.Normal == this.WindowState)
+            {
+                notifyIcon1.Visible = false;
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e)
+        {
+            ShowInTaskbar = true;
+            notifyIcon1.Visible = false;
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon1_MouseClick(object sender, EventArgs e)
+        {
+            notifyIcon1_MouseDoubleClick(sender, e);
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            notifyIcon1_MouseDoubleClick(sender, e);
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            notifyIcon1_MouseDoubleClick(sender, e);
+        }
     }
 }
