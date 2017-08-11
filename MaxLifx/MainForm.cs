@@ -950,5 +950,33 @@ namespace MaxLifx
             SaveSettings();
             _suspendUi = true;
         }
+
+        private void advancedDiscoverToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _bulbController.DiscoverBulbs("255.255.255.255");
+
+            if (_bulbController.Bulbs.Count == 0)
+            {
+                MessageBox.Show("No bulbs found. If you have just received a Windows Firewall popup, try Bulbs -> Discover Bulbs now.");
+            }
+            PopulateBulbListbox();
+
+            _suspendUi = false;
+            SaveSettings();
+            _suspendUi = true;
+            //Form2 testDialog = new Form2();
+            //
+            //// Show testDialog as a modal dialog and determine if DialogResult = OK.
+            //if (testDialog.ShowDialog(this) == DialogResult.OK)
+            //{
+            //    // Read the contents of testDialog's TextBox.
+            //    this.txtResult.Text = testDialog.TextBox1.Text;
+            //}
+            //else
+            //{
+            //    this.txtResult.Text = "Cancelled";
+            //}
+            //testDialog.Dispose();
+        }
     }
 }

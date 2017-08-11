@@ -55,11 +55,12 @@ namespace MaxLifx.Controllers
         }
 
         // The following is based on https://github.com/PhilWheat/LIFX-Control
-        public void DiscoverBulbs()
+        public void DiscoverBulbs(string ip = "")
         {
             // Send discovery packet
             GetServicePayload payload = new GetServicePayload();
             byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(new byte[8], payload));
+            if (ip != "") _localIp = ip;
 
             var a = new UdpClient();
             a.Connect(_sendingEndPoint);
@@ -133,13 +134,18 @@ namespace MaxLifx.Controllers
             if (pos >= 0)
                 _localIp = _localIp.Substring(0, pos);
             _localIp = _localIp + ".255";
-
             // Set up UDP connection
             //_sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            _sendToAddress = IPAddress.Parse(_localIp);
-            _sendingEndPoint = new IPEndPoint(_sendToAddress, 56700);
+            SetupNetwork(_localIp);
 
+        }
+
+        private void SetupNetwork(string ip)
+        {
+            _localIp = ip;
+            _sendToAddress = IPAddress.Parse(ip);
+            _sendingEndPoint = new IPEndPoint(_sendToAddress, 56700);
         }
     }
 }

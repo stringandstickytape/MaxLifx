@@ -66,10 +66,11 @@
             this.turnOnAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.turnOffAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.advancedDiscoverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3.SuspendLayout();
             this.gbMonitors.SuspendLayout();
             this.gbSequencer.SuspendLayout();
@@ -393,7 +394,8 @@
             this.turnOnAllToolStripMenuItem,
             this.turnOffAllToolStripMenuItem,
             this.panicToolStripMenuItem,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.advancedDiscoverToolStripMenuItem});
             this.bulbsToolStripMenuItem.Name = "bulbsToolStripMenuItem";
             this.bulbsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.bulbsToolStripMenuItem.Text = "Bulbs";
@@ -401,35 +403,40 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(175, 22);
             this.toolStripMenuItem1.Text = "Discover";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(172, 6);
             // 
             // turnOnAllToolStripMenuItem
             // 
             this.turnOnAllToolStripMenuItem.Name = "turnOnAllToolStripMenuItem";
-            this.turnOnAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.turnOnAllToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.turnOnAllToolStripMenuItem.Text = "Turn On All";
             this.turnOnAllToolStripMenuItem.Click += new System.EventHandler(this.turnOnAllToolStripMenuItem_Click);
             // 
             // turnOffAllToolStripMenuItem
             // 
             this.turnOffAllToolStripMenuItem.Name = "turnOffAllToolStripMenuItem";
-            this.turnOffAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.turnOffAllToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.turnOffAllToolStripMenuItem.Text = "Turn Off All";
             this.turnOffAllToolStripMenuItem.Click += new System.EventHandler(this.turnOffAllToolStripMenuItem_Click);
             // 
             // panicToolStripMenuItem
             // 
             this.panicToolStripMenuItem.Name = "panicToolStripMenuItem";
-            this.panicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.panicToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.panicToolStripMenuItem.Text = "Panic";
             this.panicToolStripMenuItem.Click += new System.EventHandler(this.panicToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(172, 6);
             // 
             // aboutToolStripMenuItem
             // 
@@ -459,10 +466,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Running Threads";
             // 
-            // toolStripSeparator2
+            // advancedDiscoverToolStripMenuItem
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.advancedDiscoverToolStripMenuItem.Name = "advancedDiscoverToolStripMenuItem";
+            this.advancedDiscoverToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.advancedDiscoverToolStripMenuItem.Text = "Advanced Discover";
+            this.advancedDiscoverToolStripMenuItem.Click += new System.EventHandler(this.advancedDiscoverToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -548,6 +557,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem advancedDiscoverToolStripMenuItem;
     }
 }
 
