@@ -140,9 +140,9 @@ namespace MaxLifx.UIs
         private void FrequencyChanged(object sender, EventArgs e)
         {
             int i;
-            if (int.TryParse(((TextBox) sender).Text, out i))
+            if (int.TryParse(((TextBox)sender).Text, out i))
             {
-                var uuid = ((TextBox) sender).Tag.ToString();
+                var uuid = ((TextBox)sender).Tag.ToString();
                 var sound = _settings.GetSoundFromUUID(uuid);
                 sound.Frequency = i;
             }
@@ -224,7 +224,7 @@ namespace MaxLifx.UIs
 
         //}
 
-        private void bSave_Click(object sender, EventArgs e)
+        private void BSave_Click(object sender, EventArgs e)
         {
             var t = new Thread(() =>
             {

@@ -106,7 +106,7 @@
             this.bSave.TabIndex = 99;
             this.bSave.Text = "Save As";
             this.bSave.UseVisualStyleBackColor = true;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            this.bSave.Click += new System.EventHandler(this.BSave_Click);
             // 
             // tabControl1
             // 

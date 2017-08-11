@@ -53,8 +53,10 @@
             this.button2 = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button5
@@ -137,9 +139,9 @@
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.saturation);
-            this.groupBox4.Location = new System.Drawing.Point(119, 200);
+            this.groupBox4.Location = new System.Drawing.Point(17, 393);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(232, 103);
+            this.groupBox4.Size = new System.Drawing.Size(228, 103);
             this.groupBox4.TabIndex = 33;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Parameters";
@@ -283,10 +285,10 @@
             // lbLabels
             // 
             this.lbLabels.FormattingEnabled = true;
-            this.lbLabels.Location = new System.Drawing.Point(12, 11);
+            this.lbLabels.Location = new System.Drawing.Point(7, 19);
             this.lbLabels.Name = "lbLabels";
             this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbLabels.Size = new System.Drawing.Size(101, 316);
+            this.lbLabels.Size = new System.Drawing.Size(215, 160);
             this.lbLabels.TabIndex = 87;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
@@ -300,20 +302,30 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(119, 13);
+            this.groupBox1.Location = new System.Drawing.Point(17, 206);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(228, 181);
             this.groupBox1.TabIndex = 102;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Screen Area To Capture";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lbLabels);
+            this.groupBox2.Location = new System.Drawing.Point(17, 13);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(228, 187);
+            this.groupBox2.TabIndex = 103;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Select Bulbs to Use:";
+            // 
             // ScreenColourUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 336);
+            this.ClientSize = new System.Drawing.Size(255, 509);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lbLabels);
             this.Controls.Add(this.groupBox4);
             this.Name = "ScreenColourUI";
             this.Text = "ScreenColourUI";
@@ -321,6 +333,7 @@
             this.groupBox4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -351,5 +364,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbBrightnessMin;
         private System.Windows.Forms.TextBox tbSaturationMin;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

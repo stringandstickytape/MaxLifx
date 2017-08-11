@@ -44,7 +44,7 @@ namespace MaxLifxCmd
                 MaxLifxBulbController bulbController = new MaxLifxBulbController();
                 bulbController.SetupNetwork();
                 var payload = new SetColourPayload() { Hue = hue, Brightness = bri, Kelvin = kel, Saturation = sat, TransitionDuration = tra };
-                bulbController.SendPayloadToMacAddress(payload, macAddress);
+                //bulbController.SendPayloadToMacAddress(payload, macAddress, ip);
             }
             else
             {

@@ -5,6 +5,7 @@ namespace MaxLifx.Controllers
     public class Bulb
     {
         public string MacAddress { get; set; }
+        public string IpAddress { get; set; }
         private string _label;
         public string Label
         {

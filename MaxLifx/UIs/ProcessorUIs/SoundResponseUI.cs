@@ -429,5 +429,21 @@ namespace MaxLifx.UIs
         {
             spectrumAnalyser1.StopCapture();
         }
+
+        private void panel1_SizeChanged(object sender, EventArgs e)
+        {
+            panel1.VerticalScroll.Enabled = true;
+        }
+
+        private void SoundResponseUI_ResizeEnd(object sender, EventArgs e)
+        {
+            panel1.VerticalScroll.Enabled = true;
+        }
+
+        private void btnCentreRanges_Click(object sender, EventArgs e)
+        {
+            brightnessSelector1.Reset();
+            UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
+        }
     }
 }

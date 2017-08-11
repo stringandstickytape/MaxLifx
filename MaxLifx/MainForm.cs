@@ -151,12 +151,16 @@ namespace MaxLifx
                 var newLocation = new Point(nextX, 0);
                 var newLabelLocation = new Point(nextX, _thumbSize + 10);
 
-                panelBulbColours.Controls.Add(new PictureBox
+                var pb = new PictureBox
                 {
                     Name = "pb" + details.Label,
                     Location = newLocation,
-                    Size = new Size(_thumbSize, _thumbSize)
-                });
+                    Size = new Size(_thumbSize, _thumbSize),
+                    Text = details.Label,
+                };
+                pb.Click += B_Click2;
+
+                panelBulbColours.Controls.Add(pb);
                 var b = new Button
                 {
                     Name = "lbl" + details.Label,
@@ -172,6 +176,12 @@ namespace MaxLifx
         private void B_Click(object sender, EventArgs e)
         {
             var fakeBulb = new FakeBulb(_bulbController, ((Button) sender).Text) {Text = ((Button) sender).Text};
+            fakeBulb.Show();
+        }
+
+        private void B_Click2(object sender, EventArgs e)
+        {
+            var fakeBulb = new FakeBulb(_bulbController, ((PictureBox)sender).Text) { Text = ((PictureBox)sender).Text };
             fakeBulb.Show();
         }
 
@@ -214,15 +224,25 @@ namespace MaxLifx
         private void PopulateBulbListbox()
         {
             lbBulbs.Items.Clear();
+            Text = $"MaxLifx : {_bulbController.Bulbs.Count} bulbs (";
+            int ctr = 0;
             foreach (var b in _bulbController.Bulbs.OrderBy(x => x.Label))
+            {
+                Text += b.Label;
                 lbBulbs.Items.Add(b.Label);
+                ctr++;
+                if (_bulbController.Bulbs.Count != ctr) Text += ", ";
+            }
+            Text += ")";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             var processor = new ScreenColourProcessor();
+            processor.ShowUI = true;
             var thread = new Thread(() => processor.ScreenColour(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Screen Colour Thread", processor);
+            
         }
 
         private void lbBulbs_SelectedIndexChanged(object sender, EventArgs e)
@@ -358,6 +378,7 @@ namespace MaxLifx
             var s = new SoundResponseProcessor();
             var thread = new Thread(() => s.SoundResponse(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Sound Response Thread", s);
+            s.ShowUI = true;
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -447,9 +468,9 @@ namespace MaxLifx
 
             foreach (var b in _bulbController.Bulbs)
             {
-                _bulbController.SendPayloadToMacAddress(p, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                _bulbController.SendPayloadToMacAddress(p, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
             }
         }
 
@@ -460,9 +481,9 @@ namespace MaxLifx
 
             foreach (var b in _bulbController.Bulbs)
             {
-                _bulbController.SendPayloadToMacAddress(p, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                _bulbController.SendPayloadToMacAddress(p, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
             }
         }
 
@@ -483,9 +504,9 @@ namespace MaxLifx
 
             foreach (var b in _bulbController.Bulbs)
             {
-                _bulbController.SendPayloadToMacAddress(c, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                _bulbController.SendPayloadToMacAddress(c, b.MacAddress);
+                _bulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
             }
         }
 
@@ -494,6 +515,7 @@ namespace MaxLifx
             var s = new SoundGeneratorProcessor();
             var thread = new Thread(() => s.SoundGenerator(_bulbController, new Random(_r.Next())));
             StartNewThread(thread, "Sound Generator Thread", s);
+            s.ShowUI = true;
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -902,6 +924,31 @@ namespace MaxLifx
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             notifyIcon1_MouseDoubleClick(sender, e);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (tbManualBulbMac.Text.Length != 6 || !System.Text.RegularExpressions.Regex.IsMatch(tbManualBulbMac.Text, @"\A\b[0-9a-fA-F]+\b\Z"))
+            {
+                MessageBox.Show(
+                    "Enter the last six characters of the bulb's MAC address.  This can be found in the \"Edit Light\" dialog of the Android app, amongst other places.  For a virtual bulb, just enter 000000.");
+                return;
+            }
+            var n =
+                _bulbController.Bulbs.Where(x => x.Label.Length > 12 && x.Label.Substring(0, 12) == "Manual Bulb ")
+                    .Select(x => int.Parse(x.Label.Substring(12)));
+
+            int n2 = 1;
+
+            if (n.Count() > 0)
+                n2 = n.Max() + 1;
+
+            Bulb b = new Bulb() { Label = "Manual Bulb "+n2, Location = ScreenLocation.All, MacAddress = "D073D5" + tbManualBulbMac.Text.Length};
+            _bulbController.Bulbs.Add(b);
+            PopulateBulbListbox();
+            _suspendUi = false;
+            SaveSettings();
+            _suspendUi = true;
         }
     }
 }

@@ -32,16 +32,16 @@ namespace MaxLifx.Controllers
         public void SetColour(string label, SetColourPayload payload)
         {
             var bulb = Bulbs.Single(x => x.Label == label);
-            SendPayloadToMacAddress(payload, bulb.MacAddress);
+            SendPayloadToMacAddress(payload, bulb.MacAddress, bulb.IpAddress);
 
             ColourSet?.Invoke(new LabelAndColourPayload() { Label = label, Payload = payload }, null);
         }
 
-        public void SendPayloadToMacAddress(IPayload Payload, string macAddress)
+        public void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress)
         {
             var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
             //Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPAddress sendToAddress = IPAddress.Parse(_localIp);
+            IPAddress sendToAddress = IPAddress.Parse(ipAddress);
             IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
 
             byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(targetMacAddress, Payload));
@@ -87,7 +87,7 @@ namespace MaxLifx.Controllers
                 var macAddress = Utils.ByteArrayToString(receivebytes).Substring(16, 12);
                 if (macAddress != "000000000000")
                 {
-                    var newBulb = new Bulb() {MacAddress = macAddress};
+                    var newBulb = new Bulb() {MacAddress = macAddress, IpAddress = remoteIpEndPoint.Address.ToString()};
 
                     // Create a new Bulb object
                     if (Bulbs.Count(x => x.MacAddress == macAddress) == 0)

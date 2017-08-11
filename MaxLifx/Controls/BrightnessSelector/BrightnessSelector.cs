@@ -366,6 +366,15 @@ namespace MaxLifx.Controls.BrightnessSelector
             Invalidate();
         }
 
+        public void Reset()
+        {
+            foreach (var handle in Handles)
+            {
+                handle.Brightness = .5f;
+            }
+            Invalidate();
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
