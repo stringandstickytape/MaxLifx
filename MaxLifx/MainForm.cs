@@ -29,7 +29,7 @@ namespace MaxLifx
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
         private readonly Random _r = new Random();
         private readonly int _thumbSize = 100;
-        public readonly decimal Version = 0.3m;
+        public readonly decimal Version = 0.5m;
         private Mp3FileReader _schedulerReader;
         private DateTime _schedulerStartTime;
         private Timer _schedulerTimer = new Timer();
