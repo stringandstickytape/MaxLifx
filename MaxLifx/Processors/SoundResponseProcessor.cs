@@ -146,7 +146,7 @@ namespace MaxLifx
                                     else
                                     {
                                         adjustedLevel = (rawLevel - levelMin)/levelRange;
-                                        if (adjustedLevel < 0 || adjustedLevel > 1) MessageBox.Show("Doh!");
+                                        if (adjustedLevel < 0 || adjustedLevel > 1) MessageBox.Show("D'oh!");
                                     }
 
                                     floatValueH = floatValueS = floatValueB = adjustedLevel;
