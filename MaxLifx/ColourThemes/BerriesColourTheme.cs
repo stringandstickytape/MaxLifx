@@ -35,11 +35,11 @@ namespace MaxLifx.ColourThemes
 
             if (!lockBrightness)
                 for (int index = 0; index < brightnesses.Count; index++)
-                brightnesses[index] = (float)(r.NextDouble()/10+.9f);
+                brightnesses[index] = (float)(r.NextDouble()/5+.8f);
 
             if (!lockBrightness)
                 for (int index = 0; index < brightnessRanges.Count; index++)
-                brightnessRanges[index] = (float)(r.NextDouble() / 10);
+                brightnessRanges[index] = (float)(r.NextDouble() / 5);
 
             if (pastel)
             {
