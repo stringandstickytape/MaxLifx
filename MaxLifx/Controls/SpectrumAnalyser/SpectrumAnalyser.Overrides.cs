@@ -73,17 +73,18 @@ namespace MaxLifx.Controls
             foreach (var handle in _handles)
             {
                 var handleRects = GetHandleRects(handle, 30);
-                if (handleRects[0].Contains(e.Location))
-                {
-                    _currentHandle = handle;
-                    _currentHandleIsRange = false;
-                    UpdateBinAndLevelFromMouse(e);
-                }
-                else if (handleRects[1].Contains(e.Location) || handleRects[2].Contains(e.Location))
+            
+                 if (handleRects[1].Contains(e.Location) || handleRects[2].Contains(e.Location))
                 {
                     _currentHandle = handle;
                     _currentHandleIsRange = true;
                     UpdateLevelRangeFromMouse(e);
+                }
+                else if (handleRects[0].Contains(e.Location))
+                {
+                    _currentHandle = handle;
+                    _currentHandleIsRange = false;
+                    UpdateBinAndLevelFromMouse(e);
                 }
             }
         }

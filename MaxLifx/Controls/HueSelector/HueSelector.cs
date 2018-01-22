@@ -429,23 +429,26 @@ namespace MaxLifx.Controls.HueSelector
         private void DrawHandles(PaintEventArgs e, HueSelectorHandle handle, bool shadow)
         {
             var handleBrush = new SolidBrush(Color.FromArgb(128, 32, 32, 32));
+            DrawHandle(e, handle, true, handleBrush,
+                handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
+                    PerBulb ? handle.HandleNumber : 1, shadow), true);
+
+            handleBrush = new SolidBrush(Color.FromArgb(128, 32, 32, 32));
             DrawHandle(e, handle, false, handleBrush,
                 handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX/2, HalfHandleSizeY/2, true,
                     PerBulb ? handle.HandleNumber : 1, shadow));
             DrawHandle(e, handle, false, handleBrush,
                 handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX/2, HalfHandleSizeY/2, false,
                     PerBulb ? handle.HandleNumber : 1, shadow));
-            handleBrush = new SolidBrush(Color.FromArgb(128, 32, 32, 32));
-            DrawHandle(e, handle, true, handleBrush,
-                handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
-                    PerBulb ? handle.HandleNumber : 1, shadow));
+
         }
 
         private void DrawHandle(PaintEventArgs e, HueSelectorHandle handle, bool label, SolidBrush handleBrush,
-            Rectangle handleRect)
+            Rectangle handleRect, bool fill = false)
         {
             e.Graphics.FillEllipse(handleBrush, handleRect);
 
+            e.Graphics.DrawEllipse(Pens.LightGray, handleRect);
             if (label)
                 using (var font1 = new Font("Segoe UI", ClientRectangle.Width/30, System.Drawing.FontStyle.Bold, GraphicsUnit.Point))
                 {
@@ -464,7 +467,27 @@ namespace MaxLifx.Controls.HueSelector
 
             foreach (var handle in Handles)
             {
-                var handleRect = handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
+                var handleRect = handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX / 2, HalfHandleSizeY / 2, true,
+                    PerBulb ? handle.HandleNumber : 1, false);
+
+                if (handleRect.Contains(e.Location))
+                {
+                    _currentRangeHandle = handle.HandleNumber;
+                    UpdateRangeFromMouse(e);
+                    break;
+                }
+
+                handleRect = handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX / 2, HalfHandleSizeY / 2, false,
+                    PerBulb ? handle.HandleNumber : 1, false);
+
+                if (handleRect.Contains(e.Location))
+                {
+                    _currentRangeHandle = handle.HandleNumber;
+                    UpdateRangeFromMouse(e);
+                    break;
+                }
+
+                handleRect = handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
                     PerBulb ? handle.HandleNumber : 1, false);
 
                 if (handleRect.Contains(e.Location))
@@ -474,25 +497,7 @@ namespace MaxLifx.Controls.HueSelector
                     break;
                 }
 
-                handleRect = handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX/2, HalfHandleSizeY/2, true,
-                    PerBulb ? handle.HandleNumber : 1, false);
 
-                if (handleRect.Contains(e.Location))
-                {
-                    _currentRangeHandle = handle.HandleNumber;
-                    UpdateRangeFromMouse(e);
-                    break;
-                }
-
-                handleRect = handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX/2, HalfHandleSizeY/2, false,
-                    PerBulb ? handle.HandleNumber : 1, false);
-
-                if (handleRect.Contains(e.Location))
-                {
-                    _currentRangeHandle = handle.HandleNumber;
-                    UpdateRangeFromMouse(e);
-                    break;
-                }
             }
         }
 
@@ -501,7 +506,7 @@ namespace MaxLifx.Controls.HueSelector
             foreach (var handle in Handles)
             {
                 handle.HueRange = dfltHueRange;
-                handle.SaturationRange = dfltSatRange;
+                handle.SaturationRange = 0f;
             }
             Invalidate();
         }

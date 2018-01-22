@@ -287,16 +287,18 @@ namespace MaxLifx.Controls.BrightnessSelector
 
             e.Graphics.DrawLine(Pens.Black, r1Centre, r2Centre);
 
-            var handleBrush = new SolidBrush(Color.FromArgb(224, 128, 128, 255));
-
-            DrawHandle(e, handle, false, handleBrush, range1Rect);
-            DrawHandle(e, handle, false, handleBrush, range2Rect);
-
-            handleBrush = new SolidBrush(Color.FromArgb(224, 128, 255, 128));
+            var handleBrush = new SolidBrush(Color.FromArgb(224, 128, 255, 128));
 
             DrawHandle(e, handle, true, handleBrush,
                 handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
                     PerBulb ? handle.HandleNumber : 1, HandleCount, handle.HandleNumber));
+
+            handleBrush = new SolidBrush(Color.FromArgb(224, 128, 128, 255));
+
+            DrawHandle(e, handle, false, handleBrush, range1Rect);
+            DrawHandle(e, handle, false, handleBrush, range2Rect);
+
+           
         }
 
         private void DrawHandle(PaintEventArgs e, BrightnessSelectorHandle handle, bool label, SolidBrush handleBrush,
@@ -323,15 +325,7 @@ namespace MaxLifx.Controls.BrightnessSelector
 
             foreach (var handle in Handles)
             {
-                var handleRect = handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
-                    PerBulb ? handle.HandleNumber : 1, HandleCount, handle.HandleNumber);
-
-                if (handleRect.Contains(e.Location))
-                {
-                    _currentHandle = handle.HandleNumber;
-                    UpdateBrightnessFromMouse(e);
-                    break;
-                }
+                var 
 
                 handleRect = handle.GetHandleRangeRectangle(ClientRectangle, HalfHandleSizeX/2, HalfHandleSizeY/2, true,
                     PerBulb ? handle.HandleNumber : 1, HandleCount, handle.HandleNumber);
@@ -350,6 +344,16 @@ namespace MaxLifx.Controls.BrightnessSelector
                 {
                     _currentRangeHandle = handle.HandleNumber;
                     UpdateRangeFromMouse(e);
+                    break;
+                }
+
+                handleRect = handle.GetHandleRectangle(ClientRectangle, HalfHandleSizeX, HalfHandleSizeY,
+                    PerBulb ? handle.HandleNumber : 1, HandleCount, handle.HandleNumber);
+
+                if (handleRect.Contains(e.Location))
+                {
+                    _currentHandle = handle.HandleNumber;
+                    UpdateBrightnessFromMouse(e);
                     break;
                 }
             }
