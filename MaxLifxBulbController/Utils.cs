@@ -14,19 +14,16 @@ namespace MaxLifx.Util
             return listToClone.Select(item => (T)item.Clone()).ToList();
         }
 
-        // LocalIPAddress from https://github.com/PhilWheat/LIFX-Control
+        // LocalIPAddress, patched by clarkinator
         public static string LocalIPAddress()
         {
-            IPHostEntry host;
-            string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            string localIP;
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                    break;
-                }
+                socket.Connect("8.8.8.8", 65530);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+
+                localIP = endPoint?.Address.ToString();
             }
             return localIP;
         }
