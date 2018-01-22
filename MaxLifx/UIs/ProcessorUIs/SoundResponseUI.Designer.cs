@@ -610,7 +610,7 @@ namespace MaxLifx.UIs
             this.groupBox1.Size = new System.Drawing.Size(248, 304);
             this.groupBox1.TabIndex = 115;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Active Bulbs";
+            this.groupBox1.Text = "Select Bulbs to Use:";
             // 
             // cbReorder
             // 
