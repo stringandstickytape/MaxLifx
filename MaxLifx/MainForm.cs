@@ -149,7 +149,7 @@ namespace MaxLifx
                     nextX = controls[controls.Count - 1].Location.X + _thumbSize + 10;
 
                 var newLocation = new Point(nextX, 0);
-                var newLabelLocation = new Point(nextX, _thumbSize + 10);
+                var newLabelLocation = new Point(nextX, _thumbSize);
 
                 var pb = new PictureBox
                 {
