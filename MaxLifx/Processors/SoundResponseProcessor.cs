@@ -131,10 +131,11 @@ namespace MaxLifx
                                                    (((float) (SettingsCast.Levels[bulbNumber] - SettingsCast.LevelRanges[bulbNumber] / 2 < 0 ? 0 : SettingsCast.Levels[bulbNumber] - SettingsCast.LevelRanges[bulbNumber] / 2) /255));
                                     var levelRange = levelMax - levelMin;
 
-                                    float rawLevel = 1 - (spectrumEngine.LatestPoints[SettingsCast.Bins[bulbNumber]].Y/255);
+                                    float rawLevel;
 
                                     // don't raise an exception if there's no input...
                                     if (SettingsCast.Bins[bulbNumber] > spectrumEngine.LatestPoints.Count - 1) rawLevel = 0;
+                                    else rawLevel = 1 - (spectrumEngine.LatestPoints[SettingsCast.Bins[bulbNumber]].Y / 255);
 
                                     float adjustedLevel;
 
