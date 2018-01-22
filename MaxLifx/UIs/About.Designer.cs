@@ -82,11 +82,12 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(97, 175);
+            this.label4.Location = new System.Drawing.Point(27, 169);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 39);
+            this.label4.Size = new System.Drawing.Size(229, 52);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Friends of MaxLifx:\r\n/u/driver_king\r\n/u/niXta-";
+            this.label4.Text = "Friends of MaxLifx:\r\n/u/driver_king\r\n/u/niXta-\r\n/u/clarkinator, who fixed the UDP" +
+    " network bug";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // pictureBox1
@@ -99,7 +100,7 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // AboutForm
+            // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -112,7 +113,7 @@
             this.Controls.Add(this.label1);
             this.MaximumSize = new System.Drawing.Size(304, 297);
             this.MinimumSize = new System.Drawing.Size(304, 297);
-            this.Name = "AboutForm";
+            this.Name = "About";
             this.Text = "About";
             this.Load += new System.EventHandler(this.About_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
