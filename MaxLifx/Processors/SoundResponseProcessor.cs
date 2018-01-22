@@ -118,6 +118,9 @@ namespace MaxLifx
                     {
                         var bulbNumber = SettingsCast.PerBulb ? bulbCtr : 0;
 
+                        // don't raise an exception if there's no input...
+                        if (bulbNumber >= SettingsCast.Levels.Count) continue;
+
                         try
                         {
 

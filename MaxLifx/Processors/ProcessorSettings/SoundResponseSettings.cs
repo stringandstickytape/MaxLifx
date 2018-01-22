@@ -7,7 +7,7 @@ namespace MaxLifx.Processors.ProcessorSettings
     public class SoundResponseSettings : SettingsBase, ISettings
     {
         public bool BrightnessInvert = false;
-        public int Delay = 200;
+        public int Delay = 90;
         public bool Free = true;
         public bool HueInvert = false;
         public ushort Kelvin = 3500;
@@ -15,8 +15,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public bool LinkRanges = false;
         public bool PerBulb = true;
         public bool SaturationInvert = false;
-        //public long TransitionDuration = 200;
-        public long TransitionDuration = 300;
+        public long TransitionDuration = 100;
         public int WaveDuration = 5000;
         public WaveTypes WaveType = WaveTypes.Audio;
 
