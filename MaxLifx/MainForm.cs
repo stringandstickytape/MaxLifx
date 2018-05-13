@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using MaxLifx.Controllers;
 using MaxLifx.Controls;
+using MaxLifx.Packets;
 using MaxLifx.Payload;
 using MaxLifx.Threads;
 using MaxLifx.UIs;
@@ -25,6 +26,8 @@ namespace MaxLifx
     public partial class MainForm : Form
     {
         private readonly MaxLifxBulbController _bulbController = new MaxLifxBulbController();
+        private readonly List<IBulbController> controllers = new List<IBulbController>();
+
         private bool _suspendUi = true;
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
         private readonly Random _r = new Random();
@@ -40,6 +43,8 @@ namespace MaxLifx
 
         public MainForm()
         {
+            controllers.Add(_bulbController);
+            
             // this.Icon = new System.Drawing.Icon("Resources\\Image1.ico");
             Bitmap bmp = MaxLifx.Properties.Resources.m__1_;
             this.Icon = Icon.FromHandle(bmp.GetHicon());
@@ -66,8 +71,9 @@ namespace MaxLifx
 
             InitializeComponent();
             _suspendUi = true;
-            _bulbController.SetupNetwork();
 
+            foreach (var controller in controllers) controller.SetupNetwork();
+            
             if (File.Exists("Settings.xml"))
             {
                 LoadSettings();
@@ -80,34 +86,37 @@ namespace MaxLifx
                         lbBulbs.SelectedItems.Add(lbBulbs.Items[i]);
             }
 
-            if (_bulbController.Bulbs.Count == 0)
+            foreach (var controller in controllers)
             {
-                var dialogResult =
-                    MessageBox.Show(
-                        "No bulbs discovered.  Run bulb discovery now?  The app willl hang for about ten seconds."
-                        , "Discover bulbs?",
-                        MessageBoxButtons.YesNo);
-
-                if (dialogResult == DialogResult.Yes)
+                if (controller.Bulbs.Count == 0)
                 {
+                    var dialogResult =
+                        MessageBox.Show(
+                            "No bulbs discovered.  Run bulb discovery now?  The app willl hang for about ten seconds."
+                            , "Discover bulbs?",
+                            MessageBoxButtons.YesNo);
 
-                    _bulbController.DiscoverBulbs();
-
-                    if (_bulbController.Bulbs.Count == 0)
+                    if (dialogResult == DialogResult.Yes)
                     {
-                        MessageBox.Show("No bulbs found. If you have just received a Windows Firewall popup, try Bulbs -> Discover Bulbs now.");
+
+                        controller.DiscoverBulbs();
+
+                        if (controller.Bulbs.Count == 0)
+                        {
+                            MessageBox.Show("No bulbs found. If you have just received a Windows Firewall popup, try Bulbs -> Discover Bulbs now.");
+                        }
+
+                        PopulateBulbListbox();
+                        _suspendUi = false;
+                        SaveSettings();
+                        _suspendUi = true;
+
                     }
-
-                    PopulateBulbListbox();
-                    _suspendUi = false;
-                    SaveSettings();
-                    _suspendUi = true;
-
                 }
-            }
 
-            _suspendUi = false;
-            _bulbController.ColourSet += BulbControllerOnColourSet;
+                _suspendUi = false;
+                controller.ColourSet += BulbControllerOnColourSet;
+            }
         }
 
         private void BulbControllerOnColourSet(object sender, EventArgs eventArgs)

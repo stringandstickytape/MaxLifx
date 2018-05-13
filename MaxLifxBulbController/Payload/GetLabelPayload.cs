@@ -1,4 +1,6 @@
 ﻿
+using MaxLifx.Controllers;
+
 namespace MaxLifx.Payload
 {
     /// <summary>
@@ -13,5 +15,7 @@ namespace MaxLifx.Payload
         {
             return new byte[0];
         }
+
+        public BulbType PayloadType { get; set; }
     }
 }

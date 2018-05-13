@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace MaxLifx.Packets
 {
+    public class LabelAndColourPayload
+    {
+        public string Label;
+        public SetColourPayload Payload;
+    }
+
     class PacketFactory
     {
         public static string GetPacket(byte[] targetMacAddress, IPayload Payload)

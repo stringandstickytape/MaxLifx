@@ -142,10 +142,12 @@ namespace MaxLifx
                         TransitionDuration = (uint) (SettingsCast.Fade),
                         Hue = hue,
                         Saturation = saturation,
-                        Brightness = brightness
+                        Brightness = brightness,
+                        PayloadType = BulbType.Lifx
                     };
 
-                    bulbController.SetColour(label, payload);
+                    payload.PayloadType = bulbController.Bulbs.First(x => x.Label == label).BulbType;
+
                     bulbController.SetColour(label, payload);
                 }
             }

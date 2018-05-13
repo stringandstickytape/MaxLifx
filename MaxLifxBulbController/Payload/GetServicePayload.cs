@@ -1,4 +1,6 @@
-﻿namespace MaxLifx.Payload
+﻿using MaxLifx.Controllers;
+
+namespace MaxLifx.Payload
 {    
     /// <summary>
     /// Payload for a GetService (discovery) message
@@ -7,6 +9,7 @@
     {
         private byte[] _messageType = new byte[2] { 0x2, 0 };
         public byte[] MessageType { get { return _messageType; } }
+        public BulbType PayloadType { get; set; }
 
         public byte[] GetPayload()
         {

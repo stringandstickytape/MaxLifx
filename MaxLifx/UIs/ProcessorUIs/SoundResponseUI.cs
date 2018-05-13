@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using CUE.NET.Devices.Keyboard;
 using MaxLifx.ColourThemes;
 using MaxLifx.Controls;
 using MaxLifx.Processors.ProcessorSettings;
@@ -193,6 +194,11 @@ namespace MaxLifx.UIs
             //int count;
             if (_settings.PerBulb)
             {
+                var labels = new List<string>();
+                foreach (var i in lbLabels.SelectedItems)
+                    labels.Add(i.ToString());
+
+                hueSelector1.SetLabels(labels);
                 hueSelector1.HandleCount = _settings.SelectedLabels.Count();
                 brightnessSelector1.HandleCount = _settings.SelectedLabels.Count();
             }
@@ -201,11 +207,18 @@ namespace MaxLifx.UIs
             if (count > 0)
                 for (int i = 0; i < count; i++)
                 {
-                    var bin = (_settings.Bins.Count - i)*(80) + 16;
+                    //var fr = 600 / ((_settings.Bins.Count * 20f) + .1);
+                    //var x = 10 + (int)fr;// + 400 / ((_settings.Bins.Count + count - i + 1) * (_settings.Bins.Count + i + 1)*2);
+
+                    var bin = 50 * Math.Pow(1.8f, _settings.Bins.Count / 3.8f) - 50;// Math.Pow(2, 1/_settings.Bins.Count) * 10;
+                        
+                        //200 - (200 / (_settings.Bins.Count + 1));// (_settings.Bins.Count - i)*(80) + 16;
                     if (bin > 512) bin = 512;
-                    _settings.Bins.Add(bin);
-                    _settings.Levels.Add(110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
-                    _settings.LevelRanges.Add(45);
+                    _settings.Bins.Add((int)bin);
+
+                    var lvlRange = 50;
+                    _settings.Levels.Add((int)(lvlRange - lvlRange * Math.Pow(1.008,512-bin) / Math.Pow(1.008,512) + 50));// 110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
+                    _settings.LevelRanges.Add(55);
                 }
             else
             if (count < 0)
@@ -392,9 +405,11 @@ namespace MaxLifx.UIs
                 }
                 lbLabels.ClearSelected();
                 lbLabels.SelectionMode = SelectionMode.One;
+                lbLabels.PreviewKeyDown += LbLabels_PreviewKeyDown;
             }
             else
             {
+                lbLabels.PreviewKeyDown -= LbLabels_PreviewKeyDown;
                 bUp.Enabled = false;
                 bDown.Enabled = false;
                 List<object> newSelectedLabels = new List<object>();
@@ -412,6 +427,24 @@ namespace MaxLifx.UIs
 
             }
         }
+
+        private void LbLabels_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            lbLabels.SelectedItems.Clear();
+            var itemName = $"Corsair Keyboard {e.KeyCode.ToString().ToUpper()}";
+            var itemIndex = lbLabels.Items.IndexOf(itemName);
+            if (itemIndex > -1)
+            {
+                var item = lbLabels.Items[itemIndex];
+                var selected = false;
+                if (lbLabels.SelectedItems.Contains(item)) selected = true;
+                lbLabels.Items.Remove(item);
+                lbLabels.Items.Insert(lbLabels.Items.Count, item);
+                if (selected) lbLabels.SelectedItems.Add(item);
+                lbLabels.TopIndex = lbLabels.Items.Count;
+            }
+        }
+
 
         private void cbUpdateAudioResponse_CheckedChanged(object sender, EventArgs e)
         {
@@ -444,6 +477,222 @@ namespace MaxLifx.UIs
         {
             brightnessSelector1.Reset();
             UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
+            {
+                lbLabels.SetSelected(ind, true);
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
+            {
+                lbLabels.SetSelected(ind, false);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            spectrumAnalyser1.RedistributeBins(_settings);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
+            {
+                var label = lbLabels.Items[ind].ToString();
+                if (label.StartsWith("Corsair Keyboard "))
+                    lbLabels.SetSelected(ind, true);
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            SelectFromString("A,S,D,F,G,H,J,K,L");
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SelectFromString("Q,W,E,R,T,Y,U,I,O,P");
+        }
+
+        private void SelectFromString(string matchString)
+        {
+            SelectFromStringList(matchString.Split(new[] { ',' }).ToList());
+        }
+
+        private void SelectFromStringList(List<string> matchStrings)
+        {
+            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
+            {
+                var label = lbLabels.Items[ind].ToString();
+                if (label.StartsWith("Corsair Keyboard ") && matchStrings.Contains(label.Substring(17)))
+                    lbLabels.SetSelected(ind, true);
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            SelectFromString("Z,X,C,V,B,N,M");
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            SelectFromString("D1,D2,D3,D4,D5,D6,D7,D8,D9,D0");
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            ReorderByString("Q,W,E,R,T,Y,U,I,O,P");
+        }
+
+        private void ReorderByString(string keyListString)
+        {
+            var firstKeyInd = -1;
+
+            var orderedKeyList = keyListString.Split(new[] { ',' }).ToList();
+
+            foreach (var key in orderedKeyList)
+                for (var ind = 0; ind < lbLabels.Items.Count; ind++)
+                {
+                    var label = lbLabels.Items[ind].ToString();
+
+                    if (label == ($"Corsair Keyboard {key}"))
+                    {
+                        var keyPosition = orderedKeyList.IndexOf(label.Substring(17));
+                        if (keyPosition == -1) continue;
+
+                        var item = lbLabels.Items[ind];
+                        var selected = lbLabels.SelectedItems.Contains(item);
+                        lbLabels.Items.Remove(item);
+                        lbLabels.Items.Insert(lbLabels.Items.Count, item);
+                        if (selected) lbLabels.SelectedItems.Add(item);
+                        break;
+                    }
+                }
+
+            lbLabels.TopIndex = lbLabels.Items.Count-orderedKeyList.Count;
+        }
+
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            ReorderByString("A,S,D,F,G,H,J,K,L");
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            ReorderByString("Z,X,C,V,B,N,M");
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            ReorderByString("D1,D2,D3,D4,D5,D6,D7,D8,D9,D0");
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            ReorderByString("D1,D2,Q,D3,W,A,D4,E,S,Z,D5,R,D,X,D6,T,F,C,D7,Y,G,V,D8,U,H,B,D9,I,J,N,D0,O,K,M,P,L");
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            SelectFromString("D1,D2,Q,D3,W,A,D4,E,S,Z,D5,R,D,X,D6,T,F,C,D7,Y,G,V,D8,U,H,B,D9,I,J,N,D0,O,K,M,P,L");
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            ReorderByString("Z,A,X,S,Q,D1,C,D,W,D2,V,F,E,D3,B,G,R,D4,N,H,T,D5,M,J,Y,D6,K,U,D7,L,I,D8,O,D9,P,D0");
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
+
+        private void textBox1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            
+        }
+
+        private Dictionary<string, string> KeyCodeDictionary = new Dictionary<string, string>()
+        {
+            { "LWin", "LeftGui" },
+            { "RWin", "RightGui" },
+            {"Oem8","GraveAccentAndTilde"},
+            {"Apps","Application" },
+            {"Back","Backspace" },
+            {"Oemplus","EqualsAndPlus" },
+            { "OemMinus","MinusAndUnderscore" },
+            {"Up","UpArrow" },
+            {"Down","DownArrow" },
+            {"Left","LeftArrow" },
+            {"Right","RightArrow" },
+            {"Next","PageDown" },
+            {"Scroll","ScrollLock" },
+            {"Pause","PauseBreak" },
+            {"Divide","KeypadSlash" },
+            {"Add","KeypadPlus" },
+            {"Subtract","KeypadMinus" },
+            {"Multiply","KeypadAsterisk" },
+            {"Decimal","KeypadPeriodAndDelete" },
+            {"OemOpenBrackets","BracketLeft"},
+{"Oem6","BracketRight"},
+{"OemPeriod","PeriodAndBiggerThan"},
+{"Oemcomma","CommaAndLessThan"},
+{"Oemtilde","ApostropheAndDoubleQuote"},
+{"OemQuestion","SlashAndQuestionMark"},
+{"Oem1","SemicolonAndColon"},
+{"Capital","CapsLock"},
+{"Oem7","NonUsTilde"},
+{"Oem5","NonUsBackslash"},
+
+        };
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            var corsairCode = e.KeyCode.ToString();
+            
+
+            if (KeyCodeDictionary.ContainsKey(corsairCode)) corsairCode = KeyCodeDictionary[corsairCode];
+
+            if (corsairCode == "ShiftKey") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)) ? "LeftShift" : "RightShift";
+            else if (corsairCode == "ControlKey") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LControlKey)) ? "LeftCtrl" : "RightCtrl";
+            else if (corsairCode == "Menu") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LMenu)) ? "LeftAlt" : "RightAlt";
+            else if (corsairCode == "Home") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.Home)) ? "Home" : "KeypadHome";
+            else if (corsairCode == "Return") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.Return)) ? "Enter" : "KeypadEnter";
+            else if (corsairCode.StartsWith("Volume")) corsairCode = corsairCode.Substring(6);
+            System.Diagnostics.Debug.WriteLine(corsairCode);
+            if (corsairCode.StartsWith("NumP"))
+                corsairCode = $"Keyp{corsairCode.Substring(4)}";
+            var itemName = $"Corsair Keyboard {corsairCode}";
+            var itemIndex = lbLabels.Items.IndexOf(itemName);
+            if (itemIndex > -1)
+            {
+                var item = lbLabels.Items[itemIndex];
+                //var selected = false;
+                //if (lbLabels.SelectedItems.Contains(item)) selected = true;
+                lbLabels.Items.Remove(item);
+                lbLabels.Items.Insert(lbLabels.Items.Count, item);
+                lbLabels.SelectedItems.Add(item);
+                lbLabels.TopIndex = lbLabels.Items.Count - 1;
+
+            }
+            e.Handled = true;
+            textBox1.Text = "";
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            _settings.Levels = spectrumAnalyser1.DecrementLevels();
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            _settings.Levels = spectrumAnalyser1.IncrementLevels();
         }
     }
 }

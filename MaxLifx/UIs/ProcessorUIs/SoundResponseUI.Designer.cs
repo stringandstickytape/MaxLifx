@@ -56,6 +56,9 @@ namespace MaxLifx.UIs
             this.hueSelector1 = new MaxLifx.Controls.HueSelector.HueSelector();
             this.btnCentreRanges = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button21 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
             this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
@@ -78,11 +81,29 @@ namespace MaxLifx.UIs
             this.nWaveDuration = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button20 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.lbLabels = new System.Windows.Forms.ListBox();
             this.cbReorder = new System.Windows.Forms.CheckBox();
             this.bDown = new System.Windows.Forms.Button();
             this.bUp = new System.Windows.Forms.Button();
-            this.lbLabels = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -106,7 +127,7 @@ namespace MaxLifx.UIs
             this.tabControl1.Location = new System.Drawing.Point(266, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(863, 539);
+            this.tabControl1.Size = new System.Drawing.Size(681, 974);
             this.tabControl1.TabIndex = 114;
             // 
             // tabHues
@@ -127,14 +148,14 @@ namespace MaxLifx.UIs
             this.tabHues.Location = new System.Drawing.Point(4, 22);
             this.tabHues.Name = "tabHues";
             this.tabHues.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHues.Size = new System.Drawing.Size(855, 513);
+            this.tabHues.Size = new System.Drawing.Size(673, 948);
             this.tabHues.TabIndex = 0;
             this.tabHues.Text = "Hues";
             // 
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(708, 151);
+            this.button4.Location = new System.Drawing.Point(517, 151);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(93, 23);
             this.button4.TabIndex = 117;
@@ -149,9 +170,9 @@ namespace MaxLifx.UIs
             this.groupBox3.Controls.Add(this.cbLockBrightness);
             this.groupBox3.Controls.Add(this.cbPastelThemes);
             this.groupBox3.Controls.Add(this.pThemes);
-            this.groupBox3.Location = new System.Drawing.Point(712, 184);
+            this.groupBox3.Location = new System.Drawing.Point(521, 184);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(135, 324);
+            this.groupBox3.Size = new System.Drawing.Size(135, 759);
             this.groupBox3.TabIndex = 113;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Themes";
@@ -181,12 +202,13 @@ namespace MaxLifx.UIs
             this.pThemes.AutoScroll = true;
             this.pThemes.Location = new System.Drawing.Point(9, 68);
             this.pThemes.Name = "pThemes";
-            this.pThemes.Size = new System.Drawing.Size(119, 240);
+            this.pThemes.Size = new System.Drawing.Size(119, 685);
             this.pThemes.TabIndex = 0;
             // 
             // brightnessSelector1
             // 
-            this.brightnessSelector1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.brightnessSelector1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.brightnessSelector1.Brightness = 0D;
             this.brightnessSelector1.Free = false;
@@ -194,13 +216,13 @@ namespace MaxLifx.UIs
             this.brightnessSelector1.HandleCount = 1;
             this.brightnessSelector1.Invert = false;
             this.brightnessSelector1.LinkRanges = false;
-            this.brightnessSelector1.Location = new System.Drawing.Point(530, 10);
+            this.brightnessSelector1.Location = new System.Drawing.Point(6, 517);
             this.brightnessSelector1.Name = "brightnessSelector1";
             this.brightnessSelector1.PerBulb = false;
             this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
             this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
             this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
-            this.brightnessSelector1.Size = new System.Drawing.Size(162, 492);
+            this.brightnessSelector1.Size = new System.Drawing.Size(509, 425);
             this.brightnessSelector1.TabIndex = 116;
             this.brightnessSelector1.Text = "brightnessSelector1";
             this.brightnessSelector1.BrightnessesChanged += new System.EventHandler(this.BrightnessesChanged);
@@ -209,7 +231,7 @@ namespace MaxLifx.UIs
             // 
             this.cbBrightnessInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBrightnessInvert.AutoSize = true;
-            this.cbBrightnessInvert.Location = new System.Drawing.Point(705, 61);
+            this.cbBrightnessInvert.Location = new System.Drawing.Point(514, 61);
             this.cbBrightnessInvert.Name = "cbBrightnessInvert";
             this.cbBrightnessInvert.Size = new System.Drawing.Size(105, 17);
             this.cbBrightnessInvert.TabIndex = 101;
@@ -221,7 +243,7 @@ namespace MaxLifx.UIs
             // 
             this.cbFree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFree.AutoSize = true;
-            this.cbFree.Location = new System.Drawing.Point(705, 27);
+            this.cbFree.Location = new System.Drawing.Point(514, 27);
             this.cbFree.Name = "cbFree";
             this.cbFree.Size = new System.Drawing.Size(75, 17);
             this.cbFree.TabIndex = 111;
@@ -235,7 +257,7 @@ namespace MaxLifx.UIs
             this.cbPerBulb.AutoSize = true;
             this.cbPerBulb.Checked = true;
             this.cbPerBulb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbPerBulb.Location = new System.Drawing.Point(705, 10);
+            this.cbPerBulb.Location = new System.Drawing.Point(514, 10);
             this.cbPerBulb.Name = "cbPerBulb";
             this.cbPerBulb.Size = new System.Drawing.Size(99, 17);
             this.cbPerBulb.TabIndex = 108;
@@ -246,7 +268,7 @@ namespace MaxLifx.UIs
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(708, 122);
+            this.button2.Location = new System.Drawing.Point(517, 122);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(93, 23);
             this.button2.TabIndex = 109;
@@ -258,7 +280,7 @@ namespace MaxLifx.UIs
             // 
             this.cbHueInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbHueInvert.AutoSize = true;
-            this.cbHueInvert.Location = new System.Drawing.Point(705, 95);
+            this.cbHueInvert.Location = new System.Drawing.Point(514, 95);
             this.cbHueInvert.Margin = new System.Windows.Forms.Padding(460, 460, 3, 3);
             this.cbHueInvert.Name = "cbHueInvert";
             this.cbHueInvert.Size = new System.Drawing.Size(140, 17);
@@ -271,7 +293,7 @@ namespace MaxLifx.UIs
             // 
             this.cbLinkRanges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbLinkRanges.AutoSize = true;
-            this.cbLinkRanges.Location = new System.Drawing.Point(705, 44);
+            this.cbLinkRanges.Location = new System.Drawing.Point(514, 44);
             this.cbLinkRanges.Name = "cbLinkRanges";
             this.cbLinkRanges.Size = new System.Drawing.Size(86, 17);
             this.cbLinkRanges.TabIndex = 110;
@@ -283,7 +305,7 @@ namespace MaxLifx.UIs
             // 
             this.cbSaturationInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSaturationInvert.AutoSize = true;
-            this.cbSaturationInvert.Location = new System.Drawing.Point(705, 78);
+            this.cbSaturationInvert.Location = new System.Drawing.Point(514, 78);
             this.cbSaturationInvert.Name = "cbSaturationInvert";
             this.cbSaturationInvert.Size = new System.Drawing.Size(133, 17);
             this.cbSaturationInvert.TabIndex = 102;
@@ -293,8 +315,7 @@ namespace MaxLifx.UIs
             // 
             // hueSelector1
             // 
-            this.hueSelector1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.hueSelector1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hueSelector1.BackColor = System.Drawing.SystemColors.Control;
             this.hueSelector1.Free = false;
@@ -316,7 +337,8 @@ namespace MaxLifx.UIs
             // 
             // btnCentreRanges
             // 
-            this.btnCentreRanges.Location = new System.Drawing.Point(690, 245);
+            this.btnCentreRanges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCentreRanges.Location = new System.Drawing.Point(145, 714);
             this.btnCentreRanges.Name = "btnCentreRanges";
             this.btnCentreRanges.Size = new System.Drawing.Size(18, 20);
             this.btnCentreRanges.TabIndex = 117;
@@ -327,19 +349,52 @@ namespace MaxLifx.UIs
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.button21);
+            this.tabPage2.Controls.Add(this.button19);
+            this.tabPage2.Controls.Add(this.button7);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.cbUpdateAudioResponse);
             this.tabPage2.Controls.Add(this.spectrumAnalyser1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(855, 513);
+            this.tabPage2.Size = new System.Drawing.Size(673, 948);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Audio Frequency Response";
             // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(518, 264);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(94, 23);
+            this.button21.TabIndex = 117;
+            this.button21.Text = "Move All Down";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(518, 235);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(94, 23);
+            this.button19.TabIndex = 116;
+            this.button19.Text = "Move All Up";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(518, 68);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(94, 23);
+            this.button7.TabIndex = 115;
+            this.button7.Text = "Redistribute";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(644, 53);
+            this.button3.Location = new System.Drawing.Point(518, 39);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(94, 23);
             this.button3.TabIndex = 108;
@@ -353,7 +408,7 @@ namespace MaxLifx.UIs
             this.cbUpdateAudioResponse.BackColor = System.Drawing.Color.Transparent;
             this.cbUpdateAudioResponse.Checked = true;
             this.cbUpdateAudioResponse.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(629, 6);
+            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(518, 3);
             this.cbUpdateAudioResponse.Name = "cbUpdateAudioResponse";
             this.cbUpdateAudioResponse.Size = new System.Drawing.Size(121, 30);
             this.cbUpdateAudioResponse.TabIndex = 114;
@@ -392,7 +447,7 @@ namespace MaxLifx.UIs
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.nWaveDuration);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Location = new System.Drawing.Point(5, 310);
+            this.groupBox4.Location = new System.Drawing.Point(3, 742);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(248, 222);
             this.groupBox4.TabIndex = 106;
@@ -601,32 +656,225 @@ namespace MaxLifx.UIs
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cbReorder);
-            this.groupBox1.Controls.Add(this.bDown);
-            this.groupBox1.Controls.Add(this.bUp);
+            this.groupBox1.Controls.Add(this.button20);
+            this.groupBox1.Controls.Add(this.button18);
+            this.groupBox1.Controls.Add(this.button17);
+            this.groupBox1.Controls.Add(this.button16);
+            this.groupBox1.Controls.Add(this.button15);
+            this.groupBox1.Controls.Add(this.button14);
+            this.groupBox1.Controls.Add(this.button13);
+            this.groupBox1.Controls.Add(this.button12);
+            this.groupBox1.Controls.Add(this.button11);
+            this.groupBox1.Controls.Add(this.button10);
+            this.groupBox1.Controls.Add(this.button9);
+            this.groupBox1.Controls.Add(this.button8);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.button6);
+            this.groupBox1.Controls.Add(this.button5);
             this.groupBox1.Controls.Add(this.lbLabels);
             this.groupBox1.Location = new System.Drawing.Point(5, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(248, 304);
+            this.groupBox1.Size = new System.Drawing.Size(248, 517);
             this.groupBox1.TabIndex = 115;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Select Bulbs to Use:";
+            this.groupBox1.Text = "Select Lights to Use:";
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(167, 437);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(69, 23);
+            this.button20.TabIndex = 131;
+            this.button20.Text = "Z-0 Radial";
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(93, 374);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(69, 23);
+            this.button18.TabIndex = 129;
+            this.button18.Text = "1-M";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(93, 437);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(69, 23);
+            this.button17.TabIndex = 128;
+            this.button17.Text = "1-M Radial";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(91, 408);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(34, 23);
+            this.button16.TabIndex = 127;
+            this.button16.Text = "1-0";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(202, 408);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(36, 23);
+            this.button15.TabIndex = 126;
+            this.button15.Text = "Z-M";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(165, 407);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(34, 23);
+            this.button14.TabIndex = 125;
+            this.button14.Text = "A-L";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(128, 407);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(34, 23);
+            this.button13.TabIndex = 124;
+            this.button13.Text = "Q-P";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(93, 346);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(34, 23);
+            this.button12.TabIndex = 123;
+            this.button12.Text = "1-0";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(202, 345);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(36, 23);
+            this.button11.TabIndex = 122;
+            this.button11.Text = "Z-M";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(167, 345);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(33, 23);
+            this.button10.TabIndex = 121;
+            this.button10.Text = "A-L";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(131, 345);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(34, 23);
+            this.button9.TabIndex = 120;
+            this.button9.Text = "Q-P";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(93, 321);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(28, 23);
+            this.button8.TabIndex = 119;
+            this.button8.Text = "All";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 413);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 118;
+            this.label5.Text = "Reorder:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 350);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.TabIndex = 117;
+            this.label4.Text = "Keyboard:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 294);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(88, 13);
+            this.label3.TabIndex = 116;
+            this.label3.Text = "Add to Selection:";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(3, 260);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(233, 23);
+            this.button6.TabIndex = 115;
+            this.button6.Text = "Clear Selection";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(93, 289);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(28, 23);
+            this.button5.TabIndex = 114;
+            this.button5.Text = "All";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // lbLabels
+            // 
+            this.lbLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLabels.FormattingEnabled = true;
+            this.lbLabels.ItemHeight = 12;
+            this.lbLabels.Location = new System.Drawing.Point(4, 16);
+            this.lbLabels.Name = "lbLabels";
+            this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lbLabels.Size = new System.Drawing.Size(234, 232);
+            this.lbLabels.TabIndex = 86;
+            this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
             // cbReorder
             // 
             this.cbReorder.AutoSize = true;
-            this.cbReorder.Location = new System.Drawing.Point(74, 274);
+            this.cbReorder.Location = new System.Drawing.Point(6, 624);
             this.cbReorder.Name = "cbReorder";
-            this.cbReorder.Size = new System.Drawing.Size(64, 17);
+            this.cbReorder.Size = new System.Drawing.Size(135, 17);
             this.cbReorder.TabIndex = 113;
-            this.cbReorder.Text = "Reorder";
+            this.cbReorder.Text = "Manual Reorder Mode:";
             this.cbReorder.UseVisualStyleBackColor = true;
             this.cbReorder.CheckedChanged += new System.EventHandler(this.cbReorder_CheckedChanged);
             // 
             // bDown
             // 
             this.bDown.Enabled = false;
-            this.bDown.Location = new System.Drawing.Point(194, 270);
+            this.bDown.Location = new System.Drawing.Point(197, 620);
             this.bDown.Name = "bDown";
             this.bDown.Size = new System.Drawing.Size(44, 23);
             this.bDown.TabIndex = 112;
@@ -637,7 +885,7 @@ namespace MaxLifx.UIs
             // bUp
             // 
             this.bUp.Enabled = false;
-            this.bUp.Location = new System.Drawing.Point(144, 270);
+            this.bUp.Location = new System.Drawing.Point(147, 620);
             this.bUp.Name = "bUp";
             this.bUp.Size = new System.Drawing.Size(44, 23);
             this.bUp.TabIndex = 111;
@@ -645,35 +893,37 @@ namespace MaxLifx.UIs
             this.bUp.UseVisualStyleBackColor = true;
             this.bUp.Click += new System.EventHandler(this.bUp_Click);
             // 
-            // lbLabels
-            // 
-            this.lbLabels.FormattingEnabled = true;
-            this.lbLabels.Location = new System.Drawing.Point(4, 16);
-            this.lbLabels.Name = "lbLabels";
-            this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbLabels.Size = new System.Drawing.Size(234, 251);
-            this.lbLabels.TabIndex = 86;
-            this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.AutoScroll = true;
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(0, 537);
+            this.panel1.Controls.Add(this.textBox1);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.groupBox4);
+            this.panel1.Controls.Add(this.bDown);
+            this.panel1.Controls.Add(this.cbReorder);
+            this.panel1.Controls.Add(this.bUp);
             this.panel1.Location = new System.Drawing.Point(4, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(256, 538);
+            this.panel1.Size = new System.Drawing.Size(256, 973);
             this.panel1.TabIndex = 116;
             this.panel1.SizeChanged += new System.EventHandler(this.panel1_SizeChanged);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(27, 657);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(99, 20);
+            this.textBox1.TabIndex = 103;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // SoundResponseUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1135, 556);
+            this.ClientSize = new System.Drawing.Size(953, 991);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
             this.Name = "SoundResponseUI";
@@ -697,6 +947,7 @@ namespace MaxLifx.UIs
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -749,5 +1000,26 @@ namespace MaxLifx.UIs
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCentreRanges;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button21;
     }
 }
