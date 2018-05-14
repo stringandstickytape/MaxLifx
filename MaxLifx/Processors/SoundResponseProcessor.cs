@@ -21,6 +21,9 @@ namespace MaxLifx
         Sawtooth,
         Audio,
         Noise,
+        EaseZero,
+        EaseZeroPointFive,
+        EaseOne,
         EaseLinear,
         EaseInSine,
         EaseOutSine,
@@ -211,46 +214,6 @@ namespace MaxLifx
                                                  (((int) timeRunning.TotalMilliseconds/SettingsCast.WaveDuration)*
                                                   SettingsCast.WaveDuration))/SettingsCast.WaveDuration;
                                     break;
-                                case WaveTypes.EaseLinear: floatValueH = floatValueS = floatValueB = (float)Ease.Linear(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInSine: floatValueH = floatValueS = floatValueB = (float)Ease.InSine(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutSine: floatValueH = floatValueS = floatValueB = (float)Ease.OutSine(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutSine: floatValueH = floatValueS = floatValueB = (float)Ease.InOutSine(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInQuint: floatValueH = floatValueS = floatValueB = (float)Ease.InQuint(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutQuint: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuint(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutQuint: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuint(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInQuart: floatValueH = floatValueS = floatValueB = (float)Ease.InQuart(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutQuart: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuart(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutQuart: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuart(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInQuad: floatValueH = floatValueS = floatValueB = (float)Ease.InQuad(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutQuad: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuad(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutQuad: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuad(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInExpo: floatValueH = floatValueS = floatValueB = (float)Ease.InExpo(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutExpo: floatValueH = floatValueS = floatValueB = (float)Ease.OutExpo(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutExpo: floatValueH = floatValueS = floatValueB = (float)Ease.InOutExpo(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInElastic   : floatValueH = floatValueS = floatValueB = (float)Ease.InElastic   (bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutElastic  : floatValueH = floatValueS = floatValueB = (float)Ease.OutElastic  (bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutElastic: floatValueH = floatValueS = floatValueB = (float)Ease.InOutElastic(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInCirc: floatValueH = floatValueS = floatValueB = (float)Ease.InCirc(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutCirc: floatValueH = floatValueS = floatValueB = (float)Ease.OutCirc(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutCirc: floatValueH = floatValueS = floatValueB = (float)Ease.InOutCirc(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInBack: floatValueH = floatValueS = floatValueB = (float)Ease.InBack(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutBack: floatValueH = floatValueS = floatValueB = (float)Ease.OutBack(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutBack: floatValueH = floatValueS = floatValueB = (float)Ease.InOutBack(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInBounce: floatValueH = floatValueS = floatValueB = (float)Ease.InBounce(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutBounce: floatValueH = floatValueS = floatValueB = (float)Ease.OutBounce(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutBounce:                                    floatValueH = floatValueS = floatValueB = (float)Ease.InOutBounce(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-
-                                case WaveTypes.EaseInCubic: floatValueH = floatValueS = floatValueB = (float)Ease.InCubic(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseOutCubic: floatValueH = floatValueS = floatValueB = (float)Ease.OutCubic(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
-                                case WaveTypes.EaseInOutCubic: floatValueH = floatValueS = floatValueB = (float)Ease.InOutCubic(bulbTime, 0, 1, SettingsCast.WaveDuration); break;
 
                                 case WaveTypes.Noise:
                                     var span = DateTime.Now - persistedSince;
@@ -271,6 +234,9 @@ namespace MaxLifx
                                         floatValueB = persistentFloatB;
                                     }
                                     break;
+
+                                default:
+                                    GetAdditionalWaveformValues(out floatValueH, out floatValueS, out floatValueB, timeRunning.TotalMilliseconds, bulbCtr); break;
                             }
 
                             if (SettingsCast.Hues.Count > bulbNumber)
@@ -331,6 +297,87 @@ namespace MaxLifx
             }
 
             spectrumEngine.StopCapture();
+        }
+
+        private void GetAdditionalWaveformValues(out float floatValueH, out float floatValueS, out float floatValueB, double totalMilliseconds, int bulbCtr)
+        {
+
+            var totalDuration = SettingsCast.AllWaveformsDuration;
+            var everyOther = true;// (totalMilliseconds / totalDuration) % 2 < 1;
+            
+            var position = everyOther ? (totalMilliseconds + totalDuration * bulbCtr / (0+SettingsCast.SelectedLabels.Count)) % totalDuration
+                                      : (totalMilliseconds + totalDuration * ((SettingsCast.SelectedLabels.Count+0)-bulbCtr) / (0+SettingsCast.SelectedLabels.Count)) % totalDuration;
+
+            WaveTypes? waveType = null;
+            double? waveDuration = null;
+            bool? waveInvert = null;
+
+            if (position < SettingsCast.WaveDuration) { waveType = SettingsCast.WaveType; waveDuration = SettingsCast.WaveDuration; waveInvert = false; }
+            else
+            {
+                position -= SettingsCast.WaveDuration;
+
+                var ctr = 0;
+                while(position > -1)
+                {
+                    if (position < SettingsCast.AdditionalWaveforms[ctr].Duration) { waveType = SettingsCast.AdditionalWaveforms[ctr].WaveType; waveDuration = SettingsCast.AdditionalWaveforms[ctr].Duration;  waveInvert = SettingsCast.AdditionalWaveforms[ctr].InverseWaveform;  break; }
+                    position -= SettingsCast.AdditionalWaveforms[ctr].Duration;
+                    ctr++;
+                }
+            }
+
+            if (!waveType.HasValue) { floatValueH = floatValueS = floatValueB = 0; return; }
+
+            switch (waveType)
+            {
+                case WaveTypes.EaseZero: floatValueH = floatValueS = floatValueB = 0f; break;
+                case WaveTypes.EaseZeroPointFive: floatValueH = floatValueS = floatValueB = .5f; break;
+                case WaveTypes.EaseOne: floatValueH = floatValueS = floatValueB = 1f; break;
+                case WaveTypes.EaseLinear: floatValueH = floatValueS = floatValueB = (float)Ease.Linear(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInSine: floatValueH = floatValueS = floatValueB = (float)Ease.InSine(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutSine: floatValueH = floatValueS = floatValueB = (float)Ease.OutSine(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutSine: floatValueH = floatValueS = floatValueB = (float)Ease.InOutSine(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInQuint: floatValueH = floatValueS = floatValueB = (float)Ease.InQuint(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutQuint: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuint(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutQuint: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuint(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInQuart: floatValueH = floatValueS = floatValueB = (float)Ease.InQuart(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutQuart: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuart(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutQuart: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuart(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInQuad: floatValueH = floatValueS = floatValueB = (float)Ease.InQuad(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutQuad: floatValueH = floatValueS = floatValueB = (float)Ease.OutQuad(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutQuad: floatValueH = floatValueS = floatValueB = (float)Ease.InOutQuad(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInExpo: floatValueH = floatValueS = floatValueB = (float)Ease.InExpo(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutExpo: floatValueH = floatValueS = floatValueB = (float)Ease.OutExpo(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutExpo: floatValueH = floatValueS = floatValueB = (float)Ease.InOutExpo(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInElastic: floatValueH = floatValueS = floatValueB = (float)Ease.InElastic(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutElastic: floatValueH = floatValueS = floatValueB = (float)Ease.OutElastic(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutElastic: floatValueH = floatValueS = floatValueB = (float)Ease.InOutElastic(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInCirc: floatValueH = floatValueS = floatValueB = (float)Ease.InCirc(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutCirc: floatValueH = floatValueS = floatValueB = (float)Ease.OutCirc(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutCirc: floatValueH = floatValueS = floatValueB = (float)Ease.InOutCirc(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInBack: floatValueH = floatValueS = floatValueB = (float)Ease.InBack(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutBack: floatValueH = floatValueS = floatValueB = (float)Ease.OutBack(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutBack: floatValueH = floatValueS = floatValueB = (float)Ease.InOutBack(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInBounce: floatValueH = floatValueS = floatValueB = (float)Ease.InBounce(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutBounce: floatValueH = floatValueS = floatValueB = (float)Ease.OutBounce(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutBounce: floatValueH = floatValueS = floatValueB = (float)Ease.InOutBounce(position, 0, 1, waveDuration.Value); break;
+
+                case WaveTypes.EaseInCubic: floatValueH = floatValueS = floatValueB = (float)Ease.InCubic(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseOutCubic: floatValueH = floatValueS = floatValueB = (float)Ease.OutCubic(position, 0, 1, waveDuration.Value); break;
+                case WaveTypes.EaseInOutCubic: floatValueH = floatValueS = floatValueB = (float)Ease.InOutCubic(position, 0, 1, waveDuration.Value); break;
+                default: floatValueH = floatValueS = floatValueB = 0; break;
+
+            }
+            if (waveInvert.Value)
+                floatValueH = floatValueS = floatValueB = (1 - floatValueB);
         }
     }
 }

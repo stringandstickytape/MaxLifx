@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using CUE.NET.Devices.Keyboard;
 using MaxLifx.ColourThemes;
 using MaxLifx.Controls;
 using MaxLifx.Processors.ProcessorSettings;
@@ -34,6 +33,8 @@ namespace MaxLifx.UIs
             Load += SoundResponseUI_Load;
             spectrumAnalyser1.SelectionChanged += SpectrumAnalyser1_SelectionChanged;
             r = R;
+
+            panelWaveforms.VerticalScroll.Visible = true;
 
             pThemes.Controls.Clear();
             var type = typeof(IColourTheme);
@@ -109,11 +110,9 @@ namespace MaxLifx.UIs
 
         private void SetupUI()
         {
-            cbWaveType.Items.Clear();
-            foreach (var s in Enum.GetNames(typeof (WaveTypes)))
-            {
-                cbWaveType.Items.Add(s);
-            }
+            var cb = cbWaveType;
+
+            SetAvailableWaveTypes(cb);
 
             foreach (var item in cbWaveType.Items)
             {
@@ -128,13 +127,6 @@ namespace MaxLifx.UIs
             nTransition.Value = _settings.TransitionDuration;
             nWaveDuration.Value = _settings.WaveDuration;
 
-            //cbConfigs.Items.Clear();
-            //foreach (var x in Directory.GetFiles(".", "*." + _settings.FileExtension))
-            //{
-            //    var fileName = x.Replace(".\\", "").Replace("." + _settings.FileExtension, "").Replace(".xml", "");
-            //    cbConfigs.Items.Add(fileName);
-            //}
-
             UpdateHueSelectorHandleCount();
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
@@ -148,14 +140,14 @@ namespace MaxLifx.UIs
             cbHueInvert.Checked = _settings.HueInvert;
             cbBrightnessInvert.Checked = _settings.BrightnessInvert;
             cbSaturationInvert.Checked = _settings.SaturationInvert;
-            
+
             cbLinkRanges.Checked = _settings.LinkRanges;
 
 
 
             List<int> b, l, lr;
 
-            spectrumAnalyser1.GetHandles(out b,out l,out lr);
+            spectrumAnalyser1.GetHandles(out b, out l, out lr);
 
             _settings.Bins = b;
             _settings.Levels = l;
@@ -165,10 +157,21 @@ namespace MaxLifx.UIs
             tbOffTimes.Text = _settings.OffTimes;
         }
 
+        private static void SetAvailableWaveTypes(ComboBox cb, bool EaseOnly = false)
+        {
+            cb.Items.Clear();
+            foreach (var s in Enum.GetNames(typeof(WaveTypes)))
+            {
+                if(!EaseOnly || s.StartsWith("Ease"))
+                    cb.Items.Add(s);
+            }
+        }
+
         private void lbLabels_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(!_suspendUi && !cbReorder.Checked)
                 UpdateSelectedLabels();
+
 
         }
 
@@ -207,17 +210,13 @@ namespace MaxLifx.UIs
             if (count > 0)
                 for (int i = 0; i < count; i++)
                 {
-                    //var fr = 600 / ((_settings.Bins.Count * 20f) + .1);
-                    //var x = 10 + (int)fr;// + 400 / ((_settings.Bins.Count + count - i + 1) * (_settings.Bins.Count + i + 1)*2);
-
                     var bin = 50 * Math.Pow(1.8f, _settings.Bins.Count / 3.8f) - 50;// Math.Pow(2, 1/_settings.Bins.Count) * 10;
                         
-                        //200 - (200 / (_settings.Bins.Count + 1));// (_settings.Bins.Count - i)*(80) + 16;
                     if (bin > 512) bin = 512;
                     _settings.Bins.Add((int)bin);
 
                     var lvlRange = 50;
-                    _settings.Levels.Add((int)(lvlRange - lvlRange * Math.Pow(1.008,512-bin) / Math.Pow(1.008,512) + 50));// 110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
+                    _settings.Levels.Add((int)(lvlRange - lvlRange * Math.Pow(1.008,512-bin) / Math.Pow(1.008,512) + 50));
                     _settings.LevelRanges.Add(55);
                 }
             else
@@ -230,11 +229,14 @@ namespace MaxLifx.UIs
                 }
 
             spectrumAnalyser1.SetupHandles(_settings.Bins, _settings.Levels, _settings.LevelRanges);
+            if (count != 0) spectrumAnalyser1.RedistributeBins(_settings);
         }
 
         private void cbWaveType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settings.WaveType = (WaveTypes) Enum.Parse(typeof (WaveTypes), cbWaveType.SelectedItem.ToString());
+            if ((int)_settings.WaveType < 5) panelWaveforms.Hide(); else panelWaveforms.Show();
+            
         }
 
         private void nDelay_ValueChanged(object sender, EventArgs e)
@@ -693,6 +695,102 @@ namespace MaxLifx.UIs
         private void button21_Click(object sender, EventArgs e)
         {
             _settings.Levels = spectrumAnalyser1.IncrementLevels();
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            var newPanel = new Panel() { Width = 220 };
+            newPanel.Height = 22;
+
+            var button = new Button() { Text = "X", Width = 15 };
+            button.Click += DeleteWaveformClicked;
+            newPanel.Controls.Add(button);
+            var comboBox = new ComboBox() { Location = new Point(15, 0) };
+            SetAvailableWaveTypes(comboBox, true);
+            comboBox.SelectedItem = cbWaveType.SelectedItem;
+            newPanel.Controls.Add(comboBox);
+
+            comboBox.SelectedIndexChanged += AdditionalWaveformChanged;
+
+            var number = new NumericUpDown() { Location = new Point(comboBox.Size.Width + comboBox.Location.X + 5, 0), Minimum = nWaveDuration.Minimum, Maximum = nWaveDuration.Maximum, Increment = nWaveDuration.Increment, Value = nWaveDuration.Value };
+            number.Width = 57;
+            var lastExistingControl = panelWaveforms.Controls.OfType<Panel>().LastOrDefault();
+
+            newPanel.Controls.Add(number);
+
+            number.ValueChanged += AdditionalWaveformChanged;
+
+            var checkbox = new CheckBox() { Location = new Point(number.Size.Width + number.Location.X + 5, 0), Width = 15, Text = "L" };
+            checkbox.CheckedChanged += AdditionalWaveformChanged;
+            newPanel.Controls.Add(checkbox);
+
+            panelWaveforms.Controls.Add(newPanel);
+
+            if(lastExistingControl != null) newPanel.Location = new Point(lastExistingControl.Location.X, lastExistingControl.Location.Y + 24);
+
+            UpdateWaveformSettings();
+        }
+
+        private void DeleteWaveformClicked(object sender, EventArgs e)
+        {
+            var panel = ((Button)sender).Parent;
+            var ind = panelWaveforms.Controls.IndexOf(panel);
+            panel.Parent.Controls.Remove(panel);
+            var panels = panelWaveforms.Controls.OfType<Panel>().ToList();
+
+            for (var ctr = ind; ctr < panels.Count; ctr++)
+            {
+                panels[ctr].Location = new Point(panels[ctr].Location.X, panels[ctr].Location.Y - 24);
+            }
+
+            UpdateWaveformSettings();
+        }
+
+        private void AdditionalWaveformChanged(object sender, EventArgs e)
+        {
+            UpdateWaveformSettings();
+
+        }
+
+        private void UpdateWaveformSettings()
+        {
+            var waveformPanels = panelWaveforms.Controls.OfType<Panel>();
+
+            List<Waveforms.AdditionalWaveform> waveforms = new List<Waveforms.AdditionalWaveform>();
+
+            foreach (var panel in waveformPanels)
+            {
+                waveforms.Add(new Waveforms.AdditionalWaveform()
+                {
+                    WaveType = (WaveTypes)Enum.Parse(typeof(WaveTypes), panel.Controls.OfType<ComboBox>().First().SelectedItem.ToString()),
+                    Duration = (int)panel.Controls.OfType<NumericUpDown>().First().Value,
+                    InverseWaveform = (bool)panel.Controls.OfType<CheckBox>().First().Checked
+                });
+            }
+
+            _settings.AdditionalWaveforms = waveforms;
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            //         lbLabels.Items = lbLabels.Items.OfType
+            _suspendUi = true;
+            var items = lbLabels.Items;
+            for (int i = 0, j = items.Count - 1; i < j; i++, j--)
+            {
+                object tmpi = items[i];
+                object tmpj = items[j];
+                var s1 = lbLabels.SelectedItems.Contains(tmpi);
+                var s2 = lbLabels.SelectedItems.Contains(tmpj);
+                items.RemoveAt(j);
+                items.RemoveAt(i);
+                items.Insert(i, tmpj);
+                items.Insert(j, tmpi);
+                if (s1) lbLabels.SelectedItems.Add(tmpi);
+                if (s2) lbLabels.SelectedItems.Add(tmpj);
+            }
+            _suspendUi = false;
+            UpdateSelectedLabels();
         }
     }
 }

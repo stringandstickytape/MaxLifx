@@ -56,6 +56,8 @@ namespace MaxLifx.Controllers
             ColourSet?.Invoke(new LabelAndColourPayload() { Label = label, Payload = payload }, null);
         }
 
+        private static ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(), _cacheMouseLock = new ReaderWriterLockSlim();
+
         public void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress)
         {
             switch (Payload.PayloadType)
@@ -79,14 +81,35 @@ namespace MaxLifx.Controllers
                     {
                         var led = Mouse.Leds.FirstOrDefault(x => x.Id.ToString() == ipAddress);
 
-                        var color = HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
+                        System.Drawing.Color colour;
 
-                        led.Color = color;
+                        if (((SetColourPayload)Payload).RGBColour != null)
+                            colour = ((SetColourPayload)Payload).RGBColour.Value;
+                        else
+                            colour = HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
 
-                        if ((DateTime.Now - lastCorsairUpdate).TotalMilliseconds > 20)
+                        _cacheMouseLock.EnterReadLock();
+                        try
                         {
-                            Mouse.Update();
-                            lastCorsairUpdate = DateTime.Now;
+                            led.Color = colour;
+                        }
+                        finally
+                        {
+                            _cacheMouseLock.ExitReadLock();
+                        }
+
+                        _cacheMouseLock.EnterWriteLock();
+                        try
+                        {
+                            if ((DateTime.Now - lastCorsairUpdate).TotalMilliseconds > 20)
+                            {
+                                Mouse.Update();
+                                lastCorsairUpdate = DateTime.Now;
+                            }
+                        }
+                        finally
+                        {
+                            _cacheMouseLock.ExitWriteLock();
                         }
                     }
 
@@ -96,14 +119,35 @@ namespace MaxLifx.Controllers
                     {
                         var led = KeyboardLedDictionary[ipAddress];
 
-                        var color = HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
+                        System.Drawing.Color colour;
 
-                        led.Color = color;
+                        if (((SetColourPayload)Payload).RGBColour != null)
+                            colour = ((SetColourPayload)Payload).RGBColour.Value;
+                        else
+                            colour = HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
 
-                        if ((DateTime.Now - lastCorsairKbdUpdate).TotalMilliseconds > 20)
+                        _cacheLock.EnterReadLock();
+                        try
                         {
-                            Keyboard.Update();
-                            lastCorsairKbdUpdate = DateTime.Now;
+                            led.Color = colour;
+                        }
+                        finally
+                        {
+                            _cacheLock.ExitReadLock();
+                        }
+
+                        _cacheLock.EnterWriteLock();
+                        try
+                        {
+                            if ((DateTime.Now - lastCorsairKbdUpdate).TotalMilliseconds > 20)
+                            {
+                                Keyboard.Update();
+                                lastCorsairKbdUpdate = DateTime.Now;
+                            }
+                        }
+                        finally
+                        {
+                            _cacheLock.ExitWriteLock();
                         }
                     }
 
@@ -111,6 +155,8 @@ namespace MaxLifx.Controllers
                 case BulbType.Asus:
                     if (Payload is SetColourPayload)
                     {
+                        //if (!auraSDK.Motherboards.Any()) return;
+
                         if (disappointingAuraColourCache == null)
                         {
                             disappointingAuraColourCache = new AuraSDKDotNet.Color[auraSDK.Motherboards[0].LedCount];
@@ -120,8 +166,10 @@ namespace MaxLifx.Controllers
                             }
                         }
 
-                        var color = HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
-                        var c = new AuraSDKDotNet.Color(color.R,color.G,color.B);
+                        var color = (((SetColourPayload)Payload).RGBColour != null)  ? ((SetColourPayload)Payload).RGBColour : 
+                            HsbToRgb(((SetColourPayload)Payload).Hue, ((SetColourPayload)Payload).Saturation / 65535f, ((SetColourPayload)Payload).Brightness / 65535f);
+
+                        var c = new AuraSDKDotNet.Color(color.Value.R,color.Value.G,color.Value.B);
                         disappointingAuraColourCache[int.Parse(ipAddress)] = c;
 
                         if ((DateTime.Now - lastAuraUpdate).TotalMilliseconds > 200)

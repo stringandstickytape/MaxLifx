@@ -1,4 +1,7 @@
-﻿using System;
+﻿//using MaxLifx.Sound;
+using System.Linq;
+using MaxLifx.Waveforms;
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -33,5 +36,9 @@ namespace MaxLifx.Processors.ProcessorSettings
         public List<int> Levels { get; set; } = new List<int>();
         public List<int> Bins { get; set; } = new List<int>();
 
+        public List<AdditionalWaveform> AdditionalWaveforms = new List<AdditionalWaveform>();
+
+        [XmlIgnore]
+        public int AllWaveformsDuration { get { return WaveDuration + AdditionalWaveforms.Sum(x => x.Duration); } }
     }
 }

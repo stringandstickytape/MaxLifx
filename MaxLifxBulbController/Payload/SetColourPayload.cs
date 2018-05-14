@@ -1,5 +1,6 @@
 ﻿using MaxLifx.Controllers;
 using System;
+using System.Drawing;
 using System.Linq;
 
 namespace MaxLifx.Payload
@@ -15,6 +16,7 @@ namespace MaxLifx.Payload
         public UInt16 Saturation { get; set; }
         public UInt16 Brightness { get; set; }
         public UInt16 Kelvin { get; set; }
+        public Color? RGBColour { get; set; }
         public UInt32 TransitionDuration { get; set; }
         public BulbType PayloadType { get; set; }
 

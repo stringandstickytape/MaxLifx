@@ -44,26 +44,12 @@ namespace MaxLifx.Controls
         public void AddHandle()
         {
             _handles.Add(new SpectrumAnalyserHandle() { Number = _handles.Count() });
+            
         }
 
         public void RemoveHandle()
         {
             _handles.RemoveAt(_handles.Count()-1);
-        }
-
-        public int SetHandleCount(int handles)
-        {
-            var startCount = _handles.Count();
-
-            if(handles > startCount)
-                for (int i = startCount; i < handles; i++)
-                    AddHandle();
-            else
-            if (handles < startCount)
-                for (int i = handles; i < startCount; i++)
-                    RemoveHandle();
-
-            return handles - startCount;
         }
 
         public void SetupHandles(List<int> bins, List<int> levels, List<int> levelRanges)
