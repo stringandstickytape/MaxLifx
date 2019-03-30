@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -699,7 +700,7 @@ namespace MaxLifx
 
         private void advancedDiscoverToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _bulbController.DiscoverBulbs("255.255.255.255");
+            _bulbController.DiscoverBulbs(ConfigurationManager.AppSettings["subnet"]);
 
             if (_bulbController.Bulbs.Count == 0)
             {
