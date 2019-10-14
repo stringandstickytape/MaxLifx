@@ -72,11 +72,11 @@ namespace MaxLifx.UIs
                         {
                             start_index = new byte[1] {0},
                             end_index = new byte[1] {0},
-                            Kelvin = (ushort)Settings.Kelvin,
-                            TransitionDuration = (uint)(Settings.Fade),
+                            Kelvin = 3500,
+                            TransitionDuration = 150,
                             Hue = (int)Color.FromArgb(255, 0, 200, 0).GetHue(),
-                            Saturation = (ushort)Settings.Saturation,
-                            Brightness = (ushort)Settings.Brightness,
+                            Saturation = 65535,
+                            Brightness = 65535,
                             // don't apply yet
                             apply = new byte[1]{0}
                         };
@@ -87,9 +87,9 @@ namespace MaxLifx.UIs
                         {
                             start_index = new byte[1] { 1 },
                             end_index = new byte[1] { (byte) (zones - 1) },
-                            Kelvin = (ushort)Settings.Kelvin,
-                            TransitionDuration = (uint)(Settings.Fade),
-                            Hue = (int)Color.FromArgb(255, 0, 0, 0).GetHue(),
+                            Kelvin = 3500,
+                            TransitionDuration = 150,
+                            Hue = 0,
                             Saturation = 0,
                             Brightness = 0,
                             // apply

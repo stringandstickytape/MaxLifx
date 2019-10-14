@@ -498,15 +498,22 @@ namespace MaxLifx
                             if (areaColour != null)
                             {
                                 Color avgZoneColour = (Color)areaColour;
+                                // Color isn't HSV, so need to convert
+                                double hue = 0;
+                                double saturation = 0;
+                                double brightness = 0;
+                                Utils.ColorToHSV((Color)avgZoneColour, out hue, out saturation, out brightness);
+                                brightness = (brightness * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
+                                saturation = (saturation * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
                                 var zonePayload = new SetColourZonesPayload
                                 {
                                     start_index = new byte[1] { (byte)(i) },
                                     end_index = new byte[1] { (byte)(i) },
                                     Kelvin = (ushort)SettingsCast.Kelvin,
                                     TransitionDuration = (uint)(SettingsCast.Fade),
-                                    Hue = (int)avgZoneColour.GetHue(),
-                                    Saturation = (ushort)(avgZoneColour.GetSaturation() * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation),
-                                    Brightness = (ushort)(avgZoneColour.GetBrightness() * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness),
+                                    Hue = (int)hue,
+                                    Saturation = (ushort)saturation,
+                                    Brightness = (ushort)brightness,
                                     // 0 for delayed apply; 1 for immediate (don't wait for other zones);
                                     apply = new byte[1] { 1 }
                                 };
@@ -555,16 +562,20 @@ namespace MaxLifx
                             avgColour = screenColourSet.bottomright;
                             break;
                     }
-                    var hue = (int)(((Color)(avgColour)).GetHue());
-                    var saturation = (ushort)(((Color)(avgColour)).GetSaturation() * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
-                    var brightness = (ushort)(((Color)(avgColour)).GetBrightness() * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
+                    // Color isn't HSV, so need to convert
+                    double hue = 0;
+                    double saturation = 0;
+                    double brightness = 0;
+                    Utils.ColorToHSV((Color)avgColour, out hue, out saturation, out brightness);
+                    brightness = (brightness * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
+                    saturation = (saturation * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
                     var payload = new SetColourPayload
                     {
                         Kelvin = (ushort)SettingsCast.Kelvin,
                         TransitionDuration = (uint)(SettingsCast.Fade),
-                        Hue = hue,
-                        Saturation = saturation,
-                        Brightness = brightness
+                        Hue = (int)hue,
+                        Saturation = (ushort)saturation,
+                        Brightness = (ushort)brightness
                     };
                     bulbController.SetColour(label, payload, true);
                 }

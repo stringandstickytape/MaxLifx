@@ -46,6 +46,18 @@ namespace MaxLifx
             }
         }
 
+        // Color.GetSaturation() and Color.GetBrightness() return HSL values, not HSV
+        // so need this to convert
+        public static void ColorToHSV(Color color, out double hue, out double saturation, out double value)
+        {
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            hue = color.GetHue();
+            saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            value = max / 255d;
+        }
+
         public static Color HsvToRgb(double h, double S, double V)
         {
             int r, g, b;
