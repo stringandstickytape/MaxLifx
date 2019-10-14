@@ -1,8 +1,8 @@
 # MaxLifx-Z
-https://github.com/gitCommitWiL/MaxLifx-Z
 
 MaxLifx-Z is a fork of the original MaxLifx with one goal in mind: get each of zones in a multizone light (such the Lifx Z), to respond to a certain area of the screen. In other words, an ambilight for your monitor using Lifx Z.
 
+Grab the latest release here: https://github.com/gitCommitWiL/MaxLifx-Z/releases
 
 ## v1.0: What's new?
 
@@ -29,8 +29,8 @@ By default, the area assigned to your multizone light should be set to 'None'. C
 The following demos show off MaxLifx-Z. The effect is a little difficult to capture on video; it's much more noticeable in person.
 Also, there is no wall behind the monitor, thus making the effect in this video a little more difficult to see.
 
-[![Demo MaxLifx-Z](https://i.imgur.com/4U6EPeD.gif)](https://youtu.be/yK4OV-j1sws)
-[![Demo MaxLifx-Z Rocket League](https://imgur.com/Vu4zTvr.gif)](https://youtu.be/1kSUHLQzJ50)
+[![Demo MaxLifx-Z](Media/Demo1.gif)](https://youtu.be/yK4OV-j1sws)
+[![Demo MaxLifx-Z Rocket League](Media/Demo2.gif)](https://youtu.be/1kSUHLQzJ50)
 
 
 ## Accuracy
