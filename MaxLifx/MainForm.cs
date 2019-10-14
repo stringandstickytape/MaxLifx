@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -67,7 +68,8 @@ namespace MaxLifx
             InitializeComponent();
             _suspendUi = true;
             _bulbController.SetupNetwork();
-
+            
+            // try and load settings
             if (File.Exists("Settings.xml"))
             {
                 LoadSettings();
@@ -84,7 +86,7 @@ namespace MaxLifx
             {
                 var dialogResult =
                     MessageBox.Show(
-                        "No bulbs discovered.  Run bulb discovery now?  The app willl hang for about ten seconds."
+                        "No bulbs discovered. Run bulb discovery now? The app willl hang for about ten seconds."
                         , "Discover bulbs?",
                         MessageBoxButtons.YesNo);
 
@@ -224,7 +226,7 @@ namespace MaxLifx
         private void PopulateBulbListbox()
         {
             lbBulbs.Items.Clear();
-            Text = $"MaxLifx : {_bulbController.Bulbs.Count} bulbs (";
+            Text = $"MaxLifx-Z : {_bulbController.Bulbs.Count} bulbs (";
             int ctr = 0;
             foreach (var b in _bulbController.Bulbs.OrderBy(x => x.Label))
             {
@@ -790,7 +792,7 @@ namespace MaxLifx
             try
             {
                 string sURL;
-                sURL = @"https://api.github.com/repos/stringandstickytape/MaxLifx/releases";
+                sURL = @"https://api.github.com/repos/gitCommitWiL/MaxLifx-Z/releases";
                 string response;
 
                 var webRequest = WebRequest.Create(sURL) as HttpWebRequest;
@@ -833,7 +835,7 @@ namespace MaxLifx
 
                     if (dialogResult == DialogResult.Yes)
                     {
-                        Process.Start(@"https://github.com/stringandstickytape/MaxLifx/releases");
+                        Process.Start(@"https://github.com/gitCommitWiL/MaxLifx-Z/releases");
                         Application.Exit();
                     }
                 }
@@ -953,7 +955,7 @@ namespace MaxLifx
 
         private void advancedDiscoverToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _bulbController.DiscoverBulbs("255.255.255.255");
+            _bulbController.DiscoverBulbs(ConfigurationManager.AppSettings["subnet"]);
 
             if (_bulbController.Bulbs.Count == 0)
             {

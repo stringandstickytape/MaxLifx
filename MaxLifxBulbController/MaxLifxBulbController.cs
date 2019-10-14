@@ -29,12 +29,14 @@ namespace MaxLifx.Controllers
 
         public event EventHandler ColourSet;
 
-        public void SetColour(string label, SetColourPayload payload)
+        public void SetColour(string label, SetColourPayload payload, bool updateBox)
         {
             var bulb = Bulbs.Single(x => x.Label == label);
             SendPayloadToMacAddress(payload, bulb.MacAddress, bulb.IpAddress);
-
-            ColourSet?.Invoke(new LabelAndColourPayload() { Label = label, Payload = payload }, null);
+            // this updates the bulb monitor, skip for multizone lights
+            if (updateBox){
+                ColourSet?.Invoke(new LabelAndColourPayload() { Label = label, Payload = payload }, null);
+            }
         }
 
         public void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress)
@@ -98,14 +100,20 @@ namespace MaxLifx.Controllers
 
             // Now, find the labels of all the bubs we detected
             GetLabelPayload labelPayload = new GetLabelPayload();
+            // and also the version of each bulb
+            //GetVersionPayload versionPayload = new GetVersionPayload();
+            // and zones if any
+            GetColourZonesPayload ColourZonesPayload = new GetColourZonesPayload();
             foreach (var bulb in Bulbs)
             {
-                // Send label request to a specific bulb
-                sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), labelPayload));
-
                 a = new UdpClient();
                 a.Connect(_sendingEndPoint);
+                // Send label request to a specific bulb
+                sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), labelPayload));
                 a.Send(sendData, sendData.Length);
+                // Send version request to a specific bulb
+                //sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), versionPayload));
+                //a.Send(sendData, sendData.Length);
                 a.Close();
 
                 //_sendingSocket.SendTo(sendData, _sendingEndPoint);
@@ -121,7 +129,36 @@ namespace MaxLifx.Controllers
                         var label1 = Utils.HexToAscii(Utils.ByteArrayToString(receivebytes).Substring(36 * 2));
                         bulb.Label = label1.Substring(0,label1.IndexOf('\0'));
                     }
+                    /* if (receivebytes[0] == 48)
+                    {
+                        // set the proper version of bulb
+                        bulb.Version = receivebytes[40];
+                    } */
                 }
+            }
+            // seperating the 2 seems more reliable
+            foreach (var bulb in Bulbs)
+            {
+                    a = new UdpClient();
+                    a.Connect(_sendingEndPoint);
+                    // Send zone request
+                    sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), ColourZonesPayload));
+                    a.Send(sendData, sendData.Length);
+                    a.Close();
+
+                    //_sendingSocket.SendTo(sendData, _sendingEndPoint);
+
+                    Thread.Sleep(1000);
+
+                    while (_receivingUdpClient.Available > 0)
+                    {
+                        receivebytes = _receivingUdpClient.Receive(ref remoteIpEndPoint);
+                        if (receivebytes[0] == 46)
+                        {
+                            // set the zones count of bulb
+                            bulb.Zones = receivebytes[36];
+                        }
+                    }
             }
 
             _receivingUdpClient.Close();

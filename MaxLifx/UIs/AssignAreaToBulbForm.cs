@@ -58,6 +58,7 @@ namespace MaxLifx
             LabelsAndLocations.Remove(LabelsAndLocations.Single(x => x.Label == SelectedLabelAndLocation.Label));
             var l = new LabelAndLocationType();
             l.Label = SelectedLabelAndLocation.Label;
+            l.Zones = SelectedLabelAndLocation.Zones;
             l.ScreenLocation =
                 (ScreenLocation) (Enum.Parse(typeof (ScreenLocation), ((ComboBox) sender).SelectedItem.ToString()));
             LabelsAndLocations.Add(l);

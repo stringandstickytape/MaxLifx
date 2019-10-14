@@ -42,7 +42,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(260, 237);
             this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "Move and resize this box so it covers the area you want to use.  Then close the w" +
+            this.textBox1.Text = "Move and resize this box so it covers the area you want to use. Then close the w" +
     "indow.";
             // 
             // Form2
@@ -53,9 +53,9 @@
             this.Controls.Add(this.textBox1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form2";
+            this.Name = "Area Select";
             this.ShowInTaskbar = false;
-            this.Text = "Form2";
+            this.Text = "Area Select";
             this.TopMost = true;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseUp);

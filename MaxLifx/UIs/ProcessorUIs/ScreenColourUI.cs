@@ -8,20 +8,24 @@ using System.Threading;
 using System.Windows.Forms;
 using MaxLifx.Processors.ProcessorSettings;
 using MaxLifx.Threads;
+using MaxLifx.Controllers;
+using MaxLifx.Payload;
 
 namespace MaxLifx.UIs
 {
     public partial class ScreenColourUI : UiFormBase
     {
         private readonly ScreenColourSettings Settings;
+        private MaxLifxBulbController BulbController;
         private Form2 _f;
 
-        public ScreenColourUI(ScreenColourSettings settings)
+        public ScreenColourUI(ScreenColourSettings settings, MaxLifxBulbController bulbController)
         {
             InitializeComponent();
             SuspendUI = true;
 
             Settings = settings;
+            BulbController = bulbController;
             SetPositionTextBoxesFromSettings();
             SetupLabels(lbLabels, Settings.LabelsAndLocations.Select(x => x.Label).ToList(), Settings);
             SuspendUI = false;
@@ -55,7 +59,46 @@ namespace MaxLifx.UIs
             Settings.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
             SetPositionTextBoxesFromSettings();
             SuspendUI = false;
+            if (Settings.MultiColourZones.Any()){
+                // send colour to first zone so can match to an area
+                foreach (var label in Settings.SelectedLabels)
+                {
+                    var zones = Settings.LabelsAndLocations.Single(x => x.Label == label).Zones;
+                    var location = Settings.LabelsAndLocations.Single(x => x.Label == label).ScreenLocation;
+                    if (zones > 1 && location == ScreenLocation.None)
+                    {
+                        // set first zone to green
+                        var payload = new SetColourZonesPayload
+                        {
+                            start_index = new byte[1] {0},
+                            end_index = new byte[1] {0},
+                            Kelvin = (ushort)Settings.Kelvin,
+                            TransitionDuration = (uint)(Settings.Fade),
+                            Hue = (int)Color.FromArgb(255, 0, 200, 0).GetHue(),
+                            Saturation = (ushort)Settings.Saturation,
+                            Brightness = (ushort)Settings.Brightness,
+                            // don't apply yet
+                            apply = new byte[1]{0}
+                        };
+                        BulbController.SetColour(label, payload, false);
 
+                        // set rest of zones to off
+                        payload = new SetColourZonesPayload
+                        {
+                            start_index = new byte[1] { 1 },
+                            end_index = new byte[1] { (byte) (zones - 1) },
+                            Kelvin = (ushort)Settings.Kelvin,
+                            TransitionDuration = (uint)(Settings.Fade),
+                            Hue = (int)Color.FromArgb(255, 0, 0, 0).GetHue(),
+                            Saturation = 0,
+                            Brightness = 0,
+                            // apply
+                            apply = new byte[1] { 1 }
+                        };
+                        BulbController.SetColour(label, payload, false);
+                    }
+                }
+            }
             ProcessorBase.SaveSettings(Settings, null);
         }
 
@@ -69,6 +112,8 @@ namespace MaxLifx.UIs
             brightness.Text = Settings.Brightness.ToString();
             saturation.Text = Settings.Saturation.ToString();
             delay.Text = Settings.Delay.ToString();
+            tbKelvin.Text = Settings.Kelvin.ToString();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -95,7 +140,8 @@ namespace MaxLifx.UIs
                 brightval = 32767,
                 satval = 32767,
                 minbrightval  = 0,
-                minsatval = 0;
+                minsatval = 0,
+                kelvinval = 3500;
 
             int.TryParse(tlx.Text, out tlxval);
             int.TryParse(tly.Text, out tlyval);
@@ -107,18 +153,19 @@ namespace MaxLifx.UIs
             int.TryParse(brightness.Text, out brightval);
             int.TryParse(tbSaturationMin.Text, out minsatval);
             int.TryParse(tbBrightnessMin.Text, out minbrightval);
+            int.TryParse(tbKelvin.Text, out kelvinval);
 
             Settings.TopLeft = new Point(tlxval, tlyval);
             Settings.BottomRight = new Point(brxval, bryval);
-            Settings.Fade = fadeval;
-            Settings.Delay = delayval;
-            Settings.Saturation = satval;
-            Settings.Brightness = brightval;
-            Settings.MinSaturation = minsatval;
-            Settings.MinBrightness = minbrightval;
+            Settings.Fade = Math.Max(fadeval ,0);
+            Settings.Delay = Math.Max(delayval, 0);
+            Settings.Saturation = Math.Min(satval, 65535);
+            Settings.Brightness = Math.Min(brightval, 65535);
+            Settings.MinSaturation = Math.Min(Math.Max(minsatval, 0), Settings.Saturation);
+            Settings.MinBrightness = Math.Min(Math.Max(minbrightval, 0), Settings.Brightness);
+            Settings.Kelvin = Math.Min(Math.Max(kelvinval, 1500),9000);
 
             SuspendUI = false;
-
             ProcessorBase.SaveSettings(Settings, null);
         }
 

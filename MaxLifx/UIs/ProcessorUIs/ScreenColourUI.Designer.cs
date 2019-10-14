@@ -36,6 +36,9 @@
             this.brx = new System.Windows.Forms.TextBox();
             this.bry = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.kelvin = new System.Windows.Forms.Label();
+            this.tbKelvin = new System.Windows.Forms.TextBox();
             this.tbBrightnessMin = new System.Windows.Forms.TextBox();
             this.tbSaturationMin = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -127,6 +130,9 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.kelvin);
+            this.groupBox4.Controls.Add(this.tbKelvin);
             this.groupBox4.Controls.Add(this.tbBrightnessMin);
             this.groupBox4.Controls.Add(this.tbSaturationMin);
             this.groupBox4.Controls.Add(this.label3);
@@ -143,10 +149,37 @@
             this.groupBox4.Controls.Add(this.saturation);
             this.groupBox4.Location = new System.Drawing.Point(17, 415);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(228, 103);
+            this.groupBox4.Size = new System.Drawing.Size(228, 129);
             this.groupBox4.TabIndex = 33;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Parameters";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(116, 106);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(64, 13);
+            this.label7.TabIndex = 105;
+            this.label7.Text = "[1500-9000]";
+            // 
+            // kelvin
+            // 
+            this.kelvin.AutoSize = true;
+            this.kelvin.Location = new System.Drawing.Point(4, 106);
+            this.kelvin.Name = "kelvin";
+            this.kelvin.Size = new System.Drawing.Size(36, 13);
+            this.kelvin.TabIndex = 104;
+            this.kelvin.Text = "Kelvin";
+            // 
+            // tbKelvin
+            // 
+            this.tbKelvin.Location = new System.Drawing.Point(79, 103);
+            this.tbKelvin.Name = "tbKelvin";
+            this.tbKelvin.Size = new System.Drawing.Size(37, 20);
+            this.tbKelvin.TabIndex = 32;
+            this.tbKelvin.Text = "3500";
+            this.tbKelvin.TextChanged += new System.EventHandler(this.pos_TextChanged);
             // 
             // tbBrightnessMin
             // 
@@ -313,6 +346,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Screen Area To Capture";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(215, 23);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "Secondary Monitor";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnMonitor1
+            // 
+            this.btnMonitor1.Location = new System.Drawing.Point(6, 19);
+            this.btnMonitor1.Name = "btnMonitor1";
+            this.btnMonitor1.Size = new System.Drawing.Size(216, 23);
+            this.btnMonitor1.TabIndex = 36;
+            this.btnMonitor1.Text = "Primary Monitor";
+            this.btnMonitor1.UseVisualStyleBackColor = true;
+            this.btnMonitor1.Click += new System.EventHandler(this.btnMonitor1_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbLabels);
@@ -327,7 +380,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(255, 528);
+            this.ClientSize = new System.Drawing.Size(255, 563);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
@@ -339,26 +392,6 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
-            //
-            // button1
-            //
-            this.button1.Location = new System.Drawing.Point(7, 48);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(215, 23);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "Secondary Monitor";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            //
-            // btnMonitor1
-            //
-            this.btnMonitor1.Location = new System.Drawing.Point(6, 19);
-            this.btnMonitor1.Name = "btnMonitor1";
-            this.btnMonitor1.Size = new System.Drawing.Size(216, 23);
-            this.btnMonitor1.TabIndex = 36;
-            this.btnMonitor1.Text = "Primary Monitor";
-            this.btnMonitor1.UseVisualStyleBackColor = true;
-            this.btnMonitor1.Click += new System.EventHandler(this.btnMonitor1_Click);
 
         }
 
@@ -391,6 +424,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnMonitor1;
         private System.Windows.Forms.Button button1;
-
+        private System.Windows.Forms.TextBox tbKelvin;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label kelvin;
     }
 }
