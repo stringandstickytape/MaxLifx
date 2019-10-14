@@ -90,7 +90,7 @@ namespace MaxLifx.UIs
                 tlyval = 0,
                 brxval = 0,
                 bryval = 0,
-                fadeval = 400,
+                fadeval = 150,
                 delayval = 50,
                 brightval = 32767,
                 satval = 32767,
@@ -133,6 +133,49 @@ namespace MaxLifx.UIs
 
                 Settings.SelectedLabels = selectedLabels;
             }
+        }
+            private void btnMonitor1_Click(object sender, EventArgs e)
+        {
+        this.GetSizeFromMonitor(((IEnumerable<Screen>) Screen.AllScreens).Single<Screen>((Func<Screen, bool>) (x => x.Primary)));
+        }
+
+        private void GetSizeFromMonitor(Screen monitor)
+        {
+        this.SuspendUI = true;
+        ScreenColourSettings settings1 = this.Settings;
+        Rectangle bounds1 = monitor.Bounds;
+        int x1 = bounds1.X;
+        bounds1 = monitor.Bounds;
+        int y1 = bounds1.Y;
+        Point point1 = new Point(x1, y1);
+        settings1.TopLeft = point1;
+        ScreenColourSettings settings2 = this.Settings;
+        Rectangle bounds2 = monitor.Bounds;
+        int x2 = bounds2.X;
+        bounds2 = monitor.Bounds;
+        int width = bounds2.Width;
+        int x3 = x2 + width;
+        bounds2 = monitor.Bounds;
+        int y2 = bounds2.Y;
+        bounds2 = monitor.Bounds;
+        int height = bounds2.Height;
+        int y3 = y2 + height;
+        Point point2 = new Point(x3, y3);
+        settings2.BottomRight = point2;
+        this.SetPositionTextBoxesFromSettings();
+        this.SuspendUI = false;
+        ProcessorBase.SaveSettings<ScreenColourSettings>(this.Settings, (string) null);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+        Screen monitor = ((IEnumerable<Screen>) Screen.AllScreens).Where<Screen>((Func<Screen, bool>) (x => !x.Primary)).FirstOrDefault<Screen>();
+        if (monitor == null)
+        {
+            int num = (int) MessageBox.Show("No secondary monitor found...");
+        }
+        else
+            this.GetSizeFromMonitor(monitor);
         }
     }
 

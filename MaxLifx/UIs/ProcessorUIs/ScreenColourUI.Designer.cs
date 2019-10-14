@@ -53,6 +53,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnMonitor1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -61,9 +63,9 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(23, 27);
+            this.button5.Location = new System.Drawing.Point(7, 77);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(184, 23);
+            this.button5.Size = new System.Drawing.Size(215, 23);
             this.button5.TabIndex = 23;
             this.button5.Text = "Set Screen Area";
             this.button5.UseVisualStyleBackColor = true;
@@ -72,7 +74,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 65);
+            this.label1.Location = new System.Drawing.Point(36, 111);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 21;
@@ -81,7 +83,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 86);
+            this.label2.Location = new System.Drawing.Point(36, 132);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 22;
@@ -89,7 +91,7 @@
             // 
             // tlx
             // 
-            this.tlx.Location = new System.Drawing.Point(105, 62);
+            this.tlx.Location = new System.Drawing.Point(105, 108);
             this.tlx.Name = "tlx";
             this.tlx.Size = new System.Drawing.Size(37, 20);
             this.tlx.TabIndex = 17;
@@ -98,7 +100,7 @@
             // 
             // tly
             // 
-            this.tly.Location = new System.Drawing.Point(144, 62);
+            this.tly.Location = new System.Drawing.Point(144, 108);
             this.tly.Name = "tly";
             this.tly.Size = new System.Drawing.Size(37, 20);
             this.tly.TabIndex = 18;
@@ -107,7 +109,7 @@
             // 
             // brx
             // 
-            this.brx.Location = new System.Drawing.Point(105, 83);
+            this.brx.Location = new System.Drawing.Point(105, 129);
             this.brx.Name = "brx";
             this.brx.Size = new System.Drawing.Size(37, 20);
             this.brx.TabIndex = 19;
@@ -116,7 +118,7 @@
             // 
             // bry
             // 
-            this.bry.Location = new System.Drawing.Point(144, 83);
+            this.bry.Location = new System.Drawing.Point(144, 129);
             this.bry.Name = "bry";
             this.bry.Size = new System.Drawing.Size(37, 20);
             this.bry.TabIndex = 20;
@@ -139,7 +141,7 @@
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.saturation);
-            this.groupBox4.Location = new System.Drawing.Point(17, 393);
+            this.groupBox4.Location = new System.Drawing.Point(17, 415);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(228, 103);
             this.groupBox4.TabIndex = 33;
@@ -274,9 +276,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 118);
+            this.button2.Location = new System.Drawing.Point(6, 158);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(216, 47);
+            this.button2.Size = new System.Drawing.Size(216, 33);
             this.button2.TabIndex = 35;
             this.button2.Text = "Assign Parts of Capture Area To Bulbs";
             this.button2.UseVisualStyleBackColor = true;
@@ -294,6 +296,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnMonitor1);
             this.groupBox1.Controls.Add(this.button5);
             this.groupBox1.Controls.Add(this.bry);
             this.groupBox1.Controls.Add(this.brx);
@@ -304,7 +308,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(17, 206);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(228, 181);
+            this.groupBox1.Size = new System.Drawing.Size(228, 203);
             this.groupBox1.TabIndex = 102;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Screen Area To Capture";
@@ -323,7 +327,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(255, 509);
+            this.ClientSize = new System.Drawing.Size(255, 528);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
@@ -335,6 +339,26 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            //
+            // button1
+            //
+            this.button1.Location = new System.Drawing.Point(7, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(215, 23);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "Secondary Monitor";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            //
+            // btnMonitor1
+            //
+            this.btnMonitor1.Location = new System.Drawing.Point(6, 19);
+            this.btnMonitor1.Name = "btnMonitor1";
+            this.btnMonitor1.Size = new System.Drawing.Size(216, 23);
+            this.btnMonitor1.TabIndex = 36;
+            this.btnMonitor1.Text = "Primary Monitor";
+            this.btnMonitor1.UseVisualStyleBackColor = true;
+            this.btnMonitor1.Click += new System.EventHandler(this.btnMonitor1_Click);
 
         }
 
@@ -365,5 +389,8 @@
         private System.Windows.Forms.TextBox tbBrightnessMin;
         private System.Windows.Forms.TextBox tbSaturationMin;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnMonitor1;
+        private System.Windows.Forms.Button button1;
+
     }
 }

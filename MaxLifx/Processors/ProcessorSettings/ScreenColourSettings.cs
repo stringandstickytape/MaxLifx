@@ -9,7 +9,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public int Brightness = 65535;
         public int Delay = 50;
         // Lighting parameters
-        public int Fade = 400;
+        public int Fade = 150;
         public List<LabelAndLocationType> LabelsAndLocations = new List<LabelAndLocationType>();
         public int Saturation = 65535;
         public int MinSaturation = 0;
