@@ -4,10 +4,11 @@ MaxLifx-Z is a fork of the original MaxLifx with one goal in mind: get each of z
 
 Grab the latest release here: https://github.com/gitCommitWiL/MaxLifx-Z/releases
 
-## v1.0: What's new?
+## v1.1: What's new?
 
 - Added multizone support
 - Added Kelvin parameter
+- Changed colours from HSL to HSV (in general, colours will be brighter)
 
 
 ## Ambilight Setup
@@ -62,8 +63,8 @@ By default, the delay is set to 50ms. I've found that decreasing the delay by to
 
 ## Remarks
 
-- If MaxLifx wasn't working previously for you, then v1.0 of MaxLifx-Z will likely not work too; you can still give it a try but none of the network discovery code was really changed.
-- If MaxLifx was working for you but you don't have any multizone lights, then you should probably stick with that since it still works. If it ain't broke, dont fix it, eh?
+- If MaxLifx wasn't working previously for you, then v1.1 of MaxLifx-Z will likely not work too; you can still give it a try but none of the network discovery code was really changed.
+- If you don't have any multizone lights you may still want to check out MaxLifx-Z; there are a few quality of life changes you may find useful.
 - Your saved threads from MaxLifx should carry over, but it's not guaranteed. Still worth a shot though.
 - Although I don't have one to test with, Lifx Beam lights are mutlizone and technically should work... but I can't guarantee the accuracy. I'm not sure if the corners affect the calculations of the zones in any way so an accurate setup might be more difficult. Might look cool if you use a TV as a monitor though.
 - However, Lifx Tiles will not work since they do not use the Lifx multizone api.
