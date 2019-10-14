@@ -30,6 +30,8 @@ The following demos show off MaxLifx-Z. The effect is a little difficult to capt
 Also, there is no wall behind the monitor, thus making the effect in this video a little more difficult to see.
 
 [![Demo MaxLifx-Z](Media/Demo1.gif)](https://youtu.be/yK4OV-j1sws)
+
+
 [![Demo MaxLifx-Z Rocket League](Media/Demo2.gif)](https://youtu.be/1kSUHLQzJ50)
 
 
