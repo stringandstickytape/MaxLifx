@@ -21,16 +21,16 @@ namespace MaxLifx.Payload
             // Multizone packet example
             // RECALL: uses little endian(bytes reversed)
             //
-            //format & size:		 Frame(8B *)           Frame Address(16B *)	       	 Protocol Header(12B *)       Payload(15B in this example)
+            //format & size:         Frame(8B *)           Frame Address(16B *)	       	 Protocol Header(12B *)       Payload(15B in this example)
             //                  |----------------| |---------------------------------| |------------------------| |-----------------------------------|
             //                  |                | |                                 | |                        | |                                   |
             //decimal value:    51            1                          0*      False    True      0*        0*     10     65535     3500            1
             //field:            size       source      target S/N    reserved   (res_r + ack_r + reserved)  rsvd    e_i     sat.       kel.        apply
             //                  |~~|      |~~~~~~| |~~~~~~~~~~~~~~| |~~~~~~~~~~| ||                          |~~|    ||      |~~|      |~~|           |
-            //bytes:			3300 0014 01000000 d073d5XXXXXXXXXX 000000000000 02 01 0000000000000000 f501 0000 0a 0a 1c47 ffff ff7f ac0d e80300000 1
+            //bytes:            3300 0014 01000000 d073d5XXXXXXXXXX 000000000000 02 01 0000000000000000 f501 0000 0a 0a 1c47 ffff ff7f ac0d e80300000 1
             //                       |~~|                                           || |~~~~~~~~~~~~~~| |~~|      ||    |~~|      |~~|      |~~~~~~~|
-            //field:	   		(protocol + addressable + tagged + origin)          seq.   reserved    pkg type   s_i   hue        bri.     duration
-            //decimal value:	    1024*     True*        False      0*             1         0*         501      10    10        32767       1000
+            //field:            (protocol + addressable + tagged + origin)          seq.   reserved    pkg type   s_i   hue        bri.     duration
+            //decimal value:        1024*     True*        False      0*             1         0*         501      10    10        32767       1000
             //
             //Notes:
             //            - * indicates mandatory value/ size
