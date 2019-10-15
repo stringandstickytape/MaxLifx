@@ -161,7 +161,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(64, 13);
             this.label7.TabIndex = 105;
-            this.label7.Text = "[1500-9000]";
+            this.label7.Text = "[2500-9000]";
             // 
             // kelvin
             // 

@@ -163,7 +163,7 @@ namespace MaxLifx.UIs
             Settings.Brightness = Math.Min(brightval, 65535);
             Settings.MinSaturation = Math.Min(Math.Max(minsatval, 0), Settings.Saturation);
             Settings.MinBrightness = Math.Min(Math.Max(minbrightval, 0), Settings.Brightness);
-            Settings.Kelvin = Math.Min(Math.Max(kelvinval, 1500),9000);
+            Settings.Kelvin = Math.Min(Math.Max(kelvinval, 2500),9000);
 
             SuspendUI = false;
             ProcessorBase.SaveSettings(Settings, null);
