@@ -18,7 +18,7 @@ After starting a screen colour thread, select your multizone bulb from the list.
 Click on 'Set Screen Area'. Your selected multizone should respond by turning off all zones, except the first starting zone which should now be green. We will be using this zone to calculate the location for the rest of the zones.
 
 Move and resize the window to approximately where you want the green zone to react to on screen. Close the window when finished.
-	- You can also fine tune this area by changing the Top-Left and Bottom-Right values in the ScreenColour window.
+- You can also fine tune this area by changing the Top-Left and Bottom-Right values in the ScreenColour window.
 
 Click on 'Assign Parts of Capture Area To Bulbs' and select your multizone light from the list.
 
@@ -35,6 +35,9 @@ Also, there is no wall behind the monitor, thus making the effect in this video 
 
 [![Demo MaxLifx-Z Rocket League](Media/Demo2.gif)](https://youtu.be/1kSUHLQzJ50)
 
+
+Credits to /u/thmstec
+[![Demo MaxLifx-Z thmstec](Media/DemoThmstec.gif)](https://imgur.com/a/wHRuaDM)
 
 ## Accuracy
 
