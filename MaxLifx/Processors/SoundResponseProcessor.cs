@@ -228,10 +228,10 @@ namespace MaxLifx
                                     TransitionDuration = (uint) SettingsCast.TransitionDuration
                                 };
 
-                                bulbController.SetColour(label, _payload);
+                                bulbController.SetColour(label, _payload, true);
                                if (SettingsCast.Delay > 200)
                                {
-                                   bulbController.SetColour(label, _payload);
+                                   bulbController.SetColour(label, _payload, true);
                                    Thread.Sleep(1);
                                
                                }
