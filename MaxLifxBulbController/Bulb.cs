@@ -19,7 +19,6 @@ namespace MaxLifx.Controllers
         }
 
         public ScreenLocation Location = ScreenLocation.All;
-        public BulbType BulbType = BulbType.Lifx;
     }
 
     public enum ScreenLocation
@@ -33,13 +32,5 @@ namespace MaxLifx.Controllers
         BottomRight,
         Bottom,
         All
-    }
-
-    public enum BulbType
-    {
-        Lifx,
-        CorsairMouse,
-        CorsairKeyboard,
-        Asus
     }
 }

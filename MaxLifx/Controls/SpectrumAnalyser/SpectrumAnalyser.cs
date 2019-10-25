@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using MaxLifx.Processors.ProcessorSettings;
 
 namespace MaxLifx.Controls
 {
@@ -44,12 +43,26 @@ namespace MaxLifx.Controls
         public void AddHandle()
         {
             _handles.Add(new SpectrumAnalyserHandle() { Number = _handles.Count() });
-            
         }
 
         public void RemoveHandle()
         {
             _handles.RemoveAt(_handles.Count()-1);
+        }
+
+        public int SetHandleCount(int handles)
+        {
+            var startCount = _handles.Count();
+
+            if(handles > startCount)
+                for (int i = startCount; i < handles; i++)
+                    AddHandle();
+            else
+            if (handles < startCount)
+                for (int i = handles; i < startCount; i++)
+                    RemoveHandle();
+
+            return handles - startCount;
         }
 
         public void SetupHandles(List<int> bins, List<int> levels, List<int> levelRanges)
@@ -80,38 +93,6 @@ namespace MaxLifx.Controls
             levelRanges = _handles.Select(x => (int)x.LevelRange).ToList();
         }
 
-        public List<int> IncrementLevels()
-        {
-            var retVal = new List<int>();
-
-            foreach (var handle in _handles)
-            {
-                handle.Level += 5;
-                if (handle.Level > 255) handle.Level = 255;
-                if (handle.Level + handle.LevelRange > 255) handle.Level = (byte)(255 - handle.Level);
-
-                retVal.Add(handle.Level);
-            }
-            return retVal;
-        }
-
-
-        public List<int> DecrementLevels()
-        {
-            var retVal = new List<int>();
-
-            foreach (var handle in _handles)
-            {
-                handle.Level -= 5;
-                if (handle.Level < 0) handle.Level = 0;
-                if (handle.Level + handle.LevelRange < 0) handle.Level = (byte)(handle.Level);
-
-                retVal.Add(handle.Level);
-            }
-            return retVal;
-        }
-
-
         public List<int> ResetRanges()
         {
             var retVal = new List<int>();
@@ -125,30 +106,6 @@ namespace MaxLifx.Controls
                 retVal.Add(handle.LevelRange);
             }
             return retVal;
-        }
-
-        public void RedistributeBins(SoundResponseSettings settings)
-        {
-            if (_handles.Count == 0) return;
-
-            double spread = 400 / _handles.Count;
-
-            settings.Bins = new List<int>();
-            settings.Levels = new List<int>();
-            settings.LevelRanges = new List<int>();
-
-            var ctr = 0;
-            foreach (var handle in _handles)
-            {
-                handle.Bin = 10 + (int)(ctr * spread);
-                handle.Level = (byte)(50 - 50 * Math.Pow(1.008, 512 - handle.Bin) / Math.Pow(1.008, 512) + 50);
-                handle.LevelRange = 55;
-                settings.Bins.Add(handle.Bin);
-                settings.Levels.Add(handle.Level);
-                settings.LevelRanges.Add(handle.LevelRange);
-                ctr++;
-            }
-            return;
         }
 
     }

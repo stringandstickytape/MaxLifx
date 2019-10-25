@@ -34,8 +34,6 @@ namespace MaxLifx.UIs
             spectrumAnalyser1.SelectionChanged += SpectrumAnalyser1_SelectionChanged;
             r = R;
 
-            panelWaveforms.VerticalScroll.Visible = true;
-
             pThemes.Controls.Clear();
             var type = typeof(IColourTheme);
             var types = AppDomain.CurrentDomain.GetAssemblies()
@@ -110,9 +108,11 @@ namespace MaxLifx.UIs
 
         private void SetupUI()
         {
-            var cb = cbWaveType;
-
-            SetAvailableWaveTypes(cb);
+            cbWaveType.Items.Clear();
+            foreach (var s in Enum.GetNames(typeof (WaveTypes)))
+            {
+                cbWaveType.Items.Add(s);
+            }
 
             foreach (var item in cbWaveType.Items)
             {
@@ -127,6 +127,13 @@ namespace MaxLifx.UIs
             nTransition.Value = _settings.TransitionDuration;
             nWaveDuration.Value = _settings.WaveDuration;
 
+            //cbConfigs.Items.Clear();
+            //foreach (var x in Directory.GetFiles(".", "*." + _settings.FileExtension))
+            //{
+            //    var fileName = x.Replace(".\\", "").Replace("." + _settings.FileExtension, "").Replace(".xml", "");
+            //    cbConfigs.Items.Add(fileName);
+            //}
+
             UpdateHueSelectorHandleCount();
             hueSelector1.SetHuesAndSaturations(_settings.Hues, _settings.HueRanges, _settings.Saturations,
                 _settings.SaturationRanges);
@@ -140,14 +147,14 @@ namespace MaxLifx.UIs
             cbHueInvert.Checked = _settings.HueInvert;
             cbBrightnessInvert.Checked = _settings.BrightnessInvert;
             cbSaturationInvert.Checked = _settings.SaturationInvert;
-
+            
             cbLinkRanges.Checked = _settings.LinkRanges;
 
 
 
             List<int> b, l, lr;
 
-            spectrumAnalyser1.GetHandles(out b, out l, out lr);
+            spectrumAnalyser1.GetHandles(out b,out l,out lr);
 
             _settings.Bins = b;
             _settings.Levels = l;
@@ -157,21 +164,10 @@ namespace MaxLifx.UIs
             tbOffTimes.Text = _settings.OffTimes;
         }
 
-        private static void SetAvailableWaveTypes(ComboBox cb, bool EaseOnly = false)
-        {
-            cb.Items.Clear();
-            foreach (var s in Enum.GetNames(typeof(WaveTypes)))
-            {
-                if(!EaseOnly || s.StartsWith("Ease"))
-                    cb.Items.Add(s);
-            }
-        }
-
         private void lbLabels_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(!_suspendUi && !cbReorder.Checked)
                 UpdateSelectedLabels();
-
 
         }
 
@@ -197,11 +193,6 @@ namespace MaxLifx.UIs
             //int count;
             if (_settings.PerBulb)
             {
-                var labels = new List<string>();
-                foreach (var i in lbLabels.SelectedItems)
-                    labels.Add(i.ToString());
-
-                hueSelector1.SetLabels(labels);
                 hueSelector1.HandleCount = _settings.SelectedLabels.Count();
                 brightnessSelector1.HandleCount = _settings.SelectedLabels.Count();
             }
@@ -210,14 +201,11 @@ namespace MaxLifx.UIs
             if (count > 0)
                 for (int i = 0; i < count; i++)
                 {
-                    var bin = 50 * Math.Pow(1.8f, _settings.Bins.Count / 3.8f) - 50;// Math.Pow(2, 1/_settings.Bins.Count) * 10;
-                        
+                    var bin = (_settings.Bins.Count - i)*(80) + 16;
                     if (bin > 512) bin = 512;
-                    _settings.Bins.Add((int)bin);
-
-                    var lvlRange = 50;
-                    _settings.Levels.Add((int)(lvlRange - lvlRange * Math.Pow(1.008,512-bin) / Math.Pow(1.008,512) + 50));
-                    _settings.LevelRanges.Add(55);
+                    _settings.Bins.Add(bin);
+                    _settings.Levels.Add(110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
+                    _settings.LevelRanges.Add(45);
                 }
             else
             if (count < 0)
@@ -229,14 +217,11 @@ namespace MaxLifx.UIs
                 }
 
             spectrumAnalyser1.SetupHandles(_settings.Bins, _settings.Levels, _settings.LevelRanges);
-            if (count != 0) spectrumAnalyser1.RedistributeBins(_settings);
         }
 
         private void cbWaveType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settings.WaveType = (WaveTypes) Enum.Parse(typeof (WaveTypes), cbWaveType.SelectedItem.ToString());
-            if ((int)_settings.WaveType < 5) panelWaveforms.Hide(); else panelWaveforms.Show();
-            
         }
 
         private void nDelay_ValueChanged(object sender, EventArgs e)
@@ -407,11 +392,9 @@ namespace MaxLifx.UIs
                 }
                 lbLabels.ClearSelected();
                 lbLabels.SelectionMode = SelectionMode.One;
-                lbLabels.PreviewKeyDown += LbLabels_PreviewKeyDown;
             }
             else
             {
-                lbLabels.PreviewKeyDown -= LbLabels_PreviewKeyDown;
                 bUp.Enabled = false;
                 bDown.Enabled = false;
                 List<object> newSelectedLabels = new List<object>();
@@ -429,24 +412,6 @@ namespace MaxLifx.UIs
 
             }
         }
-
-        private void LbLabels_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            lbLabels.SelectedItems.Clear();
-            var itemName = $"Corsair Keyboard {e.KeyCode.ToString().ToUpper()}";
-            var itemIndex = lbLabels.Items.IndexOf(itemName);
-            if (itemIndex > -1)
-            {
-                var item = lbLabels.Items[itemIndex];
-                var selected = false;
-                if (lbLabels.SelectedItems.Contains(item)) selected = true;
-                lbLabels.Items.Remove(item);
-                lbLabels.Items.Insert(lbLabels.Items.Count, item);
-                if (selected) lbLabels.SelectedItems.Add(item);
-                lbLabels.TopIndex = lbLabels.Items.Count;
-            }
-        }
-
 
         private void cbUpdateAudioResponse_CheckedChanged(object sender, EventArgs e)
         {
@@ -479,318 +444,6 @@ namespace MaxLifx.UIs
         {
             brightnessSelector1.Reset();
             UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
-            {
-                lbLabels.SetSelected(ind, true);
-            }
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
-            {
-                lbLabels.SetSelected(ind, false);
-            }
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            spectrumAnalyser1.RedistributeBins(_settings);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
-            {
-                var label = lbLabels.Items[ind].ToString();
-                if (label.StartsWith("Corsair Keyboard "))
-                    lbLabels.SetSelected(ind, true);
-            }
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            SelectFromString("A,S,D,F,G,H,J,K,L");
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            SelectFromString("Q,W,E,R,T,Y,U,I,O,P");
-        }
-
-        private void SelectFromString(string matchString)
-        {
-            SelectFromStringList(matchString.Split(new[] { ',' }).ToList());
-        }
-
-        private void SelectFromStringList(List<string> matchStrings)
-        {
-            for (var ind = 0; ind < lbLabels.Items.Count; ind++)
-            {
-                var label = lbLabels.Items[ind].ToString();
-                if (label.StartsWith("Corsair Keyboard ") && matchStrings.Contains(label.Substring(17)))
-                    lbLabels.SetSelected(ind, true);
-            }
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            SelectFromString("Z,X,C,V,B,N,M");
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            SelectFromString("D1,D2,D3,D4,D5,D6,D7,D8,D9,D0");
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            ReorderByString("Q,W,E,R,T,Y,U,I,O,P");
-        }
-
-        private void ReorderByString(string keyListString)
-        {
-            var firstKeyInd = -1;
-
-            var orderedKeyList = keyListString.Split(new[] { ',' }).ToList();
-
-            foreach (var key in orderedKeyList)
-                for (var ind = 0; ind < lbLabels.Items.Count; ind++)
-                {
-                    var label = lbLabels.Items[ind].ToString();
-
-                    if (label == ($"Corsair Keyboard {key}"))
-                    {
-                        var keyPosition = orderedKeyList.IndexOf(label.Substring(17));
-                        if (keyPosition == -1) continue;
-
-                        var item = lbLabels.Items[ind];
-                        var selected = lbLabels.SelectedItems.Contains(item);
-                        lbLabels.Items.Remove(item);
-                        lbLabels.Items.Insert(lbLabels.Items.Count, item);
-                        if (selected) lbLabels.SelectedItems.Add(item);
-                        break;
-                    }
-                }
-
-            lbLabels.TopIndex = lbLabels.Items.Count-orderedKeyList.Count;
-        }
-
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            ReorderByString("A,S,D,F,G,H,J,K,L");
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            ReorderByString("Z,X,C,V,B,N,M");
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-            ReorderByString("D1,D2,D3,D4,D5,D6,D7,D8,D9,D0");
-        }
-
-        private void button17_Click(object sender, EventArgs e)
-        {
-            ReorderByString("D1,D2,Q,D3,W,A,D4,E,S,Z,D5,R,D,X,D6,T,F,C,D7,Y,G,V,D8,U,H,B,D9,I,J,N,D0,O,K,M,P,L");
-        }
-
-        private void button18_Click(object sender, EventArgs e)
-        {
-            SelectFromString("D1,D2,Q,D3,W,A,D4,E,S,Z,D5,R,D,X,D6,T,F,C,D7,Y,G,V,D8,U,H,B,D9,I,J,N,D0,O,K,M,P,L");
-        }
-
-        private void button20_Click(object sender, EventArgs e)
-        {
-            ReorderByString("Z,A,X,S,Q,D1,C,D,W,D2,V,F,E,D3,B,G,R,D4,N,H,T,D5,M,J,Y,D6,K,U,D7,L,I,D8,O,D9,P,D0");
-        }
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(Keys vKey);
-
-        private void textBox1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            
-        }
-
-        private Dictionary<string, string> KeyCodeDictionary = new Dictionary<string, string>()
-        {
-            { "LWin", "LeftGui" },
-            { "RWin", "RightGui" },
-            {"Oem8","GraveAccentAndTilde"},
-            {"Apps","Application" },
-            {"Back","Backspace" },
-            {"Oemplus","EqualsAndPlus" },
-            { "OemMinus","MinusAndUnderscore" },
-            {"Up","UpArrow" },
-            {"Down","DownArrow" },
-            {"Left","LeftArrow" },
-            {"Right","RightArrow" },
-            {"Next","PageDown" },
-            {"Scroll","ScrollLock" },
-            {"Pause","PauseBreak" },
-            {"Divide","KeypadSlash" },
-            {"Add","KeypadPlus" },
-            {"Subtract","KeypadMinus" },
-            {"Multiply","KeypadAsterisk" },
-            {"Decimal","KeypadPeriodAndDelete" },
-            {"OemOpenBrackets","BracketLeft"},
-{"Oem6","BracketRight"},
-{"OemPeriod","PeriodAndBiggerThan"},
-{"Oemcomma","CommaAndLessThan"},
-{"Oemtilde","ApostropheAndDoubleQuote"},
-{"OemQuestion","SlashAndQuestionMark"},
-{"Oem1","SemicolonAndColon"},
-{"Capital","CapsLock"},
-{"Oem7","NonUsTilde"},
-{"Oem5","NonUsBackslash"},
-
-        };
-
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            var corsairCode = e.KeyCode.ToString();
-            
-
-            if (KeyCodeDictionary.ContainsKey(corsairCode)) corsairCode = KeyCodeDictionary[corsairCode];
-
-            if (corsairCode == "ShiftKey") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LShiftKey)) ? "LeftShift" : "RightShift";
-            else if (corsairCode == "ControlKey") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LControlKey)) ? "LeftCtrl" : "RightCtrl";
-            else if (corsairCode == "Menu") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.LMenu)) ? "LeftAlt" : "RightAlt";
-            else if (corsairCode == "Home") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.Home)) ? "Home" : "KeypadHome";
-            else if (corsairCode == "Return") corsairCode = Convert.ToBoolean(GetAsyncKeyState(Keys.Return)) ? "Enter" : "KeypadEnter";
-            else if (corsairCode.StartsWith("Volume")) corsairCode = corsairCode.Substring(6);
-            System.Diagnostics.Debug.WriteLine(corsairCode);
-            if (corsairCode.StartsWith("NumP"))
-                corsairCode = $"Keyp{corsairCode.Substring(4)}";
-            var itemName = $"Corsair Keyboard {corsairCode}";
-            var itemIndex = lbLabels.Items.IndexOf(itemName);
-            if (itemIndex > -1)
-            {
-                var item = lbLabels.Items[itemIndex];
-                //var selected = false;
-                //if (lbLabels.SelectedItems.Contains(item)) selected = true;
-                lbLabels.Items.Remove(item);
-                lbLabels.Items.Insert(lbLabels.Items.Count, item);
-                lbLabels.SelectedItems.Add(item);
-                lbLabels.TopIndex = lbLabels.Items.Count - 1;
-
-            }
-            e.Handled = true;
-            textBox1.Text = "";
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            _settings.Levels = spectrumAnalyser1.DecrementLevels();
-        }
-
-        private void button21_Click(object sender, EventArgs e)
-        {
-            _settings.Levels = spectrumAnalyser1.IncrementLevels();
-        }
-
-        private void button22_Click(object sender, EventArgs e)
-        {
-            var newPanel = new Panel() { Width = 220 };
-            newPanel.Height = 22;
-
-            var button = new Button() { Text = "X", Width = 15 };
-            button.Click += DeleteWaveformClicked;
-            newPanel.Controls.Add(button);
-            var comboBox = new ComboBox() { Location = new Point(15, 0) };
-            SetAvailableWaveTypes(comboBox, true);
-            comboBox.SelectedItem = cbWaveType.SelectedItem;
-            newPanel.Controls.Add(comboBox);
-
-            comboBox.SelectedIndexChanged += AdditionalWaveformChanged;
-
-            var number = new NumericUpDown() { Location = new Point(comboBox.Size.Width + comboBox.Location.X + 5, 0), Minimum = nWaveDuration.Minimum, Maximum = nWaveDuration.Maximum, Increment = nWaveDuration.Increment, Value = nWaveDuration.Value };
-            number.Width = 57;
-            var lastExistingControl = panelWaveforms.Controls.OfType<Panel>().LastOrDefault();
-
-            newPanel.Controls.Add(number);
-
-            number.ValueChanged += AdditionalWaveformChanged;
-
-            var checkbox = new CheckBox() { Location = new Point(number.Size.Width + number.Location.X + 5, 0), Width = 15, Text = "L" };
-            checkbox.CheckedChanged += AdditionalWaveformChanged;
-            newPanel.Controls.Add(checkbox);
-
-            panelWaveforms.Controls.Add(newPanel);
-
-            if(lastExistingControl != null) newPanel.Location = new Point(lastExistingControl.Location.X, lastExistingControl.Location.Y + 24);
-
-            UpdateWaveformSettings();
-        }
-
-        private void DeleteWaveformClicked(object sender, EventArgs e)
-        {
-            var panel = ((Button)sender).Parent;
-            var ind = panelWaveforms.Controls.IndexOf(panel);
-            panel.Parent.Controls.Remove(panel);
-            var panels = panelWaveforms.Controls.OfType<Panel>().ToList();
-
-            for (var ctr = ind; ctr < panels.Count; ctr++)
-            {
-                panels[ctr].Location = new Point(panels[ctr].Location.X, panels[ctr].Location.Y - 24);
-            }
-
-            UpdateWaveformSettings();
-        }
-
-        private void AdditionalWaveformChanged(object sender, EventArgs e)
-        {
-            UpdateWaveformSettings();
-
-        }
-
-        private void UpdateWaveformSettings()
-        {
-            var waveformPanels = panelWaveforms.Controls.OfType<Panel>();
-
-            List<Waveforms.AdditionalWaveform> waveforms = new List<Waveforms.AdditionalWaveform>();
-
-            foreach (var panel in waveformPanels)
-            {
-                waveforms.Add(new Waveforms.AdditionalWaveform()
-                {
-                    WaveType = (WaveTypes)Enum.Parse(typeof(WaveTypes), panel.Controls.OfType<ComboBox>().First().SelectedItem.ToString()),
-                    Duration = (int)panel.Controls.OfType<NumericUpDown>().First().Value,
-                    InverseWaveform = (bool)panel.Controls.OfType<CheckBox>().First().Checked
-                });
-            }
-
-            _settings.AdditionalWaveforms = waveforms;
-        }
-
-        private void button23_Click(object sender, EventArgs e)
-        {
-            //         lbLabels.Items = lbLabels.Items.OfType
-            _suspendUi = true;
-            var items = lbLabels.Items;
-            for (int i = 0, j = items.Count - 1; i < j; i++, j--)
-            {
-                object tmpi = items[i];
-                object tmpj = items[j];
-                var s1 = lbLabels.SelectedItems.Contains(tmpi);
-                var s2 = lbLabels.SelectedItems.Contains(tmpj);
-                items.RemoveAt(j);
-                items.RemoveAt(i);
-                items.Insert(i, tmpj);
-                items.Insert(j, tmpi);
-                if (s1) lbLabels.SelectedItems.Add(tmpi);
-                if (s2) lbLabels.SelectedItems.Add(tmpj);
-            }
-            _suspendUi = false;
-            UpdateSelectedLabels();
         }
     }
 }

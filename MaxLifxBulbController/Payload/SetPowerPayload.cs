@@ -1,5 +1,4 @@
-﻿using MaxLifx.Controllers;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace MaxLifx.Payload
@@ -11,7 +10,7 @@ namespace MaxLifx.Payload
     {
         private byte[] _messageType = new byte[2] { 21, 0 };
         public byte[] MessageType { get { return _messageType; } }
-        public BulbType PayloadType { get; set; }
+
         public bool PowerState;
 
         public SetPowerPayload(bool powerState)

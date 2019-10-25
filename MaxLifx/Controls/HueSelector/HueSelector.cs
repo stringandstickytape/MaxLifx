@@ -22,16 +22,8 @@ namespace MaxLifx.Controls.HueSelector
         private int _currentHandle = -1;
         private int _currentRangeHandle = -1;
 
-        private Font labelFont;
-        private StringFormat labelFormat;
         public HueSelector()
         {
-            labelFont = new Font(FontFamily.GenericSansSerif, 10, System.Drawing.FontStyle.Bold, GraphicsUnit.Point);
-
-            StringFormat labelFormat = new StringFormat();
-            labelFormat.LineAlignment = StringAlignment.Far;
-            labelFormat.Alignment = StringAlignment.Far;
-
             ResizeRedraw = true;
             SetStyle(
                 ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -43,12 +35,6 @@ namespace MaxLifx.Controls.HueSelector
             SelectedTwoColourStrategy = new AnalogousColourStrategy();
             SelectedThreeColourStrategy = new AnalogousColourStrategy();
             GenericColourStrategy = new AnalogousColourStrategy();
-        }
-
-        private List<string> _labels;
-        public void SetLabels(List<string> labels)
-        {
-            _labels = labels;
         }
 
         public int HandleCount
@@ -464,48 +450,15 @@ namespace MaxLifx.Controls.HueSelector
 
             e.Graphics.DrawEllipse(Pens.LightGray, handleRect);
             if (label)
-            {
-                using (var font1 = new Font("Segoe UI", ClientRectangle.Width / 30, System.Drawing.FontStyle.Bold, GraphicsUnit.Point))
+                using (var font1 = new Font("Segoe UI", ClientRectangle.Width/30, System.Drawing.FontStyle.Bold, GraphicsUnit.Point))
                 {
                     var stringFormat = new StringFormat
                     {
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center
                     };
-                    var centrePoint = new PointF((handleRect.Left + handleRect.Right) / 2, (handleRect.Top + handleRect.Bottom) / 2);
-
-
-                    if (_labels == null || _labels.Count <= handle.HandleNumber) return;
-
-                    e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2  + 1, (handleRect.Top + handleRect.Bottom) / 2 + 1), stringFormat);
-                    e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2  - 1, (handleRect.Top + handleRect.Bottom) / 2 - 1), stringFormat);
-                    e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2  + 1, (handleRect.Top + handleRect.Bottom) / 2 - 1), stringFormat);
-                    e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2  - 1, (handleRect.Top + handleRect.Bottom) / 2 + 1), stringFormat);
-                    e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.White, new PointF((handleRect.Left + handleRect.Right) / 2 , (handleRect.Top + handleRect.Bottom) / 2), stringFormat);
-
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.White, centrePoint, stringFormat);
-                    //var stringSize = e.Graphics.MeasureString(_labels[handle.HandleNumber], labelFont);
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width/2, handleRect.Top));
-                    //
-
-                    //GraphicsPath p = new GraphicsPath();
-                    //p.AddString(
-                    //    _labels[handle.HandleNumber],             // text to draw
-                    //    FontFamily.GenericSansSerif,  // or any other font family
-                    //    (int)System.Drawing.FontStyle.Bold,      // font style (bold, italic, etc.)
-                    //    (float)(e.Graphics.DpiY * 10.1 / 72),       // em size
-                    //    new System.Drawing.Point((int)((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2), handleRect.Top),              // location where to draw text
-                    //    new StringFormat());          // set options here (e.g. center alignment)
-                    //e.Graphics.DrawPath(Pens.Black, p);
-                    //
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2 + 1, handleRect.Top + 1));
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2 - 1, handleRect.Top - 1));
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2 + 1, handleRect.Top - 1));
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.Black, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2 - 1, handleRect.Top + 1));
-                    //e.Graphics.DrawString(_labels[handle.HandleNumber], labelFont, Brushes.White, new PointF((handleRect.Left + handleRect.Right) / 2 - stringSize.Width / 2, handleRect.Top ));
+                    e.Graphics.DrawString(handle.HandleNumber.ToString(), font1, Brushes.White, handleRect, stringFormat);
                 }
-            }
-
         }
 
         protected override void OnMouseDown(MouseEventArgs e)

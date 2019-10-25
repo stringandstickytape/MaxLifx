@@ -73,11 +73,10 @@ namespace MaxLifx.UIs
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var f = new AssignAreaToBulbForm(Settings.LabelsAndLocations.Where(x => lbLabels.SelectedItems.Contains(x.Label)).ToList());
+            var f = new AssignAreaToBulbForm(Settings.LabelsAndLocations);
             f.ShowDialog();
 
-            Settings.LabelsAndLocations.RemoveAll(x => f.LabelsAndLocations.Any(y => y.Label == x.Label));
-            Settings.LabelsAndLocations.AddRange(f.LabelsAndLocations);
+            Settings.LabelsAndLocations = f.LabelsAndLocations;
             ProcessorBase.SaveSettings(Settings, null);
         }
 

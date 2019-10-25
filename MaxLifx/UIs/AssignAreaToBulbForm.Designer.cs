@@ -32,7 +32,6 @@
             this.lbBulbs = new System.Windows.Forms.ListBox();
             this.cbArea = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panelScreenLocations = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // button1
@@ -73,19 +72,11 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Area assigned to bulb:";
             // 
-            // panelScreenLocations
-            // 
-            this.panelScreenLocations.Location = new System.Drawing.Point(12, 179);
-            this.panelScreenLocations.Name = "panelScreenLocations";
-            this.panelScreenLocations.Size = new System.Drawing.Size(260, 211);
-            this.panelScreenLocations.TabIndex = 4;
-            // 
             // AssignAreaToBulbForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 520);
-            this.Controls.Add(this.panelScreenLocations);
+            this.ClientSize = new System.Drawing.Size(284, 173);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbArea);
             this.Controls.Add(this.lbBulbs);
@@ -103,6 +94,5 @@
         private System.Windows.Forms.ListBox lbBulbs;
         private System.Windows.Forms.ComboBox cbArea;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panelScreenLocations;
     }
 }
