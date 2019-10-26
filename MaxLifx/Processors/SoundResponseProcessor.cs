@@ -289,7 +289,7 @@ namespace MaxLifx
                             {
                                 individualPayloads.Add(p.Key.Item2, p.Value);
 
-                                if (ctr % 10 == 9 || ctr == group.Count() - 1)
+                                if (ctr % 80 == 79 || ctr == group.Count() - 1)
                                 {
                                     var newPayload = new SetHomebrewColourZonesPayload()
                                     {

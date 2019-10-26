@@ -35,15 +35,18 @@ namespace MaxLifx.Controls
 
         public void Add(float value)
         {
-            // Remember the window function! There are many others as well.
-            _fftBuffer[_fftPos].X = (float) (value*FastFourierTransform.HammingWindow(_fftPos, _fftLength));
-            _fftBuffer[_fftPos].Y = 0; // This is always zero with audio.
-            _fftPos++;
-            if (_fftPos >= _fftLength)
+            if (FftCalculated != null)
             {
-                _fftPos = 0;
-                FastFourierTransform.FFT(true, _m, _fftBuffer);
-                if (FftCalculated != null) FftCalculated(this, _fftArgs);
+                // Remember the window function! There are many others as well.
+                _fftBuffer[_fftPos].X = (float)(value * FastFourierTransform.HammingWindow(_fftPos, _fftLength));
+                _fftBuffer[_fftPos].Y = 0; // This is always zero with audio.
+                _fftPos++;
+                if (_fftPos >= _fftLength)
+                {
+                    _fftPos = 0;
+                    FastFourierTransform.FFT(true, _m, _fftBuffer);
+                    FftCalculated(this, _fftArgs);
+                }
             }
         }
     }
