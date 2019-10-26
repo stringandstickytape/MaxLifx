@@ -24,6 +24,13 @@ namespace MaxLifx.Controllers
         }
         // by default, the bulb is set to take average of entire screen
         public ScreenLocation Location = ScreenLocation.All;
+
+        public bool IsHomebrewDevice { get {
+                if (MacAddress.StartsWith("0102030405"))
+                    return true;
+                return false;
+            } 
+        }
     }
 
     public enum ScreenLocation

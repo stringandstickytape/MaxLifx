@@ -518,7 +518,7 @@ namespace MaxLifx
                                     apply = new byte[1] { 1 }
                                 };
                                 // send
-                                bulbController.SetColour(label, zonePayload, false);
+                                bulbController.SetColour(bulbController.GetBulbFromLabel(label, out int zone), zone, zonePayload, false);
                             }
                         }
                         multiFlag = true;
@@ -577,7 +577,7 @@ namespace MaxLifx
                         Saturation = (ushort)saturation,
                         Brightness = (ushort)brightness
                     };
-                    bulbController.SetColour(label, payload, true);
+                    bulbController.SetColour(bulbController.GetBulbFromLabel(label, out int zone), zone, payload, true);
                 }
                 // this is for when multizone apply is set to 0: need to send another packet to apply everything
                 /*else {

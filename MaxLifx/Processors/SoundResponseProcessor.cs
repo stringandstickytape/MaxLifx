@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -93,7 +94,13 @@ namespace MaxLifx
                 {
                     var t = new Thread(() =>
                     {
-                        var form = new SoundResponseUI(SettingsCast, bulbController.Bulbs.Select(x => x.Label).ToList(), r);
+                        var bulbs = bulbController.Bulbs.Where(x => x.Zones < 2).Select(x => x.Label).ToList();
+
+                        foreach (var bulbObj in bulbController.Bulbs.Where(x => x.Zones > 1))
+                            for (var i = 0; i < bulbObj.Zones; i++)
+                                bulbs.Add(bulbObj.Label + $" (Zone {(i + 1).ToString().PadLeft(3,'0')})");
+
+                        var form = new SoundResponseUI(SettingsCast, bulbs, r);
                             /* (SettingsCast, bulbController.Bulbs);*/
                         form.ShowDialog();
                     });
@@ -114,12 +121,19 @@ namespace MaxLifx
                     var floatValueB = 0f;
 
                     var bulbCtr = 0;
+
+                    var homebrewDevicePayloadCache = new Dictionary<(Bulb, int), SetColourPayload>();
+
+
                     foreach (var label in SettingsCast.SelectedLabels)
                     {
                         var bulbNumber = SettingsCast.PerBulb ? bulbCtr : 0;
 
                         // don't raise an exception if there's no input...
                         if (bulbNumber >= SettingsCast.Levels.Count) continue;
+
+                        var bulb = bulbController.GetBulbFromLabel(label, out int zone);
+                        
 
                         try
                         {
@@ -228,13 +242,21 @@ namespace MaxLifx
                                     TransitionDuration = (uint) SettingsCast.TransitionDuration
                                 };
 
-                                bulbController.SetColour(label, _payload, true);
-                               if (SettingsCast.Delay > 200)
-                               {
-                                   bulbController.SetColour(label, _payload, true);
-                                   Thread.Sleep(1);
-                               
-                               }
+
+                                if (bulb.IsHomebrewDevice)
+                                {
+                                    homebrewDevicePayloadCache.Add((bulb, zone), _payload);
+                                }
+                                else
+                                {
+                                    bulbController.SetColour(bulb, zone, _payload, true);
+                                    if (SettingsCast.Delay > 200)
+                                    {
+                                        bulbController.SetColour(bulb, zone, _payload, true);
+                                        Thread.Sleep(1);
+
+                                    }
+                                }
                             }
                             else
                             {
@@ -245,12 +267,61 @@ namespace MaxLifx
                         {
                             Thread.Sleep(1);
                         }
+
+
+
+
                         Thread.Sleep(1);
 
                         bulbCtr++;
                     }
+
+                    if (homebrewDevicePayloadCache.Any())
+                    {
+
+                        foreach (var group in homebrewDevicePayloadCache.GroupBy(x => (Bulb)x.Key.Item1))
+                        {
+                            var payloads = group.Select(x => x.Value);
+                            Dictionary<int, SetColourPayload> individualPayloads = new Dictionary<int, SetColourPayload>();
+
+                            int ctr = 0;
+                            foreach(var p in group)
+                            {
+                                individualPayloads.Add(p.Key.Item2, p.Value);
+
+                                if (ctr % 10 == 9 || ctr == group.Count() - 1)
+                                {
+                                    var newPayload = new SetHomebrewColourZonesPayload()
+                                    {
+                                        IndividualPayloads = individualPayloads
+                                    };
+
+                                    MaxLifxBulbController.SendPayloadToMacAddress(newPayload, group.Key.MacAddress, group.Key.IpAddress);
+                                    Thread.Sleep(1);
+
+                                    individualPayloads = new Dictionary<int, SetColourPayload>();
+                                }
+
+                                ctr++;
+                            }
+
+
+
+
+                            // foreach(var p in group.ToDictionary(x => x.Key.Item2, x => x.Value))
+                            //     MaxLifxBulbController.SendPayloadToMacAddress(p.Value, group.Key.MacAddress, group.Key.IpAddress);
+                        }
+
+
+                        
+
+                    }
+
                 }
-                Thread.Sleep(SettingsCast.Delay);
+
+                int diff =(int) (DateTime.Now - SettingsCast.WaveStartTime).TotalMilliseconds;
+                if(diff < SettingsCast.Delay)
+                    Thread.Sleep(SettingsCast.Delay-diff);
             }
 
             spectrumEngine.StopCapture();

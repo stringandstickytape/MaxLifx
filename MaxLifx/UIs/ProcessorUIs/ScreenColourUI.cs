@@ -80,7 +80,8 @@ namespace MaxLifx.UIs
                             // don't apply yet
                             apply = new byte[1]{0}
                         };
-                        BulbController.SetColour(label, payload, false);
+                        var bulb = BulbController.GetBulbFromLabel(label, out int zone);
+                        BulbController.SetColour(bulb, zone, payload, false);
 
                         // set rest of zones to off
                         payload = new SetColourZonesPayload
@@ -95,7 +96,7 @@ namespace MaxLifx.UIs
                             // apply
                             apply = new byte[1] { 1 }
                         };
-                        BulbController.SetColour(label, payload, false);
+                        BulbController.SetColour(bulb, zone, payload, false);
                     }
                 }
             }

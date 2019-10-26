@@ -16,10 +16,15 @@ namespace MaxLifx.Packets
             // Frame is 16+2+1+1+12+32=64 bits = 8 bytes
 
             byte[] sizelessHeader = GetSizelessHeader(targetMacAddress, Payload);
+
+            //System.Diagnostics.Debug.WriteLine("Sizeless header is: " + BitConverter.ToString(sizelessHeader).Replace("-", ""));
+
             byte[] payloadBytes = Payload.GetPayload();
 
             var frameSizeInt = Convert.ToInt16(2 + sizelessHeader.Length + payloadBytes.Length);
             var frameSize = BitConverter.GetBytes(frameSizeInt);
+
+            System.Diagnostics.Debug.WriteLine("payloadBytes is: " + BitConverter.ToString(payloadBytes).Replace("-", ""));
 
             var packet = frameSize.Concat(sizelessHeader)
                                 .Concat(payloadBytes);
