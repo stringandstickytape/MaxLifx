@@ -68,11 +68,11 @@ namespace MaxLifx.Processors.ProcessorSettings
         {
             try
             {
-                int currentTime;
-                int.TryParse(DateTime.Now.ToString("HHmm"), out currentTime);
-
                 if (OnTimesList == null || OffTimesList == null)
                     return true;
+
+                int currentTime;
+                int.TryParse(DateTime.Now.ToString("HHmm"), out currentTime);
 
                 var ons = OnTimesList.Where(x => x <= currentTime).ToList();
                 var offs = OffTimesList.Where(x => x <= currentTime).ToList();

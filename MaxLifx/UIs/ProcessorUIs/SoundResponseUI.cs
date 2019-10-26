@@ -152,7 +152,8 @@ namespace MaxLifx.UIs
 
 
 
-            List<int> b, l, lr;
+            List<int> b, lr;
+            List<int> l;
 
             spectrumAnalyser1.GetHandles(out b,out l,out lr);
 
@@ -204,7 +205,7 @@ namespace MaxLifx.UIs
                     var bin = (_settings.Bins.Count - i)*(80) + 16;
                     if (bin > 512) bin = 512;
                     _settings.Bins.Add(bin);
-                    _settings.Levels.Add(110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60));
+                    _settings.Levels.Add((110 + (int)(((float)-1 / (_settings.SelectedLabels.Count - i)) * 60)));
                     _settings.LevelRanges.Add(45);
                 }
             else

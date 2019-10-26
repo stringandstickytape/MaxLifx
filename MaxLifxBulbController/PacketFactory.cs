@@ -7,7 +7,18 @@ namespace MaxLifx.Packets
 {
     class PacketFactory
     {
-        public static string GetPacket(byte[] targetMacAddress, IPayload Payload)
+        // from https://stackoverflow.com/questions/415291/best-way-to-combine-two-or-more-byte-arrays-in-c-sharp
+        public static byte[] Combine(byte[] first, byte[] second, byte[] third)
+        {
+            byte[] ret = new byte[first.Length + second.Length + third.Length];
+            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+            Buffer.BlockCopy(third, 0, ret, first.Length + second.Length,
+                             third.Length);
+            return ret;
+        }
+
+        public static byte[] GetPacket(byte[] targetMacAddress, IPayload Payload)
         {
             // Mac address must be left-aligned and padded with zeroes to a length of 8...
             if (targetMacAddress.Length != 8) throw new NotImplementedException();
@@ -24,14 +35,14 @@ namespace MaxLifx.Packets
             var frameSizeInt = Convert.ToInt16(2 + sizelessHeader.Length + payloadBytes.Length);
             var frameSize = BitConverter.GetBytes(frameSizeInt);
 
-            System.Diagnostics.Debug.WriteLine("payloadBytes is: " + BitConverter.ToString(payloadBytes).Replace("-", ""));
+            //System.Diagnostics.Debug.WriteLine("payloadBytes is: " + BitConverter.ToString(payloadBytes).Replace("-", ""));
 
-            var packet = frameSize.Concat(sizelessHeader)
-                                .Concat(payloadBytes);
+            //var packet = frameSize.Concat(sizelessHeader)
+            //                    .Concat(payloadBytes);
 
-            var packetAsString = BitConverter.ToString(packet.ToArray()).Replace("-", "");
+            //var packetAsString = BitConverter.ToString(packet.ToArray()).Replace("-", "");
 
-            return packetAsString;// ;
+            return Combine(frameSize, sizelessHeader, payloadBytes);// packet.ToArray();// ;
         }
 
         // The following is interpreted from https://community.lifx.com/t/building-a-lifx-packet/59

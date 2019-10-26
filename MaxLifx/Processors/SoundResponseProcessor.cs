@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -78,6 +79,8 @@ namespace MaxLifx
 
         private void DoMainLoop(MaxLifxBulbController bulbController, MMDevice device)
         {
+            var reusableHomebrewClientDictionary = new Dictionary<string,UdpClient>();
+
             SettingsCast.WaveStartTime = DateTime.Now;
 
             var persistentFloatH = (float) r.NextDouble();
@@ -114,7 +117,7 @@ namespace MaxLifx
                     ushort brightness = 0;
                     ushort saturation = 0;
                     var _hue = 0;
-                    var timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
+                    TimeSpan timeRunning ;
 
                     var floatValueH = 0f;
                     var floatValueS = 0f;
@@ -130,7 +133,8 @@ namespace MaxLifx
                         var bulbNumber = SettingsCast.PerBulb ? bulbCtr : 0;
 
                         // don't raise an exception if there's no input...
-                        if (bulbNumber >= SettingsCast.Levels.Count) continue;
+                        if (bulbNumber >= SettingsCast.Levels.Count) 
+                            continue;
 
                         var bulb = bulbController.GetBulbFromLabel(label, out int zone);
                         
@@ -141,17 +145,22 @@ namespace MaxLifx
                             switch (SettingsCast.WaveType)
                             {
                                 case WaveTypes.Audio:
+                                    var halfRange = SettingsCast.LevelRanges[bulbNumber] / 2;
+                                    var centre = SettingsCast.Levels[bulbNumber] + halfRange;
                                     var levelMin = 1 -
-                                                   (((float) (SettingsCast.Levels[bulbNumber] + SettingsCast.LevelRanges[bulbNumber]/ 2 > 255 ? 255 : SettingsCast.Levels[bulbNumber] + SettingsCast.LevelRanges[bulbNumber] / 2) /
+                                                   (((float) (centre > 255 ? 255 : centre) /
                                                      255));
                                     var levelMax = 1 -
-                                                   (((float) (SettingsCast.Levels[bulbNumber] - SettingsCast.LevelRanges[bulbNumber] / 2 < 0 ? 0 : SettingsCast.Levels[bulbNumber] - SettingsCast.LevelRanges[bulbNumber] / 2) /255));
+                                                   (((float) (centre < 0 ? 0 : SettingsCast.Levels[bulbNumber] - halfRange) /255));
+
                                     var levelRange = levelMax - levelMin;
 
                                     float rawLevel;
 
                                     // don't raise an exception if there's no input...
-                                    if (SettingsCast.Bins[bulbNumber] > spectrumEngine.LatestPoints.Count - 1) rawLevel = 0;
+                                    if (SettingsCast.Bins[bulbNumber] > spectrumEngine.LatestPoints.Count - 1) 
+                                        rawLevel = 0;
+
                                     else rawLevel = 1 - (spectrumEngine.LatestPoints[SettingsCast.Bins[bulbNumber]].Y / 255);
 
                                     float adjustedLevel;
@@ -170,6 +179,7 @@ namespace MaxLifx
                                         // device.AudioMeterInformation.MasterPeakValue;
                                     break;
                                 case WaveTypes.Sine:
+                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
@@ -178,12 +188,14 @@ namespace MaxLifx
                                                      1)/2;
                                     break;
                                 case WaveTypes.Square:
+                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
                                                 ((int) (timeRunning.TotalMilliseconds/SettingsCast.WaveDuration))%2;
                                     break;
                                 case WaveTypes.Sawtooth:
+                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
@@ -271,7 +283,6 @@ namespace MaxLifx
 
 
 
-                        Thread.Sleep(1);
 
                         bulbCtr++;
                     }
@@ -291,13 +302,16 @@ namespace MaxLifx
 
                                 if (ctr % 80 == 79 || ctr == group.Count() - 1)
                                 {
-                                    var newPayload = new SetHomebrewColourZonesPayload()
+                                    if (!reusableHomebrewClientDictionary.ContainsKey(group.Key.IpAddress))
                                     {
-                                        IndividualPayloads = individualPayloads
-                                    };
+                                        reusableHomebrewClientDictionary.Add(group.Key.IpAddress,
+                                            MaxLifxBulbController.GetPersistentClient(group.Key.MacAddress, group.Key.IpAddress));
+                                    }
 
-                                    MaxLifxBulbController.SendPayloadToMacAddress(newPayload, group.Key.MacAddress, group.Key.IpAddress);
-                                    Thread.Sleep(1);
+                                    var payload = new SetHomebrewColourZonesPayload { IndividualPayloads = individualPayloads };
+
+                                    MaxLifxBulbController.SendPayloadToMacAddress(payload, group.Key.MacAddress, group.Key.IpAddress, reusableHomebrewClientDictionary[group.Key.IpAddress]);
+                                    
 
                                     individualPayloads = new Dictionary<int, SetColourPayload>();
                                 }
@@ -322,6 +336,11 @@ namespace MaxLifx
                 int diff =(int) (DateTime.Now - SettingsCast.WaveStartTime).TotalMilliseconds;
                 if(diff < SettingsCast.Delay)
                     Thread.Sleep(SettingsCast.Delay-diff);
+            }
+
+            foreach(var i in reusableHomebrewClientDictionary)
+            {
+                i.Value.Close();
             }
 
             spectrumEngine.StopCapture();

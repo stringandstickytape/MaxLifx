@@ -58,37 +58,63 @@ namespace MaxLifx.Controllers
             }
         }
 
+        private Dictionary<string, (Bulb, int)> labelToBulbZoneCache = new Dictionary<string, (Bulb, int)>();
+
         public Bulb GetBulbFromLabel(string label, out int zone)
         {
-            var bulb = Bulbs.SingleOrDefault(x => x.Label == label);
-            zone = 0;
-            if (bulb == null)
+            if (!labelToBulbZoneCache.ContainsKey(label))
             {
-                bulb = Bulbs.Single(x => x.Label == label.Substring(0, label.LastIndexOf(" (Zone ")));
+                var bulb = Bulbs.SingleOrDefault(x => x.Label == label);
+                zone = 0;
+                if (bulb == null)
+                {
+                    bulb = Bulbs.Single(x => x.Label == label.Substring(0, label.LastIndexOf(" (Zone ")));
 
-                var zonex = label.Substring(label.LastIndexOf(" (Zone ") + 7);
-                zonex = zonex.Substring(0, zonex.Length - 1);
-                zone = int.Parse(zonex) - 1;
+                    var zonex = label.Substring(label.LastIndexOf(" (Zone ") + 7);
+                    zonex = zonex.Substring(0, zonex.Length - 1);
+                    zone = int.Parse(zonex) - 1;
+                }
+
+                labelToBulbZoneCache.Add(label, (bulb,zone));
             }
-
-            return bulb;
+            zone = labelToBulbZoneCache[label].Item2;
+            return labelToBulbZoneCache[label].Item1;
         }
 
-        public static void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress)
+        public static void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress, UdpClient persistentClient = null)
         {
-            var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
-            //Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPAddress sendToAddress = IPAddress.Parse(ipAddress);
-            IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
+            //Thread thread = new Thread(new ThreadStart(() => {
+                var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
+                //Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                IPAddress sendToAddress = IPAddress.Parse(ipAddress);
+                IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
 
-            byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(targetMacAddress, Payload));
+                byte[] sendData = PacketFactory.GetPacket(targetMacAddress, Payload);
             //sendingSocket.SendTo(sendData, sendingEndPoint);
             //sendingSocket.Dispose();
 
+            if (persistentClient == null)
+            {
+                var a = new UdpClient();
+                a.Connect(sendingEndPoint);
+                a.Send(sendData, sendData.Length);
+                a.Close();
+            }
+            else persistentClient.Send(sendData, sendData.Length);
+            //}));
+            //thread.Start();
+
+
+        }
+
+        public static UdpClient GetPersistentClient(string macAddress, string ipAddress)
+        {
+            var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
+            IPAddress sendToAddress = IPAddress.Parse(ipAddress);
+            IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
             var a = new UdpClient();
             a.Connect(sendingEndPoint);
-            a.Send(sendData, sendData.Length);
-            a.Close();
+            return a;
         }
 
         // The following is based on https://github.com/PhilWheat/LIFX-Control
@@ -96,7 +122,7 @@ namespace MaxLifx.Controllers
         {
             // Send discovery packet
             GetServicePayload payload = new GetServicePayload();
-            byte[] sendData = Utils.StringToByteArray(PacketFactory.GetPacket(new byte[8], payload));
+            byte[] sendData = PacketFactory.GetPacket(new byte[8], payload);
             if (ip != "") _localIp = ip;
 
             var a = new UdpClient();
@@ -144,7 +170,7 @@ namespace MaxLifx.Controllers
                 a = new UdpClient();
                 a.Connect(_sendingEndPoint);
                 // Send label request to a specific bulb
-                sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), labelPayload));
+                sendData = PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), labelPayload);
                 a.Send(sendData, sendData.Length);
                 // Send version request to a specific bulb
                 //sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), versionPayload));
@@ -177,7 +203,7 @@ namespace MaxLifx.Controllers
                 a = new UdpClient();
                 a.Connect(_sendingEndPoint);
                 // Send zone request
-                sendData = Utils.StringToByteArray(PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), ColourZonesPayload));
+                sendData = PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), ColourZonesPayload);
                 a.Send(sendData, sendData.Length);
                 a.Close();
 
