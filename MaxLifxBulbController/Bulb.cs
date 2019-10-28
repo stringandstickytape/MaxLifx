@@ -4,7 +4,18 @@ namespace MaxLifx.Controllers
 {
     public class Bulb
     {
-        public string MacAddress { get; set; }
+        public bool IsHomebrewDevice = false;
+
+        private string _macAddress;
+        public string MacAddress { get { return _macAddress; }
+            set
+            {
+                _macAddress = value;
+                    if (_macAddress.StartsWith("0102030405"))
+                        IsHomebrewDevice = true;
+                    else IsHomebrewDevice = false;
+                }
+        }
         public string IpAddress { get; set; }
         private string _label;
         // currently not using Version, but may be useful in the future to distinguish which type of light
@@ -25,19 +36,7 @@ namespace MaxLifx.Controllers
         // by default, the bulb is set to take average of entire screen
         public ScreenLocation Location = ScreenLocation.All;
 
-        private bool? isHomebrewDevice = null;
-        public bool IsHomebrewDevice { get {
-
-                if (isHomebrewDevice == null)
-                {
-                    if (MacAddress.StartsWith("0102030405"))
-                        isHomebrewDevice = true;
-                    else isHomebrewDevice = false;
-                }
-
-                return isHomebrewDevice.Value;
-            } 
-        }
+        
     }
 
     public enum ScreenLocation

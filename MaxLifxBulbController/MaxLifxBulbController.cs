@@ -81,17 +81,22 @@ namespace MaxLifx.Controllers
             return labelToBulbZoneCache[label].Item1;
         }
 
-        public static void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress, UdpClient persistentClient = null)
+        Dictionary<string, byte[]> macAddressCache = new Dictionary<string, byte[]>();
+        public void SendPayloadToMacAddress(IPayload Payload, string macAddress, string ipAddress, UdpClient persistentClient = null)
         {
-            //Thread thread = new Thread(new ThreadStart(() => {
-                var targetMacAddress = Utils.StringToByteArray(macAddress + "0000");
-                //Socket sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                IPAddress sendToAddress = IPAddress.Parse(ipAddress);
-                IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
+            var fullMac = $"{macAddress}0000";
+            if (!macAddressCache.ContainsKey(fullMac))
+                macAddressCache.Add(fullMac, Utils.StringToByteArray(fullMac));
+            
+            SendPayloadToMacAddress(Payload, macAddressCache[fullMac], ipAddress, persistentClient);
+        }
 
-                byte[] sendData = PacketFactory.GetPacket(targetMacAddress, Payload);
-            //sendingSocket.SendTo(sendData, sendingEndPoint);
-            //sendingSocket.Dispose();
+        public void SendPayloadToMacAddress(IPayload Payload, byte[] targetMacAddress, string ipAddress, UdpClient persistentClient = null)
+        {
+            IPAddress sendToAddress = IPAddress.Parse(ipAddress);
+            IPEndPoint sendingEndPoint = new IPEndPoint(sendToAddress, 56700);
+
+            byte[] sendData = PacketFactory.GetPacket(targetMacAddress, Payload);
 
             if (persistentClient == null)
             {
@@ -101,10 +106,6 @@ namespace MaxLifx.Controllers
                 a.Close();
             }
             else persistentClient.Send(sendData, sendData.Length);
-            //}));
-            //thread.Start();
-
-
         }
 
         public static UdpClient GetPersistentClient(string macAddress, string ipAddress)

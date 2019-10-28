@@ -32,7 +32,7 @@ namespace MaxLifx
         [XmlIgnore]
         public SoundResponseSettings SettingsCast
         {
-            get { return ((SoundResponseSettings) Settings); }
+            get { return Settings as SoundResponseSettings; }
         }
 
         public override ISettings Settings { get; set; }
@@ -90,9 +90,10 @@ namespace MaxLifx
 
             var spectrumEngine = new SpectrumAnalyserEngine();
             spectrumEngine.StartCapture();
-
+            var sc = SettingsCast;
             while (!TerminateThread)
             {
+                var passStart = DateTime.Now;
                 if (ShowUI)
                 {
                     var t = new Thread(() =>
@@ -114,10 +115,12 @@ namespace MaxLifx
                 var _offOrOn = Settings.OffOrOn();
                 if (_offOrOn)
                 {
+                    
+
                     ushort brightness = 0;
                     ushort saturation = 0;
                     var _hue = 0;
-                    TimeSpan timeRunning ;
+                    TimeSpan timeRunning = DateTime.Now - sc.WaveStartTime;
 
                     var floatValueH = 0f;
                     var floatValueS = 0f;
@@ -128,12 +131,12 @@ namespace MaxLifx
                     var homebrewDevicePayloadCache = new Dictionary<(Bulb, int), SetColourPayload>();
 
 
-                    foreach (var label in SettingsCast.SelectedLabels)
+                    foreach (var label in sc.SelectedLabels)
                     {
-                        var bulbNumber = SettingsCast.PerBulb ? bulbCtr : 0;
+                        var bulbNumber = sc.PerBulb ? bulbCtr : 0;
 
                         // don't raise an exception if there's no input...
-                        if (bulbNumber >= SettingsCast.Levels.Count) 
+                        if (bulbNumber >= sc.Levels.Count) 
                             continue;
 
                         var bulb = bulbController.GetBulbFromLabel(label, out int zone);
@@ -141,117 +144,112 @@ namespace MaxLifx
 
                         try
                         {
+                            
 
-                            switch (SettingsCast.WaveType)
+                            switch (sc.WaveType)
                             {
                                 case WaveTypes.Audio:
-                                    var halfRange = SettingsCast.LevelRanges[bulbNumber] / 2;
-                                    var centre = SettingsCast.Levels[bulbNumber] + halfRange;
-                                    var levelMin = 1 -
-                                                   (((float) (centre > 255 ? 255 : centre) /
-                                                     255));
-                                    var levelMax = 1 -
-                                                   (((float) (centre < 0 ? 0 : SettingsCast.Levels[bulbNumber] - halfRange) /255));
+                                    var halfRange = sc.LevelRanges[bulbNumber] >> 1;
+                                    var centre = sc.Levels[bulbNumber] + halfRange;
+
+                                    var levelMin = centre > 255 ? 255 : 255 - centre;
+
+                                    var levelMax =  centre < 0 ? 0 : 255 - sc.Levels[bulbNumber] + halfRange;
 
                                     var levelRange = levelMax - levelMin;
 
-                                    float rawLevel;
+                                    int rawLevel;
 
                                     // don't raise an exception if there's no input...
-                                    if (SettingsCast.Bins[bulbNumber] > spectrumEngine.LatestPoints.Count - 1) 
+                                    if (sc.Bins[bulbNumber] > spectrumEngine.LatestPoints.Count - 1) 
                                         rawLevel = 0;
 
-                                    else rawLevel = 1 - (spectrumEngine.LatestPoints[SettingsCast.Bins[bulbNumber]].Y / 255);
+                                    else rawLevel = 255 - (spectrumEngine.LatestPoints[sc.Bins[bulbNumber]].Y);
 
                                     float adjustedLevel;
 
                                     if (rawLevel < levelMin)
                                         adjustedLevel = 0;
                                     else if (rawLevel > levelMax)
-                                        adjustedLevel = 1;
+                                        adjustedLevel = 255;
                                     else
                                     {
-                                        adjustedLevel = (rawLevel - levelMin)/levelRange;
-                                        if (adjustedLevel < 0 || adjustedLevel > 1) MessageBox.Show("D'oh!");
+                                        adjustedLevel = (rawLevel - levelMin)/(float)levelRange;
                                     }
 
                                     floatValueH = floatValueS = floatValueB = adjustedLevel;
-                                        // device.AudioMeterInformation.MasterPeakValue;
                                     break;
                                 case WaveTypes.Sine:
-                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
                                                 (float)
-                                                    (Math.Sin(timeRunning.TotalSeconds*6.283*500/SettingsCast.WaveDuration) +
+                                                    (Math.Sin(timeRunning.TotalSeconds*6.283*500/sc.WaveDuration) +
                                                      1)/2;
                                     break;
                                 case WaveTypes.Square:
-                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
-                                                ((int) (timeRunning.TotalMilliseconds/SettingsCast.WaveDuration))%2;
+                                                ((int) (timeRunning.TotalMilliseconds/sc.WaveDuration))%2;
                                     break;
                                 case WaveTypes.Sawtooth:
-                                    timeRunning = DateTime.Now - SettingsCast.WaveStartTime;
                                     floatValueH =
                                         floatValueS =
                                             floatValueB =
                                                 ((float) timeRunning.TotalMilliseconds -
-                                                 (((int) timeRunning.TotalMilliseconds/SettingsCast.WaveDuration)*
-                                                  SettingsCast.WaveDuration))/SettingsCast.WaveDuration;
+                                                 (((int) timeRunning.TotalMilliseconds/sc.WaveDuration)*
+                                                  sc.WaveDuration))/sc.WaveDuration;
                                     break;
                                 case WaveTypes.Noise:
                                     var span = DateTime.Now - persistedSince;
-                                    if (span.TotalMilliseconds > SettingsCast.WaveDuration)
-                                    {
+                                    //if (span.TotalMilliseconds > sc.WaveDuration)
+                                    //{
                                         floatValueH = (float) r.NextDouble();
                                         floatValueS = (float) r.NextDouble();
                                         floatValueB = (float) r.NextDouble();
-                                        persistentFloatH = floatValueH;
-                                        persistentFloatS = floatValueS;
-                                        persistentFloatB = floatValueB;
-                                        persistedSince = DateTime.Now;
-                                    }
-                                    else
-                                    {
-                                        floatValueH = persistentFloatH;
-                                        floatValueS = persistentFloatS;
-                                        floatValueB = persistentFloatB;
-                                    }
+                                        //persistentFloatH = floatValueH;
+                                        //persistentFloatS = floatValueS;
+                                        //persistentFloatB = floatValueB;
+                                        //persistedSince = DateTime.Now;
+                                    //}
+                                    //else
+                                    //{
+                                    //    floatValueH = persistentFloatH;
+                                   //    floatValueS = persistentFloatS;
+                                    //    floatValueB = persistentFloatB;
+                                    //}
                                     break;
                             }
 
-                            if (SettingsCast.Hues.Count > bulbNumber)
+                            if (sc.Hues.Count > bulbNumber)
                             {
                                 brightness =
                                     (ushort)
-                                        (((SettingsCast.BrightnessInvert ? 1 - floatValueB : floatValueB) *
-                                          SettingsCast.BrightnessRanges[bulbNumber] * 2 +
-                                          (SettingsCast.Brightnesses[bulbNumber] -
-                                           SettingsCast.BrightnessRanges[bulbNumber])) *
+                                        (((sc.BrightnessInvert ? 1 - floatValueB : floatValueB) *
+                                          sc.BrightnessRanges[bulbNumber] * 2 +
+                                          (sc.Brightnesses[bulbNumber] -
+                                           sc.BrightnessRanges[bulbNumber])) *
                                          65535);
                                 saturation =
                                     (ushort)
-                                        (((SettingsCast.SaturationInvert ? 1 - floatValueS : floatValueS)*
-                                          SettingsCast.SaturationRanges[bulbNumber]*2 +
-                                          (SettingsCast.Saturations[bulbNumber] -
-                                           SettingsCast.SaturationRanges[bulbNumber]))*
+                                        (((sc.SaturationInvert ? 1 - floatValueS : floatValueS)*
+                                          sc.SaturationRanges[bulbNumber]*2 +
+                                          (sc.Saturations[bulbNumber] -
+                                           sc.SaturationRanges[bulbNumber]))*
                                          65535);
                                 _hue =
                                     ((int)
-                                        ((SettingsCast.HueInvert ? 1 - floatValueH : floatValueH)*
-                                         SettingsCast.HueRanges[bulbNumber]*2 +
-                                         (SettingsCast.Hues[bulbNumber] - SettingsCast.HueRanges[0])) + 720)%360;
+                                        ((sc.HueInvert ? 1 - floatValueH : floatValueH)*
+                                         sc.HueRanges[bulbNumber]*2 +
+                                         (sc.Hues[bulbNumber] - sc.HueRanges[0])) + 720)%360;
                                 var _payload = new SetColourPayload
                                 {
                                     Hue = _hue,
                                     Saturation = saturation,
                                     Brightness = brightness,
-                                    Kelvin = SettingsCast.Kelvin,
-                                    TransitionDuration = (uint) SettingsCast.TransitionDuration
+                                    Kelvin = sc.Kelvin,
+                                    TransitionDuration = (uint) sc.TransitionDuration
                                 };
 
 
@@ -262,7 +260,7 @@ namespace MaxLifx
                                 else
                                 {
                                     bulbController.SetColour(bulb, zone, _payload, true);
-                                    if (SettingsCast.Delay > 200)
+                                    if (sc.Delay > 200)
                                     {
                                         bulbController.SetColour(bulb, zone, _payload, true);
                                         Thread.Sleep(1);
@@ -310,7 +308,7 @@ namespace MaxLifx
 
                                     var payload = new SetHomebrewColourZonesPayload { IndividualPayloads = individualPayloads };
 
-                                    MaxLifxBulbController.SendPayloadToMacAddress(payload, group.Key.MacAddress, group.Key.IpAddress, reusableHomebrewClientDictionary[group.Key.IpAddress]);
+                                    bulbController.SendPayloadToMacAddress(payload, group.Key.MacAddress, group.Key.IpAddress, reusableHomebrewClientDictionary[group.Key.IpAddress]);
                                     
 
                                     individualPayloads = new Dictionary<int, SetColourPayload>();
@@ -332,10 +330,10 @@ namespace MaxLifx
                     }
 
                 }
-
-                int diff =(int) (DateTime.Now - SettingsCast.WaveStartTime).TotalMilliseconds;
-                if(diff < SettingsCast.Delay)
-                    Thread.Sleep(SettingsCast.Delay-diff);
+                
+                int diff =(int) (DateTime.Now - passStart).TotalMilliseconds;
+                if(diff < sc.Delay)
+                    Thread.Sleep(sc.Delay-diff);
             }
 
             foreach(var i in reusableHomebrewClientDictionary)

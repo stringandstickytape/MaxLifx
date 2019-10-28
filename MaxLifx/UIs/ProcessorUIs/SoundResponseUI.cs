@@ -152,8 +152,8 @@ namespace MaxLifx.UIs
 
 
 
-            List<int> b, lr;
-            List<int> l;
+            List<int> b, l;
+            List<byte> lr;
 
             spectrumAnalyser1.GetHandles(out b,out l,out lr);
 
@@ -445,6 +445,23 @@ namespace MaxLifx.UIs
         {
             brightnessSelector1.Reset();
             UpdateHuesFromHueSelectorAndBrightnessesFromBrightnessSelector();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var tuple = spectrumAnalyser1.Redistribute();
+            _settings.Bins = tuple.Item1;
+            _settings.Levels = tuple.Item2;
+            _settings.LevelRanges = tuple.Item3;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            for (var i = 0; i < lbLabels.Items.Count; i++)
+            {
+                lbLabels.SetSelected(i, !lbLabels.GetSelected(i));
+               
+            }
         }
     }
 }

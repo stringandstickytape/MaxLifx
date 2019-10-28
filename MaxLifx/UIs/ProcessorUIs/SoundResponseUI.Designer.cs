@@ -56,6 +56,7 @@ namespace MaxLifx.UIs
             this.hueSelector1 = new MaxLifx.Controls.HueSelector.HueSelector();
             this.btnCentreRanges = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
             this.spectrumAnalyser1 = new MaxLifx.Controls.SpectrumAnalyser();
@@ -83,6 +84,7 @@ namespace MaxLifx.UIs
             this.bUp = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button6 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -103,10 +105,11 @@ namespace MaxLifx.UIs
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabHues);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(266, 12);
+            this.tabControl1.Location = new System.Drawing.Point(399, 18);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(863, 539);
+            this.tabControl1.Size = new System.Drawing.Size(1294, 829);
             this.tabControl1.TabIndex = 114;
             // 
             // tabHues
@@ -124,19 +127,21 @@ namespace MaxLifx.UIs
             this.tabHues.Controls.Add(this.cbSaturationInvert);
             this.tabHues.Controls.Add(this.hueSelector1);
             this.tabHues.Controls.Add(this.btnCentreRanges);
-            this.tabHues.Location = new System.Drawing.Point(4, 22);
+            this.tabHues.Location = new System.Drawing.Point(4, 29);
+            this.tabHues.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabHues.Name = "tabHues";
-            this.tabHues.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHues.Size = new System.Drawing.Size(855, 513);
+            this.tabHues.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabHues.Size = new System.Drawing.Size(1286, 796);
             this.tabHues.TabIndex = 0;
             this.tabHues.Text = "Hues";
             // 
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(708, 151);
+            this.button4.Location = new System.Drawing.Point(1062, 232);
+            this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(93, 23);
+            this.button4.Size = new System.Drawing.Size(140, 35);
             this.button4.TabIndex = 117;
             this.button4.Text = "Zero Ranges";
             this.button4.UseVisualStyleBackColor = true;
@@ -149,9 +154,11 @@ namespace MaxLifx.UIs
             this.groupBox3.Controls.Add(this.cbLockBrightness);
             this.groupBox3.Controls.Add(this.cbPastelThemes);
             this.groupBox3.Controls.Add(this.pThemes);
-            this.groupBox3.Location = new System.Drawing.Point(712, 184);
+            this.groupBox3.Location = new System.Drawing.Point(1068, 283);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(135, 324);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox3.Size = new System.Drawing.Size(202, 498);
             this.groupBox3.TabIndex = 113;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Themes";
@@ -159,9 +166,10 @@ namespace MaxLifx.UIs
             // cbLockBrightness
             // 
             this.cbLockBrightness.AutoSize = true;
-            this.cbLockBrightness.Location = new System.Drawing.Point(11, 37);
+            this.cbLockBrightness.Location = new System.Drawing.Point(16, 57);
+            this.cbLockBrightness.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbLockBrightness.Name = "cbLockBrightness";
-            this.cbLockBrightness.Size = new System.Drawing.Size(102, 17);
+            this.cbLockBrightness.Size = new System.Drawing.Size(149, 24);
             this.cbLockBrightness.TabIndex = 2;
             this.cbLockBrightness.Text = "Lock Brightness";
             this.cbLockBrightness.UseVisualStyleBackColor = true;
@@ -169,9 +177,10 @@ namespace MaxLifx.UIs
             // cbPastelThemes
             // 
             this.cbPastelThemes.AutoSize = true;
-            this.cbPastelThemes.Location = new System.Drawing.Point(11, 19);
+            this.cbPastelThemes.Location = new System.Drawing.Point(16, 29);
+            this.cbPastelThemes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbPastelThemes.Name = "cbPastelThemes";
-            this.cbPastelThemes.Size = new System.Drawing.Size(55, 17);
+            this.cbPastelThemes.Size = new System.Drawing.Size(79, 24);
             this.cbPastelThemes.TabIndex = 1;
             this.cbPastelThemes.Text = "Pastel";
             this.cbPastelThemes.UseVisualStyleBackColor = true;
@@ -179,9 +188,10 @@ namespace MaxLifx.UIs
             // pThemes
             // 
             this.pThemes.AutoScroll = true;
-            this.pThemes.Location = new System.Drawing.Point(9, 68);
+            this.pThemes.Location = new System.Drawing.Point(14, 105);
+            this.pThemes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pThemes.Name = "pThemes";
-            this.pThemes.Size = new System.Drawing.Size(119, 240);
+            this.pThemes.Size = new System.Drawing.Size(178, 369);
             this.pThemes.TabIndex = 0;
             // 
             // brightnessSelector1
@@ -194,13 +204,14 @@ namespace MaxLifx.UIs
             this.brightnessSelector1.HandleCount = 1;
             this.brightnessSelector1.Invert = false;
             this.brightnessSelector1.LinkRanges = false;
-            this.brightnessSelector1.Location = new System.Drawing.Point(530, 10);
+            this.brightnessSelector1.Location = new System.Drawing.Point(795, 15);
+            this.brightnessSelector1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.brightnessSelector1.Name = "brightnessSelector1";
             this.brightnessSelector1.PerBulb = false;
             this.brightnessSelector1.SelectedOneColourStrategy = analogousColourStrategy2;
             this.brightnessSelector1.SelectedThreeColourStrategy = analogousColourStrategy3;
             this.brightnessSelector1.SelectedTwoColourStrategy = analogousColourStrategy4;
-            this.brightnessSelector1.Size = new System.Drawing.Size(162, 492);
+            this.brightnessSelector1.Size = new System.Drawing.Size(243, 757);
             this.brightnessSelector1.TabIndex = 116;
             this.brightnessSelector1.Text = "brightnessSelector1";
             this.brightnessSelector1.BrightnessesChanged += new System.EventHandler(this.BrightnessesChanged);
@@ -209,9 +220,10 @@ namespace MaxLifx.UIs
             // 
             this.cbBrightnessInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbBrightnessInvert.AutoSize = true;
-            this.cbBrightnessInvert.Location = new System.Drawing.Point(705, 61);
+            this.cbBrightnessInvert.Location = new System.Drawing.Point(1063, 94);
+            this.cbBrightnessInvert.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbBrightnessInvert.Name = "cbBrightnessInvert";
-            this.cbBrightnessInvert.Size = new System.Drawing.Size(105, 17);
+            this.cbBrightnessInvert.Size = new System.Drawing.Size(153, 24);
             this.cbBrightnessInvert.TabIndex = 101;
             this.cbBrightnessInvert.Text = "Invert Hue Order";
             this.cbBrightnessInvert.UseVisualStyleBackColor = true;
@@ -221,9 +233,10 @@ namespace MaxLifx.UIs
             // 
             this.cbFree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFree.AutoSize = true;
-            this.cbFree.Location = new System.Drawing.Point(705, 27);
+            this.cbFree.Location = new System.Drawing.Point(1062, 42);
+            this.cbFree.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbFree.Name = "cbFree";
-            this.cbFree.Size = new System.Drawing.Size(75, 17);
+            this.cbFree.Size = new System.Drawing.Size(108, 24);
             this.cbFree.TabIndex = 111;
             this.cbFree.Text = "Link Bulbs";
             this.cbFree.UseVisualStyleBackColor = true;
@@ -235,9 +248,10 @@ namespace MaxLifx.UIs
             this.cbPerBulb.AutoSize = true;
             this.cbPerBulb.Checked = true;
             this.cbPerBulb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbPerBulb.Location = new System.Drawing.Point(705, 10);
+            this.cbPerBulb.Location = new System.Drawing.Point(1061, 15);
+            this.cbPerBulb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbPerBulb.Name = "cbPerBulb";
-            this.cbPerBulb.Size = new System.Drawing.Size(99, 17);
+            this.cbPerBulb.Size = new System.Drawing.Size(145, 24);
             this.cbPerBulb.TabIndex = 108;
             this.cbPerBulb.Text = "Colour Per Bulb";
             this.cbPerBulb.UseVisualStyleBackColor = true;
@@ -246,9 +260,10 @@ namespace MaxLifx.UIs
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(708, 122);
+            this.button2.Location = new System.Drawing.Point(1062, 188);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(93, 23);
+            this.button2.Size = new System.Drawing.Size(140, 35);
             this.button2.TabIndex = 109;
             this.button2.Text = "Reset Ranges";
             this.button2.UseVisualStyleBackColor = true;
@@ -258,10 +273,10 @@ namespace MaxLifx.UIs
             // 
             this.cbHueInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbHueInvert.AutoSize = true;
-            this.cbHueInvert.Location = new System.Drawing.Point(705, 95);
-            this.cbHueInvert.Margin = new System.Windows.Forms.Padding(460, 460, 3, 3);
+            this.cbHueInvert.Location = new System.Drawing.Point(1060, 146);
+            this.cbHueInvert.Margin = new System.Windows.Forms.Padding(690, 708, 4, 5);
             this.cbHueInvert.Name = "cbHueInvert";
-            this.cbHueInvert.Size = new System.Drawing.Size(140, 17);
+            this.cbHueInvert.Size = new System.Drawing.Size(207, 24);
             this.cbHueInvert.TabIndex = 103;
             this.cbHueInvert.Text = "Invert Brightness Range";
             this.cbHueInvert.UseVisualStyleBackColor = true;
@@ -271,9 +286,10 @@ namespace MaxLifx.UIs
             // 
             this.cbLinkRanges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbLinkRanges.AutoSize = true;
-            this.cbLinkRanges.Location = new System.Drawing.Point(705, 44);
+            this.cbLinkRanges.Location = new System.Drawing.Point(1062, 68);
+            this.cbLinkRanges.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbLinkRanges.Name = "cbLinkRanges";
-            this.cbLinkRanges.Size = new System.Drawing.Size(86, 17);
+            this.cbLinkRanges.Size = new System.Drawing.Size(124, 24);
             this.cbLinkRanges.TabIndex = 110;
             this.cbLinkRanges.Text = "Link Ranges";
             this.cbLinkRanges.UseVisualStyleBackColor = true;
@@ -283,9 +299,10 @@ namespace MaxLifx.UIs
             // 
             this.cbSaturationInvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSaturationInvert.AutoSize = true;
-            this.cbSaturationInvert.Location = new System.Drawing.Point(705, 78);
+            this.cbSaturationInvert.Location = new System.Drawing.Point(1061, 120);
+            this.cbSaturationInvert.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbSaturationInvert.Name = "cbSaturationInvert";
-            this.cbSaturationInvert.Size = new System.Drawing.Size(133, 17);
+            this.cbSaturationInvert.Size = new System.Drawing.Size(197, 24);
             this.cbSaturationInvert.TabIndex = 102;
             this.cbSaturationInvert.Text = "Invert Saturation Order";
             this.cbSaturationInvert.UseVisualStyleBackColor = true;
@@ -309,16 +326,17 @@ namespace MaxLifx.UIs
             this.hueSelector1.SelectedOneColourStrategy = analogousColourStrategy6;
             this.hueSelector1.SelectedThreeColourStrategy = analogousColourStrategy7;
             this.hueSelector1.SelectedTwoColourStrategy = analogousColourStrategy8;
-            this.hueSelector1.Size = new System.Drawing.Size(517, 514);
+            this.hueSelector1.Size = new System.Drawing.Size(776, 791);
             this.hueSelector1.TabIndex = 107;
             this.hueSelector1.Text = "z";
             this.hueSelector1.HuesChanged += new System.EventHandler(this.colourControl1_HuesChanged);
             // 
             // btnCentreRanges
             // 
-            this.btnCentreRanges.Location = new System.Drawing.Point(690, 245);
+            this.btnCentreRanges.Location = new System.Drawing.Point(1035, 377);
+            this.btnCentreRanges.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCentreRanges.Name = "btnCentreRanges";
-            this.btnCentreRanges.Size = new System.Drawing.Size(18, 20);
+            this.btnCentreRanges.Size = new System.Drawing.Size(27, 31);
             this.btnCentreRanges.TabIndex = 117;
             this.btnCentreRanges.Text = "<";
             this.btnCentreRanges.UseVisualStyleBackColor = true;
@@ -327,21 +345,35 @@ namespace MaxLifx.UIs
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.button5);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.cbUpdateAudioResponse);
             this.tabPage2.Controls.Add(this.spectrumAnalyser1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(855, 513);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage2.Size = new System.Drawing.Size(1286, 796);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Audio Frequency Response";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(938, 143);
+            this.button5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(195, 35);
+            this.button5.TabIndex = 115;
+            this.button5.Text = "Distribute";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(644, 53);
+            this.button3.Location = new System.Drawing.Point(966, 82);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 23);
+            this.button3.Size = new System.Drawing.Size(141, 35);
             this.button3.TabIndex = 108;
             this.button3.Text = "Reset Ranges";
             this.button3.UseVisualStyleBackColor = true;
@@ -353,9 +385,10 @@ namespace MaxLifx.UIs
             this.cbUpdateAudioResponse.BackColor = System.Drawing.Color.Transparent;
             this.cbUpdateAudioResponse.Checked = true;
             this.cbUpdateAudioResponse.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(629, 6);
+            this.cbUpdateAudioResponse.Location = new System.Drawing.Point(944, 9);
+            this.cbUpdateAudioResponse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbUpdateAudioResponse.Name = "cbUpdateAudioResponse";
-            this.cbUpdateAudioResponse.Size = new System.Drawing.Size(121, 30);
+            this.cbUpdateAudioResponse.Size = new System.Drawing.Size(178, 44);
             this.cbUpdateAudioResponse.TabIndex = 114;
             this.cbUpdateAudioResponse.Text = "update in real \r\ntime (CPU intensive)";
             this.cbUpdateAudioResponse.UseVisualStyleBackColor = false;
@@ -364,8 +397,9 @@ namespace MaxLifx.UIs
             // spectrumAnalyser1
             // 
             this.spectrumAnalyser1.Location = new System.Drawing.Point(0, 0);
+            this.spectrumAnalyser1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.spectrumAnalyser1.Name = "spectrumAnalyser1";
-            this.spectrumAnalyser1.Size = new System.Drawing.Size(512, 512);
+            this.spectrumAnalyser1.Size = new System.Drawing.Size(768, 788);
             this.spectrumAnalyser1.TabIndex = 107;
             this.spectrumAnalyser1.Text = "spectrumAnalyser1";
             // 
@@ -392,9 +426,11 @@ namespace MaxLifx.UIs
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.nWaveDuration);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Location = new System.Drawing.Point(5, 310);
+            this.groupBox4.Location = new System.Drawing.Point(8, 477);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(248, 222);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox4.Size = new System.Drawing.Size(372, 342);
             this.groupBox4.TabIndex = 106;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Parameters";
@@ -402,42 +438,47 @@ namespace MaxLifx.UIs
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 195);
+            this.label2.Location = new System.Drawing.Point(33, 300);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.Size = new System.Drawing.Size(89, 20);
             this.label2.TabIndex = 102;
             this.label2.Text = "Turn Off at:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 169);
+            this.label1.Location = new System.Drawing.Point(33, 260);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.Size = new System.Drawing.Size(88, 20);
             this.label1.TabIndex = 101;
             this.label1.Text = "Turn On at:";
             // 
             // tbOnTimes
             // 
-            this.tbOnTimes.Location = new System.Drawing.Point(95, 166);
+            this.tbOnTimes.Location = new System.Drawing.Point(142, 255);
+            this.tbOnTimes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbOnTimes.Name = "tbOnTimes";
-            this.tbOnTimes.Size = new System.Drawing.Size(99, 20);
+            this.tbOnTimes.Size = new System.Drawing.Size(146, 26);
             this.tbOnTimes.TabIndex = 100;
             this.tbOnTimes.TextChanged += new System.EventHandler(this.tbOnTimes_TextChanged);
             // 
             // tbOffTimes
             // 
-            this.tbOffTimes.Location = new System.Drawing.Point(94, 192);
+            this.tbOffTimes.Location = new System.Drawing.Point(141, 295);
+            this.tbOffTimes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbOffTimes.Name = "tbOffTimes";
-            this.tbOffTimes.Size = new System.Drawing.Size(100, 20);
+            this.tbOffTimes.Size = new System.Drawing.Size(148, 26);
             this.tbOffTimes.TabIndex = 99;
             this.tbOffTimes.TextChanged += new System.EventHandler(this.tbOffTimes_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 137);
+            this.button1.Location = new System.Drawing.Point(9, 211);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(235, 23);
+            this.button1.Size = new System.Drawing.Size(352, 35);
             this.button1.TabIndex = 95;
             this.button1.Text = "Reset Wave Timer";
             this.button1.UseVisualStyleBackColor = true;
@@ -450,7 +491,8 @@ namespace MaxLifx.UIs
             0,
             0,
             0});
-            this.nDelay.Location = new System.Drawing.Point(94, 19);
+            this.nDelay.Location = new System.Drawing.Point(141, 29);
+            this.nDelay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.nDelay.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -462,7 +504,7 @@ namespace MaxLifx.UIs
             0,
             0});
             this.nDelay.Name = "nDelay";
-            this.nDelay.Size = new System.Drawing.Size(100, 20);
+            this.nDelay.Size = new System.Drawing.Size(150, 26);
             this.nDelay.TabIndex = 88;
             this.nDelay.Value = new decimal(new int[] {
             100,
@@ -474,9 +516,10 @@ namespace MaxLifx.UIs
             // cbWaveType
             // 
             this.cbWaveType.FormattingEnabled = true;
-            this.cbWaveType.Location = new System.Drawing.Point(95, 84);
+            this.cbWaveType.Location = new System.Drawing.Point(142, 129);
+            this.cbWaveType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbWaveType.Name = "cbWaveType";
-            this.cbWaveType.Size = new System.Drawing.Size(101, 21);
+            this.cbWaveType.Size = new System.Drawing.Size(150, 28);
             this.cbWaveType.TabIndex = 87;
             this.cbWaveType.SelectedIndexChanged += new System.EventHandler(this.cbWaveType_SelectedIndexChanged);
             // 
@@ -487,7 +530,8 @@ namespace MaxLifx.UIs
             0,
             0,
             0});
-            this.nTransition.Location = new System.Drawing.Point(95, 45);
+            this.nTransition.Location = new System.Drawing.Point(142, 69);
+            this.nTransition.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.nTransition.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -499,7 +543,7 @@ namespace MaxLifx.UIs
             0,
             0});
             this.nTransition.Name = "nTransition";
-            this.nTransition.Size = new System.Drawing.Size(100, 20);
+            this.nTransition.Size = new System.Drawing.Size(150, 26);
             this.nTransition.TabIndex = 89;
             this.nTransition.Value = new decimal(new int[] {
             100,
@@ -511,54 +555,60 @@ namespace MaxLifx.UIs
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(51, 21);
+            this.label7.Location = new System.Drawing.Point(76, 32);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.Size = new System.Drawing.Size(49, 20);
             this.label7.TabIndex = 90;
             this.label7.Text = "Delay";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(33, 47);
+            this.label8.Location = new System.Drawing.Point(50, 72);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 13);
+            this.label8.Size = new System.Drawing.Size(78, 20);
             this.label8.TabIndex = 91;
             this.label8.Text = "Transition";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(199, 113);
+            this.label12.Location = new System.Drawing.Point(298, 174);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(20, 13);
+            this.label12.Size = new System.Drawing.Size(30, 20);
             this.label12.TabIndex = 98;
             this.label12.Text = "ms";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(199, 21);
+            this.label10.Location = new System.Drawing.Point(298, 32);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 13);
+            this.label10.Size = new System.Drawing.Size(30, 20);
             this.label10.TabIndex = 92;
             this.label10.Text = "ms";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(4, 113);
+            this.label13.Location = new System.Drawing.Point(6, 174);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(79, 13);
+            this.label13.Size = new System.Drawing.Size(114, 20);
             this.label13.TabIndex = 97;
             this.label13.Text = "Wave Duration";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(199, 47);
+            this.label9.Location = new System.Drawing.Point(298, 72);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(20, 13);
+            this.label9.Size = new System.Drawing.Size(30, 20);
             this.label9.TabIndex = 93;
             this.label9.Text = "ms";
             // 
@@ -569,7 +619,8 @@ namespace MaxLifx.UIs
             0,
             0,
             0});
-            this.nWaveDuration.Location = new System.Drawing.Point(95, 111);
+            this.nWaveDuration.Location = new System.Drawing.Point(142, 171);
+            this.nWaveDuration.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.nWaveDuration.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -581,7 +632,7 @@ namespace MaxLifx.UIs
             0,
             0});
             this.nWaveDuration.Name = "nWaveDuration";
-            this.nWaveDuration.Size = new System.Drawing.Size(100, 20);
+            this.nWaveDuration.Size = new System.Drawing.Size(150, 26);
             this.nWaveDuration.TabIndex = 96;
             this.nWaveDuration.Value = new decimal(new int[] {
             100,
@@ -593,21 +644,25 @@ namespace MaxLifx.UIs
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(22, 87);
+            this.label11.Location = new System.Drawing.Point(33, 134);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(63, 13);
+            this.label11.Size = new System.Drawing.Size(87, 20);
             this.label11.TabIndex = 94;
             this.label11.Text = "Wave Type";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Controls.Add(this.cbReorder);
             this.groupBox1.Controls.Add(this.bDown);
             this.groupBox1.Controls.Add(this.bUp);
             this.groupBox1.Controls.Add(this.lbLabels);
-            this.groupBox1.Location = new System.Drawing.Point(5, 3);
+            this.groupBox1.Location = new System.Drawing.Point(8, 5);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(248, 304);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(372, 468);
             this.groupBox1.TabIndex = 115;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Bulbs to Use:";
@@ -615,9 +670,10 @@ namespace MaxLifx.UIs
             // cbReorder
             // 
             this.cbReorder.AutoSize = true;
-            this.cbReorder.Location = new System.Drawing.Point(74, 274);
+            this.cbReorder.Location = new System.Drawing.Point(111, 422);
+            this.cbReorder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbReorder.Name = "cbReorder";
-            this.cbReorder.Size = new System.Drawing.Size(64, 17);
+            this.cbReorder.Size = new System.Drawing.Size(93, 24);
             this.cbReorder.TabIndex = 113;
             this.cbReorder.Text = "Reorder";
             this.cbReorder.UseVisualStyleBackColor = true;
@@ -626,9 +682,10 @@ namespace MaxLifx.UIs
             // bDown
             // 
             this.bDown.Enabled = false;
-            this.bDown.Location = new System.Drawing.Point(194, 270);
+            this.bDown.Location = new System.Drawing.Point(291, 415);
+            this.bDown.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bDown.Name = "bDown";
-            this.bDown.Size = new System.Drawing.Size(44, 23);
+            this.bDown.Size = new System.Drawing.Size(66, 35);
             this.bDown.TabIndex = 112;
             this.bDown.Text = "Down";
             this.bDown.UseVisualStyleBackColor = true;
@@ -637,9 +694,10 @@ namespace MaxLifx.UIs
             // bUp
             // 
             this.bUp.Enabled = false;
-            this.bUp.Location = new System.Drawing.Point(144, 270);
+            this.bUp.Location = new System.Drawing.Point(216, 415);
+            this.bUp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bUp.Name = "bUp";
-            this.bUp.Size = new System.Drawing.Size(44, 23);
+            this.bUp.Size = new System.Drawing.Size(66, 35);
             this.bUp.TabIndex = 111;
             this.bUp.Text = "Up";
             this.bUp.UseVisualStyleBackColor = true;
@@ -648,10 +706,12 @@ namespace MaxLifx.UIs
             // lbLabels
             // 
             this.lbLabels.FormattingEnabled = true;
-            this.lbLabels.Location = new System.Drawing.Point(4, 16);
+            this.lbLabels.ItemHeight = 20;
+            this.lbLabels.Location = new System.Drawing.Point(6, 25);
+            this.lbLabels.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lbLabels.Name = "lbLabels";
             this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lbLabels.Size = new System.Drawing.Size(234, 251);
+            this.lbLabels.Size = new System.Drawing.Size(349, 384);
             this.lbLabels.TabIndex = 86;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
@@ -663,19 +723,31 @@ namespace MaxLifx.UIs
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(0, 537);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.groupBox4);
-            this.panel1.Location = new System.Drawing.Point(4, 6);
+            this.panel1.Location = new System.Drawing.Point(6, 9);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(256, 538);
+            this.panel1.Size = new System.Drawing.Size(384, 828);
             this.panel1.TabIndex = 116;
             this.panel1.SizeChanged += new System.EventHandler(this.panel1_SizeChanged);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(6, 415);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(72, 35);
+            this.button6.TabIndex = 114;
+            this.button6.Text = "Invert";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // SoundResponseUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1135, 556);
+            this.ClientSize = new System.Drawing.Size(1702, 855);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "SoundResponseUI";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SoundResponseUI";
@@ -749,5 +821,7 @@ namespace MaxLifx.UIs
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCentreRanges;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
     }
 }

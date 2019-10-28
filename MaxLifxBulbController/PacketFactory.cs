@@ -48,6 +48,8 @@ namespace MaxLifx.Packets
         // The following is interpreted from https://community.lifx.com/t/building-a-lifx-packet/59
         private static byte[] GetSizelessHeader(byte[] targetMacAddress, IPayload payload)
         {
+            var sizelessHeader2 = new byte[34];
+
             // Sizeless Header
             var originAddressTaggedProtocol = new byte[2];
 
@@ -67,49 +69,46 @@ namespace MaxLifx.Packets
             // we need to switch the two bytes around before we add them to the frame
             Array.Reverse(originAddressTaggedProtocol, 0, originAddressTaggedProtocol.Length);
 
+            sizelessHeader2[0] = originAddressTaggedProtocol[0];
+            sizelessHeader2[1] = originAddressTaggedProtocol[1];
+
             // The next 32 bit(4 bytes) are the source, which are unique to the client and used to identify broadcasts that it cares about.Since 
             // we are a dumb client and don't care about the response, lets set this all to zero (0). If you are writing a client program you'll 
             // want to use a unique value here.
-            byte[] source = new byte[4];
             // we want the response of the following payloads:
-            if((targetMacAddress.Sum(x => x) != 0) && payload.GetType() != typeof(GetServicePayload) && payload.GetType() != typeof(GetLabelPayload) && payload.GetType() != typeof(GetColourZonesPayload) && payload.GetType() != typeof(GetVersionPayload))
-                source = new byte[]  { 1,2,3,4 };
+            if ((targetMacAddress.Sum(x => x) != 0) && payload.GetType() != typeof(GetServicePayload) && payload.GetType() != typeof(GetLabelPayload) && payload.GetType() != typeof(GetColourZonesPayload) && payload.GetType() != typeof(GetVersionPayload))
+            {
+                sizelessHeader2[2] = 1;
+                sizelessHeader2[3] = 2;
+                sizelessHeader2[4] = 3;
+                sizelessHeader2[5] = 4;
+            }
 
             // The frame address starts with 64 bits (8 bytes) of the target field. Since we want this message to be processed by all device we will set it to zero.
-            var frameAddress = targetMacAddress;// tagged = 0 and  { 0xD0, 0x73, 0xD5, 0x02, 0xA7, 0x72,0,0};
-            //Array.Reverse(_frameAddress, 0, _frameAddress.Length);
+//            var frameAddress = targetMacAddress;// tagged = 0 and  { 0xD0, 0x73, 0xD5, 0x02, 0xA7, 0x72,0,0};
+            sizelessHeader2[6] = targetMacAddress[0];
+            sizelessHeader2[7] = targetMacAddress[1];
+            sizelessHeader2[8] = targetMacAddress[2];
+            sizelessHeader2[9] = targetMacAddress[3];
+            sizelessHeader2[10] = targetMacAddress[4];
+            sizelessHeader2[11] = targetMacAddress[5];
 
             // This is followed by a reserved section of 48 bits(6 bytes) that must be all zeros.
-            var reserved = new byte[6];
 
             // The next byte is another field so follow the steps above to build the binary then hex representations. In this example we will be setting the 
             // ack_required and res_required fields to zero (0) because our bash script wont be listening for a response. This leads to a byte of zero being added.
-            var ackResRequired = new byte[1];
 
             // Since we aren't processing or creating responses the sequence number is irrelevant so lets also set it to zero (0)
-            var sequence = new byte[1];
 
             // Next we include the protocol header. which begins with 64 reserved bits (8 bytes). Set these all to zero.
-            var prReserved = new byte[8];
 
             // We are changing the color of our lights, so lets use SetColor9, which is message type 0x66 (102 in decimal). Remember to represent this in little endian.
-            var messageType = payload.MessageType;
-            //_messageType[0] = 23;
+            sizelessHeader2[30] = payload.MessageType[0];
+            sizelessHeader2[31] = payload.MessageType[1];
 
             // Finally another reserved field of 16 bits (2 bytes).
-            var prReserved2 = new byte[2];
 
-            var sizelessHeader = originAddressTaggedProtocol
-                                .Concat(source)
-                                .Concat(frameAddress)
-                                .Concat(reserved)
-                                .Concat(ackResRequired)
-                                .Concat(sequence)
-                                .Concat(prReserved)
-                                .Concat(messageType)
-                                .Concat(prReserved2)
-                                .ToArray();
-            return sizelessHeader;
+            return sizelessHeader2;
         }
     }
 }

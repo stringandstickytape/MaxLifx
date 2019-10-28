@@ -29,7 +29,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public List<double> SaturationRanges { get; set; } = new List<double>();
         public List<double> Saturations { get; set; } = new List<double>();
 
-        public List<int> LevelRanges { get; set; } = new List<int>();
+        public List<byte> LevelRanges { get; set; } = new List<byte>();
         public List<int> Levels { get; set; } = new List<int>();
         public List<int> Bins { get; set; } = new List<int>();
 

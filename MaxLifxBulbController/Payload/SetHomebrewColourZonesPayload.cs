@@ -28,8 +28,8 @@ namespace MaxLifx.Payload
                     payload.Hue = payload.Hue + 36000;
                 payload.Hue = payload.Hue % 360;
 
-                var _hsbkColourLE = BitConverter.GetBytes((payload.Hue * 65535) / 360);
-                var _hsbkColour = new byte[2] { _hsbkColourLE[0], _hsbkColourLE[1] };
+                var _hsbkColourLE = BitConverter.GetBytes(payload.Hue * 182);
+                //var _hsbkColour = new byte[2] { _hsbkColourLE[0], _hsbkColourLE[1] };
 
                 bytes[ctr * 14 + 0] = (byte)individualPayload.Key ;
                 bytes[ctr * 14 + 1] = (byte)individualPayload.Key ;
@@ -54,10 +54,13 @@ namespace MaxLifx.Payload
 
                 var _transition = BitConverter.GetBytes(payload.TransitionDuration);
 
+                // faster than array.copy...
                 bytes[ctr * 14 + 10] = _transition[0];
                 bytes[ctr * 14 + 11] = _transition[1];
                 bytes[ctr * 14 + 12] = _transition[2];
                 bytes[ctr * 14 + 13] = _transition[3];
+
+                
 
                 //byte[] start_index = new byte[1] { (byte)individualPayload.Key };
                 //byte[] end_index = new byte[1] { (byte)individualPayload.Key };

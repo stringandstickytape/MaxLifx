@@ -45,7 +45,7 @@ namespace MaxLifx.Controls
                     var a = graphics.VisibleClipBounds;
                     var p = latestPoints[ctr];
 
-                    var newP = new Point((int) (p.X/_spectrumEngine.Bins*a.Width), ((int) (p.Y/256*a.Height)));
+                    var newP = new Point((int) (a.Width*p.X/_spectrumEngine.Bins), ((int) (p.Y*a.Height / 256)));
 
                     if (lastPoint != null)
                         graphics.DrawLine(pen, lastPoint.Value, newP);

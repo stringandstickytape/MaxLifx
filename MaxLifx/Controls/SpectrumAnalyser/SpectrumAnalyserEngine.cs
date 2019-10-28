@@ -16,13 +16,13 @@ namespace MaxLifx.Controls
         private static readonly int FftLength = 1024; // NAudio fft wants powers of two!
         private readonly SampleAggregator _sampleAggregator = new SampleAggregator(FftLength);
         public int Bins = 512; // guess a 1024 size FFT, bins is half FFT size
-        public List<PointF> LatestPoints;
+        public List<Point> LatestPoints;
         public int SelectedBin = 10;
         private IWaveIn _waveIn;
 
         public SpectrumAnalyserEngine()
         {
-            LatestPoints = new List<PointF> {new PointF(0, 100), new PointF(1, 50)};
+            LatestPoints = new List<Point>{new Point(0, 100), new Point(1, 50)};
         }
 
         public void StartCapture()
@@ -55,10 +55,10 @@ namespace MaxLifx.Controls
                 Bins = fftResults.Length/2;
             }
 
-            var points = new List<PointF>();
+            var points = new List<Point>();
             for (var n = 0; n < fftResults.Length/2; n ++)
             {
-                points.Add(new PointF(n, (float) (GetYPosLog(fftResults[n]))));
+                points.Add(new Point(n, (int) (GetYPosLog(fftResults[n]))));
             }
             LatestPoints = points;
         }

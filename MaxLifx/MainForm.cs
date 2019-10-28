@@ -469,9 +469,10 @@ namespace MaxLifx
             var p = new SetPowerPayload(true);
 
             foreach (var b in _bulbController.Bulbs)
-            {   MaxLifxBulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
+            {
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                MaxLifxBulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
             }
         }
 
@@ -482,9 +483,9 @@ namespace MaxLifx
 
             foreach (var b in _bulbController.Bulbs)
             {
-                MaxLifxBulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                MaxLifxBulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
+                _bulbController.SendPayloadToMacAddress(p, b.MacAddress, b.IpAddress);
             }
         }
 
@@ -505,9 +506,9 @@ namespace MaxLifx
 
             foreach (var b in _bulbController.Bulbs)
             {
-                MaxLifxBulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
+                _bulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
                 Thread.Sleep(1);
-                MaxLifxBulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
+                _bulbController.SendPayloadToMacAddress(c, b.MacAddress, b.IpAddress);
             }
         }
 
