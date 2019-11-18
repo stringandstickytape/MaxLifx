@@ -445,8 +445,9 @@ namespace MaxLifx
             // determine colours on screen
             // var screenColourSet = GetScreenColours(SettingsCast.TopLeft, SettingsCast.BottomRight, screenPixel, gdest, gsrc);
             Color? avgColour = null;
-            ScreenColorSet screenColourSet = null;
- 
+
+            bool needNewFrame = true;
+
             foreach (var bulbSetting in SettingsCast.BulbSettings)
             {
                 if (!bulbSetting.Enabled) continue;
@@ -531,7 +532,9 @@ namespace MaxLifx
 
                     //screenColourSet = GetScreenColours(bulbSetting.TopLeft, bulbSetting.BottomRight, screenPixel, gdest, gsrc);
 
-                    avgColour = TestDD(bulbSetting);
+                    avgColour = TestDD(bulbSetting, needNewFrame);
+                    needNewFrame = false;
+
                     if (avgColour == null) continue;
 
                     // Color isn't HSV, so need to convert
@@ -577,10 +580,12 @@ namespace MaxLifx
         [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
         static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
 
-        private unsafe Color? TestDD(BulbSetting bulbSetting)
+        DesktopFrame frame;
+        private unsafe Color? TestDD(BulbSetting bulbSetting, bool getNewFrame = false)
         {
-            
-            var frame = _desktopDuplicator.GetLatestFrame();
+            if(getNewFrame || frame == null)
+                frame = _desktopDuplicator.GetLatestFrame();
+
             Color? all = null;
             Bitmap b = new Bitmap(1, 1);
             if (frame != null && frame.DesktopImage != null)

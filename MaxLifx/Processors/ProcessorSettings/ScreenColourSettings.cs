@@ -4,7 +4,6 @@ namespace MaxLifx.Processors.ProcessorSettings
 {
     public class ScreenColourSettings : SettingsBase, ISettings
     {
-        public Point BottomRight = new Point(450, 300);
         public int Brightness = 65535;
         public int Kelvin = 3500;
         public int Delay = 50;

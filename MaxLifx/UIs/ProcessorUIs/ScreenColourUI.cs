@@ -76,7 +76,7 @@ namespace MaxLifx.UIs
             _f.ResizeEnd += F_ResizeEnd;
             _f.Move += F_ResizeEnd;
             _f.FormClosed += F_FormClosed;
-            
+            _f.Width = 50;
             _f.Show();
         }
 
@@ -88,14 +88,14 @@ namespace MaxLifx.UIs
 
         private void F_ResizeEnd(object sender, EventArgs e)
         {
-            if (MouseButtons == MouseButtons.Left) return;
+            //if (MouseButtons == MouseButtons.Left) return;
 
             SuspendUI = true;
 
             if(Settings.SelectedLabels.Count == 1)
             {
                 var bulbSetting = Settings.BulbSettings.Single(x => x.Label == Settings.SelectedLabels[0]);
-                bulbSetting.TopLeft = new Point(_f.Location.X + 7, _f.Location.Y);
+                bulbSetting.TopLeft = new Point(_f.Location.X + 102, _f.Location.Y + 38);
                 bulbSetting.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
                 SetPositionTextBoxesFromSettings(bulbSetting);
             }
@@ -151,14 +151,10 @@ namespace MaxLifx.UIs
             if (bulbSetting != null) {
                 tlx.Text = bulbSetting.TopLeft.X.ToString();
                 tly.Text = bulbSetting.TopLeft.Y.ToString();
-                brx.Text = bulbSetting.BottomRight.X.ToString();
-                bry.Text = bulbSetting.BottomRight.Y.ToString();
             } else
             {
                 tlx.Text = "";
                 tly.Text = "";
-                brx.Text = "";
-                bry.Text = "";
             }
             fade.Text = Settings.Fade.ToString();
             brightness.Text = Settings.Brightness.ToString();
@@ -186,8 +182,6 @@ namespace MaxLifx.UIs
 
             int tlxval = 0,
                 tlyval = 0,
-                brxval = 0,
-                bryval = 0,
                 fadeval = 150,
                 delayval = 50,
                 brightval = 32767,
@@ -199,8 +193,6 @@ namespace MaxLifx.UIs
 
             int.TryParse(tlx.Text, out tlxval);
             int.TryParse(tly.Text, out tlyval);
-            int.TryParse(brx.Text, out brxval);
-            int.TryParse(bry.Text, out bryval);
             int.TryParse(fade.Text, out fadeval);
             int.TryParse(delay.Text, out delayval);
             int.TryParse(saturation.Text, out satval);
@@ -211,7 +203,6 @@ namespace MaxLifx.UIs
             int.TryParse(tbMonitor.Text, out monitor);
 
             Settings.TopLeft = new Point(tlxval, tlyval);
-            Settings.BottomRight = new Point(brxval, bryval);
             Settings.Fade = Math.Max(fadeval ,0);
             Settings.Delay = Math.Max(delayval, 0);
             Settings.Saturation = Math.Min(satval, 65535);
@@ -242,8 +233,6 @@ namespace MaxLifx.UIs
 
                 tlx.Text = bulbSettings.TopLeft.X.ToString();
                 tly.Text = bulbSettings.TopLeft.Y.ToString();
-                brx.Text = bulbSettings.BottomRight.X.ToString();
-                bry.Text = bulbSettings.BottomRight.Y.ToString();
 
             }
         }
@@ -277,7 +266,6 @@ namespace MaxLifx.UIs
         int height = bounds2.Height;
         int y3 = y2 + height;
         Point point2 = new Point(x3, y3);
-        settings2.BottomRight = point2;
         this.SetPositionTextBoxesFromSettings();
         this.SuspendUI = false;
         ProcessorBase.SaveSettings<ScreenColourSettings>(this.Settings, (string) null);

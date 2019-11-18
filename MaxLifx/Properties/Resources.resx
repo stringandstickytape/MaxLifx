@@ -121,6 +121,9 @@
   <data name="ColourWheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Colour Wheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="crosshair" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\crosshair.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="m (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\m (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

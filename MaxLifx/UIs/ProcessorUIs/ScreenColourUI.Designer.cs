@@ -29,12 +29,8 @@
         private void InitializeComponent()
         {
             this.button5 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.tlx = new System.Windows.Forms.TextBox();
             this.tly = new System.Windows.Forms.TextBox();
-            this.brx = new System.Windows.Forms.TextBox();
-            this.bry = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.kelvin = new System.Windows.Forms.Label();
@@ -55,51 +51,28 @@
             this.saturation = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnMonitor1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tbMonitor = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox4.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(10, 118);
+            this.button5.Location = new System.Drawing.Point(154, 283);
             this.button5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(322, 35);
+            this.button5.Size = new System.Drawing.Size(176, 35);
             this.button5.TabIndex = 23;
-            this.button5.Text = "Set Screen Area";
+            this.button5.Text = "Set Screen Location";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(54, 171);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 20);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Top-Left";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(54, 203);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(104, 20);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "Bottom-Right";
-            // 
             // tlx
             // 
-            this.tlx.Location = new System.Drawing.Point(158, 166);
+            this.tlx.Location = new System.Drawing.Point(189, 328);
             this.tlx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tlx.Name = "tlx";
             this.tlx.Size = new System.Drawing.Size(54, 26);
@@ -109,33 +82,13 @@
             // 
             // tly
             // 
-            this.tly.Location = new System.Drawing.Point(216, 166);
+            this.tly.Location = new System.Drawing.Point(247, 328);
             this.tly.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tly.Name = "tly";
             this.tly.Size = new System.Drawing.Size(54, 26);
             this.tly.TabIndex = 18;
             this.tly.Text = "0";
             this.tly.TextChanged += new System.EventHandler(this.pos_TextChanged);
-            // 
-            // brx
-            // 
-            this.brx.Location = new System.Drawing.Point(158, 198);
-            this.brx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.brx.Name = "brx";
-            this.brx.Size = new System.Drawing.Size(54, 26);
-            this.brx.TabIndex = 19;
-            this.brx.Text = "0";
-            this.brx.TextChanged += new System.EventHandler(this.pos_TextChanged);
-            // 
-            // bry
-            // 
-            this.bry.Location = new System.Drawing.Point(216, 198);
-            this.bry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.bry.Name = "bry";
-            this.bry.Size = new System.Drawing.Size(54, 26);
-            this.bry.TabIndex = 20;
-            this.bry.Text = "0";
-            this.bry.TextChanged += new System.EventHandler(this.pos_TextChanged);
             // 
             // groupBox4
             // 
@@ -337,7 +290,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(9, 243);
+            this.button2.Location = new System.Drawing.Point(18, 430);
             this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(324, 51);
@@ -357,57 +310,19 @@
             this.lbLabels.TabIndex = 87;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.btnMonitor1);
-            this.groupBox1.Controls.Add(this.button5);
-            this.groupBox1.Controls.Add(this.bry);
-            this.groupBox1.Controls.Add(this.brx);
-            this.groupBox1.Controls.Add(this.tly);
-            this.groupBox1.Controls.Add(this.tlx);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(26, 379);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Size = new System.Drawing.Size(342, 312);
-            this.groupBox1.TabIndex = 102;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Screen Area To Capture";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(10, 74);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(322, 35);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "Secondary Monitor";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // btnMonitor1
-            // 
-            this.btnMonitor1.Location = new System.Drawing.Point(9, 29);
-            this.btnMonitor1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnMonitor1.Name = "btnMonitor1";
-            this.btnMonitor1.Size = new System.Drawing.Size(324, 35);
-            this.btnMonitor1.TabIndex = 36;
-            this.btnMonitor1.Text = "Primary Monitor";
-            this.btnMonitor1.UseVisualStyleBackColor = true;
-            this.btnMonitor1.Click += new System.EventHandler(this.btnMonitor1_Click);
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button5);
             this.groupBox2.Controls.Add(this.lbLabels);
-            this.groupBox2.Location = new System.Drawing.Point(26, 142);
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.tly);
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.tlx);
+            this.groupBox2.Location = new System.Drawing.Point(26, 61);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox2.Size = new System.Drawing.Size(342, 166);
+            this.groupBox2.Size = new System.Drawing.Size(342, 504);
             this.groupBox2.TabIndex = 103;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Select Lights to Configure:";
@@ -415,7 +330,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(39, 329);
+            this.checkBox1.Location = new System.Drawing.Point(13, 289);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(121, 24);
             this.checkBox1.TabIndex = 104;
@@ -425,7 +340,7 @@
             // 
             // tbMonitor
             // 
-            this.tbMonitor.Location = new System.Drawing.Point(176, 27);
+            this.tbMonitor.Location = new System.Drawing.Point(106, 25);
             this.tbMonitor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbMonitor.Name = "tbMonitor";
             this.tbMonitor.Size = new System.Drawing.Size(54, 26);
@@ -433,24 +348,31 @@
             this.tbMonitor.Text = "0";
             this.tbMonitor.TextChanged += new System.EventHandler(this.pos_TextChanged);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(31, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 20);
+            this.label4.TabIndex = 107;
+            this.label4.Text = "Monitor";
+            // 
             // ScreenColourUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 954);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.tbMonitor);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ScreenColourUI";
             this.Text = "ScreenColourUI";
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -458,12 +380,8 @@
 
         #endregion
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tlx;
         private System.Windows.Forms.TextBox tly;
-        private System.Windows.Forms.TextBox brx;
-        private System.Windows.Forms.TextBox bry;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox delay;
@@ -479,16 +397,14 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lbLabels;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbBrightnessMin;
         private System.Windows.Forms.TextBox tbSaturationMin;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnMonitor1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tbKelvin;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label kelvin;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox tbMonitor;
+        private System.Windows.Forms.Label label4;
     }
 }
