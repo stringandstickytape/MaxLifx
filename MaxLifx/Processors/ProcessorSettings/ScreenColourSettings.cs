@@ -16,5 +16,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public Point TopLeft = new Point(0, 0);
         // keep track of the different number of multizone lights
         public HashSet<int> MultiColourZones = new HashSet<int>();
+
+        public int Monitor = 0;
     }
 }

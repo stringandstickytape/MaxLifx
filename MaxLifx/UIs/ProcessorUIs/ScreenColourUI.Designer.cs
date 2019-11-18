@@ -60,6 +60,7 @@
             this.btnMonitor1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tbMonitor = new System.Windows.Forms.TextBox();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -402,14 +403,14 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbLabels);
-            this.groupBox2.Location = new System.Drawing.Point(26, 20);
+            this.groupBox2.Location = new System.Drawing.Point(26, 142);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox2.Size = new System.Drawing.Size(342, 288);
+            this.groupBox2.Size = new System.Drawing.Size(342, 166);
             this.groupBox2.TabIndex = 103;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Select Bulbs to Use:";
+            this.groupBox2.Text = "Select Lights to Configure:";
             // 
             // checkBox1
             // 
@@ -422,11 +423,22 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // tbMonitor
+            // 
+            this.tbMonitor.Location = new System.Drawing.Point(176, 27);
+            this.tbMonitor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbMonitor.Name = "tbMonitor";
+            this.tbMonitor.Size = new System.Drawing.Size(54, 26);
+            this.tbMonitor.TabIndex = 106;
+            this.tbMonitor.Text = "0";
+            this.tbMonitor.TextChanged += new System.EventHandler(this.pos_TextChanged);
+            // 
             // ScreenColourUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 954);
+            this.Controls.Add(this.tbMonitor);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -477,5 +489,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label kelvin;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox tbMonitor;
     }
 }

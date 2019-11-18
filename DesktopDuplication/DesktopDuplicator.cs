@@ -26,7 +26,7 @@ namespace DesktopDuplication
 
         private Texture2D desktopImageTexture = null;
         private OutputDuplicateFrameInformation frameInfo = new OutputDuplicateFrameInformation();
-        private int mWhichOutputDevice = -1;
+        public int mWhichOutputDevice = -1;
 
         private Bitmap finalImage1, finalImage2;
         private bool isFinalImage1 = false;
@@ -277,7 +277,9 @@ namespace DesktopDuplication
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
-            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Width(), mOutputDesc.DesktopBounds.Height(), PixelFormat.Format32bppRgb);
+            if(FinalImage == null)
+                FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Width(), mOutputDesc.DesktopBounds.Height(), PixelFormat.Format32bppRgb);
+
             var boundsRect = new System.Drawing.Rectangle(0, 0, mOutputDesc.DesktopBounds.Width(), mOutputDesc.DesktopBounds.Height());
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = FinalImage.LockBits(boundsRect, ImageLockMode.WriteOnly, FinalImage.PixelFormat);

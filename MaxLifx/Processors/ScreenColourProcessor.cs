@@ -52,7 +52,7 @@ namespace MaxLifx
 
         public void ScreenColour(MaxLifxBulbController bulbController, Random random)
         {
-            _desktopDuplicator = new DesktopDuplicator(0);
+            
             
             var frames = 0;
             var start = DateTime.Now;
@@ -62,6 +62,8 @@ namespace MaxLifx
                 Settings = new ScreenColourSettings();
             }
 
+            _desktopDuplicator = new DesktopDuplicator(SettingsCast.Monitor);
+            
             foreach (var bulb in bulbController.Bulbs.Select(x => x))
             {
                 if (!SettingsCast.BulbSettings.Select(x => x.Label).Contains(bulb.Label))
@@ -425,6 +427,9 @@ namespace MaxLifx
         // this is where the actual colours are determined and set for the bulbs
         private void DoMainLoop(MaxLifxBulbController bulbController, ref int frames, DateTime start)
         {
+            if(_desktopDuplicator.mWhichOutputDevice != SettingsCast.Monitor)
+                _desktopDuplicator = new DesktopDuplicator(SettingsCast.Monitor);
+
             if (ShowUI)
             {
                 var t = new Thread(() =>
@@ -524,23 +529,10 @@ namespace MaxLifx
                     // set once
                     var bulb = bulbController.GetBulbFromLabel(label, out int zone);
 
-                    var screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
-                    var gdest = Graphics.FromImage(screenPixel);
-                    var gsrc = Graphics.FromHwnd(IntPtr.Zero);
-
                     //screenColourSet = GetScreenColours(bulbSetting.TopLeft, bulbSetting.BottomRight, screenPixel, gdest, gsrc);
 
                     avgColour = TestDD(bulbSetting);
                     if (avgColour == null) continue;
-
-                    Debug.WriteLine(avgColour);
-
-
-
-
-
-                    // default is all
-                    //avgColour = screenColourSet.all;
 
                     // Color isn't HSV, so need to convert
                     double hue = 0;

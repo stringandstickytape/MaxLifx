@@ -33,14 +33,50 @@ namespace MaxLifx.UIs
 
         private bool SuspendUI { get; set; }
 
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private bool _dragging;
+        private Point _offset;
+        private void Borderless_MouseDown(object sender, MouseEventArgs e)
+        {
+            _offset.X = e.X;
+            _offset.Y = e.Y;
+            _dragging = true;
+        }
+
+        private void Borderless_MouseUp(object sender, MouseEventArgs e)
+        {
+            _dragging = false;
+        }
+        private void Borderless_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragging)
+            {
+                Point currentScreenPos = _f.PointToScreen(e.Location);
+                _f.Location = new Point
+                    (currentScreenPos.X - _offset.X,
+                     currentScreenPos.Y - _offset.Y);
+            }
+        }
+
         private void button5_Click(object sender, EventArgs e)
         {
             if (_f != null) return;
             _f = new Form2();
+            _f.MouseDown += Borderless_MouseDown;
+            _f.MouseUp += Borderless_MouseUp;
+            _f.MouseMove += Borderless_MouseMove;
             _f.Opacity = .5;
             _f.ResizeEnd += F_ResizeEnd;
             _f.Move += F_ResizeEnd;
             _f.FormClosed += F_FormClosed;
+            
             _f.Show();
         }
 
@@ -129,6 +165,7 @@ namespace MaxLifx.UIs
             saturation.Text = Settings.Saturation.ToString();
             delay.Text = Settings.Delay.ToString();
             tbKelvin.Text = Settings.Kelvin.ToString();
+            tbMonitor.Text = Settings.Monitor.ToString();
 
         }
 
@@ -157,7 +194,8 @@ namespace MaxLifx.UIs
                 satval = 32767,
                 minbrightval  = 0,
                 minsatval = 0,
-                kelvinval = 3500;
+                kelvinval = 3500,
+                monitor = 0;
 
             int.TryParse(tlx.Text, out tlxval);
             int.TryParse(tly.Text, out tlyval);
@@ -170,6 +208,7 @@ namespace MaxLifx.UIs
             int.TryParse(tbSaturationMin.Text, out minsatval);
             int.TryParse(tbBrightnessMin.Text, out minbrightval);
             int.TryParse(tbKelvin.Text, out kelvinval);
+            int.TryParse(tbMonitor.Text, out monitor);
 
             Settings.TopLeft = new Point(tlxval, tlyval);
             Settings.BottomRight = new Point(brxval, bryval);
@@ -180,6 +219,7 @@ namespace MaxLifx.UIs
             Settings.MinSaturation = Math.Min(Math.Max(minsatval, 0), Settings.Saturation);
             Settings.MinBrightness = Math.Min(Math.Max(minbrightval, 0), Settings.Brightness);
             Settings.Kelvin = Math.Min(Math.Max(kelvinval, 2500),9000);
+            Settings.Monitor = monitor;
 
             SuspendUI = false;
             ProcessorBase.SaveSettings(Settings, null);
