@@ -27,7 +27,7 @@ namespace MaxLifx.UIs
             Settings = settings;
             BulbController = bulbController;
             SetPositionTextBoxesFromSettings();
-            SetupLabels(lbLabels, Settings.LabelsAndLocations.Select(x => x.Label).ToList(), Settings);
+            SetupLabels(lbLabels, Settings.BulbSettings.Select(x => x.Label).ToList(), Settings);
             SuspendUI = false;
         }
 
@@ -55,16 +55,23 @@ namespace MaxLifx.UIs
             if (MouseButtons == MouseButtons.Left) return;
 
             SuspendUI = true;
-            Settings.TopLeft = new Point(_f.Location.X + 7, _f.Location.Y);
-            Settings.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
-            SetPositionTextBoxesFromSettings();
+
+            if(Settings.SelectedLabels.Count == 1)
+            {
+                var bulbSetting = Settings.BulbSettings.Single(x => x.Label == Settings.SelectedLabels[0]);
+                bulbSetting.TopLeft = new Point(_f.Location.X + 7, _f.Location.Y);
+                bulbSetting.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
+                SetPositionTextBoxesFromSettings(bulbSetting);
+            }
+
+            
             SuspendUI = false;
             if (Settings.MultiColourZones.Any()){
                 // send colour to first zone so can match to an area
                 foreach (var label in Settings.SelectedLabels)
                 {
-                    var zones = Settings.LabelsAndLocations.Single(x => x.Label == label).Zones;
-                    var location = Settings.LabelsAndLocations.Single(x => x.Label == label).ScreenLocation;
+                    var zones = Settings.BulbSettings.Single(x => x.Label == label).Zones;
+                    var location = Settings.BulbSettings.Single(x => x.Label == label).ScreenLocation;
                     if (zones > 1 && location == ScreenLocation.None)
                     {
                         // set first zone to green
@@ -103,12 +110,20 @@ namespace MaxLifx.UIs
             ProcessorBase.SaveSettings(Settings, null);
         }
 
-        private void SetPositionTextBoxesFromSettings()
+        private void SetPositionTextBoxesFromSettings(BulbSetting bulbSetting = null)
         {
-            tlx.Text = Settings.TopLeft.X.ToString();
-            tly.Text = Settings.TopLeft.Y.ToString();
-            brx.Text = Settings.BottomRight.X.ToString();
-            bry.Text = Settings.BottomRight.Y.ToString();
+            if (bulbSetting != null) {
+                tlx.Text = bulbSetting.TopLeft.X.ToString();
+                tly.Text = bulbSetting.TopLeft.Y.ToString();
+                brx.Text = bulbSetting.BottomRight.X.ToString();
+                bry.Text = bulbSetting.BottomRight.Y.ToString();
+            } else
+            {
+                tlx.Text = "";
+                tly.Text = "";
+                brx.Text = "";
+                bry.Text = "";
+            }
             fade.Text = Settings.Fade.ToString();
             brightness.Text = Settings.Brightness.ToString();
             saturation.Text = Settings.Saturation.ToString();
@@ -119,10 +134,10 @@ namespace MaxLifx.UIs
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var f = new AssignAreaToBulbForm(Settings.LabelsAndLocations);
+            var f = new AssignAreaToBulbForm(Settings.BulbSettings);
             f.ShowDialog();
 
-            Settings.LabelsAndLocations = f.LabelsAndLocations;
+            Settings.BulbSettings = f.LabelsAndLocations;
             ProcessorBase.SaveSettings(Settings, null);
         }
 
@@ -180,9 +195,22 @@ namespace MaxLifx.UIs
                     selectedLabels.Add(q.ToString());
 
                 Settings.SelectedLabels = selectedLabels;
+
+                var bulbSettings = GetBulbSettingsFromSelectedItemLabel();
+
+                checkBox1.Checked = bulbSettings.Enabled;
+
+                tlx.Text = bulbSettings.TopLeft.X.ToString();
+                tly.Text = bulbSettings.TopLeft.Y.ToString();
+                brx.Text = bulbSettings.BottomRight.X.ToString();
+                bry.Text = bulbSettings.BottomRight.Y.ToString();
+
             }
         }
-            private void btnMonitor1_Click(object sender, EventArgs e)
+
+        private BulbSetting GetBulbSettingsFromSelectedItemLabel() => Settings.BulbSettings.Single(x => x.Label == Settings.SelectedLabels[0]);
+
+        private void btnMonitor1_Click(object sender, EventArgs e)
         {
         this.GetSizeFromMonitor(((IEnumerable<Screen>) Screen.AllScreens).Single<Screen>((Func<Screen, bool>) (x => x.Primary)));
         }
@@ -224,6 +252,11 @@ namespace MaxLifx.UIs
         }
         else
             this.GetSizeFromMonitor(monitor);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.BulbSettings.Single(x => x.Label == Settings.SelectedLabels[0]).Enabled = ((CheckBox)sender).Checked;
         }
     }
 

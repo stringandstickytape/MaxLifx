@@ -8,11 +8,11 @@ namespace MaxLifx
 {
     public partial class AssignAreaToBulbForm : Form
     {
-        public List<LabelAndLocationType> LabelsAndLocations;
-        public LabelAndLocationType SelectedLabelAndLocation;
+        public List<BulbSetting> LabelsAndLocations;
+        public BulbSetting SelectedLabelAndLocation;
         private bool _suspendUi;
 
-        public AssignAreaToBulbForm(List<LabelAndLocationType> labelsAndLocations)
+        public AssignAreaToBulbForm(List<BulbSetting> labelsAndLocations)
         {
             LabelsAndLocations = labelsAndLocations;
             InitializeComponent();
@@ -56,7 +56,7 @@ namespace MaxLifx
             _suspendUi = true;
 
             LabelsAndLocations.Remove(LabelsAndLocations.Single(x => x.Label == SelectedLabelAndLocation.Label));
-            var l = new LabelAndLocationType();
+            var l = new BulbSetting();
             l.Label = SelectedLabelAndLocation.Label;
             l.Zones = SelectedLabelAndLocation.Zones;
             l.ScreenLocation =

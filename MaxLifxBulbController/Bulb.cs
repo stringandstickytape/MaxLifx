@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace MaxLifx.Controllers
 {
@@ -33,6 +34,9 @@ namespace MaxLifx.Controllers
             }
             set { _label = value; }
         }
+
+
+
         // by default, the bulb is set to take average of entire screen
         public ScreenLocation Location = ScreenLocation.All;
 

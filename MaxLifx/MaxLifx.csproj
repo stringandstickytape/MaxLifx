@@ -261,6 +261,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
+      <Project>{222C215B-663F-4BD6-9B3E-8FA99C867B22}</Project>
+      <Name>DesktopDuplication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MaxLifxBulbController\MaxLifxBulbController.csproj">
       <Project>{53625bb1-4234-4348-9952-2624e9bc9ba8}</Project>
       <Name>MaxLifxBulbController</Name>

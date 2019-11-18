@@ -10,7 +10,7 @@ namespace MaxLifx.Payload
     public class GetVersionPayload : IPayload
     // getting the version info will let us know if light has zones (Beam or Z)
     {
-        private byte[] _messageType = new byte[2] { 0x20, 0 };
+        private byte[] _messageType = new byte[2] { 0x12, 0 };
         public byte[] MessageType { get { return _messageType; } }
 
         public byte[] GetPayload()

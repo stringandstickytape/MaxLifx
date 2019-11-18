@@ -9,7 +9,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public int Kelvin = 3500;
         public int Delay = 50;
         public int Fade = 150;
-        public List<LabelAndLocationType> LabelsAndLocations = new List<LabelAndLocationType>();
+        public List<BulbSetting> BulbSettings = new List<BulbSetting>();
         public int Saturation = 65535;
         public int MinSaturation = 0;
         public int MinBrightness = 0;

@@ -140,7 +140,7 @@ namespace MaxLifx.Controllers
             byte[] receivebytes;
 
             // Pause for a second to allow for slow bulb responses - not uncommmon :/
-            Thread.Sleep(1000);
+            Thread.Sleep(10000);
             Bulbs = new List<Bulb>();
             // Now loop through received packets
             while (_receivingUdpClient.Available > 0)
@@ -163,7 +163,7 @@ namespace MaxLifx.Controllers
             // Now, find the labels of all the bubs we detected
             GetLabelPayload labelPayload = new GetLabelPayload();
             // and also the version of each bulb
-            //GetVersionPayload versionPayload = new GetVersionPayload();
+            GetVersionPayload versionPayload = new GetVersionPayload();
             // and zones if any
             GetColourZonesPayload ColourZonesPayload = new GetColourZonesPayload();
             foreach (var bulb in Bulbs)
@@ -185,24 +185,24 @@ namespace MaxLifx.Controllers
                 while (_receivingUdpClient.Available > 0)
                 {
                     receivebytes = _receivingUdpClient.Receive(ref remoteIpEndPoint);
-                    if (receivebytes[0] == 0x44)
+                    if (receivebytes[0] == 0x44 && remoteIpEndPoint.Address.ToString() == bulb.IpAddress)
                     {
                         // Parse the received label and mark it against the bulb
                         var label1 = Utils.HexToAscii(Utils.ByteArrayToString(receivebytes).Substring(36 * 2));
                         bulb.Label = label1.Substring(0, label1.IndexOf('\0'));
                     }
-                    /* if (receivebytes[0] == 48)
-                    {
+                    // if (receivebytes[0] == 48)
+                    //{
                         // set the proper version of bulb
-                        bulb.Version = receivebytes[40];
-                    } */
+                       // bulb.Version = receivebytes[40];
+                   // } 
                 }
             }
             // seperating the 2 seems more reliable
             foreach (var bulb in Bulbs)
             {
                 a = new UdpClient();
-                a.Connect(_sendingEndPoint);
+                a.Connect(new IPEndPoint(IPAddress.Parse(bulb.IpAddress), 56700));
                 // Send zone request
                 sendData = PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), ColourZonesPayload);
                 a.Send(sendData, sendData.Length);
@@ -215,11 +215,45 @@ namespace MaxLifx.Controllers
                 while (_receivingUdpClient.Available > 0)
                 {
                     receivebytes = _receivingUdpClient.Receive(ref remoteIpEndPoint);
-                    if (receivebytes[0] == 46)
+                    if (receivebytes[32] == 250 && receivebytes[33] == 1 && remoteIpEndPoint.Address.ToString() == bulb.IpAddress)
                     {
                         // set the zones count of bulb
                         bulb.Zones = receivebytes[36];
                     }
+                }
+            }
+
+            foreach (var bulb in Bulbs)
+            {
+                a = new UdpClient();
+                a.Connect(_sendingEndPoint);
+                // Send zone request
+
+                
+                sendData = PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), versionPayload);
+                a.Send(sendData, sendData.Length);
+                a.Close();
+
+                //_sendingSocket.SendTo(sendData, _sendingEndPoint);
+
+                Thread.Sleep(1000);
+
+                while (_receivingUdpClient.Available > 0)
+                {
+                    receivebytes = _receivingUdpClient.Receive(ref remoteIpEndPoint);
+                    if (receivebytes[32] == 0x13)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(Utils.ByteArrayToString(receivebytes));
+                    
+                  //      if (bulb.MacAddress.StartsWith("01"))
+                    {
+                        System.Diagnostics.Debug.WriteLine("01 ^^^^");
+                    }
+
+                    // set the proper version of bulb
+                    // bulb.Version = receivebytes[40];
+                     } 
                 }
             }
 

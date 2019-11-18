@@ -13,14 +13,17 @@ using MaxLifx.Payload;
 using MaxLifx.Processors.ProcessorSettings;
 using MaxLifx.Threads;
 using MaxLifx.UIs;
+using DesktopDuplication;
+using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace MaxLifx
 {
     public class ScreenColourProcessor : ProcessorBase
     {
         public Dictionary<string, List<Rectangle>> ZoneAreas = new Dictionary<string, List<Rectangle>>();
-        private Point TopLeft { get; set; }
-        private Point BottomRight { get; set; }
+
+        private DesktopDuplicator _desktopDuplicator;
 
         [XmlIgnore]
         public ScreenColourSettings SettingsCast => ((ScreenColourSettings) Settings);
@@ -49,6 +52,8 @@ namespace MaxLifx
 
         public void ScreenColour(MaxLifxBulbController bulbController, Random random)
         {
+            _desktopDuplicator = new DesktopDuplicator(0);
+            
             var frames = 0;
             var start = DateTime.Now;
 
@@ -59,10 +64,10 @@ namespace MaxLifx
 
             foreach (var bulb in bulbController.Bulbs.Select(x => x))
             {
-                if (!SettingsCast.LabelsAndLocations.Select(x => x.Label).Contains(bulb.Label))
+                if (!SettingsCast.BulbSettings.Select(x => x.Label).Contains(bulb.Label))
                 {
                     // populating SettingsCast fields
-                    var l = new LabelAndLocationType();
+                    var l = new BulbSetting();
                     l.Label = bulb.Label;
                     l.ScreenLocation = ScreenLocation.All;
                     l.Zones = bulb.Zones;
@@ -73,27 +78,16 @@ namespace MaxLifx
                         // if multizone enabled keep track of number of zones
                         SettingsCast.MultiColourZones.Add(bulb.Zones);
                     }
-                    SettingsCast.LabelsAndLocations.Add(l);
+                    SettingsCast.BulbSettings.Add(l);
                 }
             }
 
             while (!TerminateThread)
             {
-                // check if area has changed
-                if (TopLeft == SettingsCast.TopLeft && BottomRight == SettingsCast.BottomRight)
-                {
-                    DoMainLoop(bulbController, ref frames, start);
-                }
-                else
-                {
-                    // if it has changed then recalculate zones and set
-                    zoneCalculation();
-                    TopLeft = SettingsCast.TopLeft;
-                    BottomRight = SettingsCast.BottomRight;
-                }
+               DoMainLoop(bulbController, ref frames, start);
             }
         }
-        private void zoneCalculation()
+        /*private void zoneCalculation()
         {
             // getting a rectangle based on the Settings area
             var size = new Size(SettingsCast.BottomRight.X - SettingsCast.TopLeft.X, SettingsCast.BottomRight.Y - SettingsCast.TopLeft.Y);
@@ -367,7 +361,7 @@ namespace MaxLifx
                 // counterclockwise dictionary
                 ZoneAreas[zoneNumber.ToString() + "ccw"] = rectList;
             }
-        }
+        }*/
         private int closestEdge(ref Rectangle rect, Rectangle bounds)
         {
             int[] boundsDistance = new int[4];
@@ -427,6 +421,7 @@ namespace MaxLifx
             return edge;
         }
 
+
         // this is where the actual colours are determined and set for the bulbs
         private void DoMainLoop(MaxLifxBulbController bulbController, ref int frames, DateTime start)
         {
@@ -447,17 +442,16 @@ namespace MaxLifx
             Color? avgColour = null;
             ScreenColorSet screenColourSet = null;
  
-            foreach (var label in SettingsCast.SelectedLabels)
-                {
-                    var multiFlag = false;
-                    var labelsAndLocations = SettingsCast.LabelsAndLocations.Single(x => x.Label == label);
-                    var location = labelsAndLocations.ScreenLocation;
-                    var zones = labelsAndLocations.Zones;
-                    // skip if set to None
-                    if (location == ScreenLocation.None)
-                    {
-                        continue;
-                    }
+            foreach (var bulbSetting in SettingsCast.BulbSettings)
+            {
+                if (!bulbSetting.Enabled) continue;
+                if (bulbSetting.TopLeft.X == bulbSetting.BottomRight.X || bulbSetting.TopLeft.Y == bulbSetting.BottomRight.Y) continue;
+
+                var multiFlag = false;
+                var label = bulbSetting.Label;
+                var location = bulbSetting.ScreenLocation;
+                var zones = bulbSetting.Zones;
+                
                 if (zones > 1)
                 {
                     List<Rectangle> rectList = null;
@@ -528,40 +522,26 @@ namespace MaxLifx
                 if (!multiFlag)
                 {
                     // set once
+                    var bulb = bulbController.GetBulbFromLabel(label, out int zone);
 
-                    var screenPixel = new Bitmap(2, 2, PixelFormat.Format32bppArgb);
+                    var screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
                     var gdest = Graphics.FromImage(screenPixel);
                     var gsrc = Graphics.FromHwnd(IntPtr.Zero);
-                    screenColourSet = GetScreenColours(SettingsCast.TopLeft, SettingsCast.BottomRight, screenPixel, gdest, gsrc);
+
+                    //screenColourSet = GetScreenColours(bulbSetting.TopLeft, bulbSetting.BottomRight, screenPixel, gdest, gsrc);
+
+                    avgColour = TestDD(bulbSetting);
+                    if (avgColour == null) continue;
+
+                    Debug.WriteLine(avgColour);
+
+
+
+
+
                     // default is all
-                    avgColour = screenColourSet.all;
-                    switch (location)
-                    {
-                        case ScreenLocation.Top:
-                            avgColour = screenColourSet.top;
-                            break;
-                        case ScreenLocation.Bottom:
-                            avgColour = screenColourSet.bottom;
-                            break;
-                        case ScreenLocation.Left:
-                            avgColour = screenColourSet.left;
-                            break;
-                        case ScreenLocation.Right:
-                            avgColour = screenColourSet.right;
-                            break;
-                        case ScreenLocation.TopLeft:
-                            avgColour = screenColourSet.topleft;
-                            break;
-                        case ScreenLocation.TopRight:
-                            avgColour = screenColourSet.topright;
-                            break;
-                        case ScreenLocation.BottomLeft:
-                            avgColour = screenColourSet.bottomleft;
-                            break;
-                        case ScreenLocation.BottomRight:
-                            avgColour = screenColourSet.bottomright;
-                            break;
-                    }
+                    //avgColour = screenColourSet.all;
+
                     // Color isn't HSV, so need to convert
                     double hue = 0;
                     double saturation = 0;
@@ -577,7 +557,8 @@ namespace MaxLifx
                         Saturation = (ushort)saturation,
                         Brightness = (ushort)brightness
                     };
-                    bulbController.SetColour(bulbController.GetBulbFromLabel(label, out int zone), zone, payload, true);
+                    bulbController.SetColour(bulb, zone, payload, true);
+
                 }
                 // this is for when multizone apply is set to 0: need to send another packet to apply everything
                 /*else {
@@ -601,6 +582,62 @@ namespace MaxLifx
             Thread.Sleep(SettingsCast.Delay);
         }
 
+        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
+        static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
+
+        private unsafe Color? TestDD(BulbSetting bulbSetting)
+        {
+            
+            var frame = _desktopDuplicator.GetLatestFrame();
+            Color? all = null;
+            Bitmap b = new Bitmap(1, 1);
+            if (frame != null && frame.DesktopImage != null)
+            {
+                int PixelSize = 4;
+
+                var size = 10;
+
+                var tlx = bulbSetting.TopLeft.X;
+                var tly = bulbSetting.TopLeft.Y;
+
+                BitmapData bmd = frame.DesktopImage.LockBits(new Rectangle(tlx, tly, size, size),
+                                  System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                                  frame.DesktopImage.PixelFormat);
+
+                
+
+                
+
+                byte[] bl = new byte[size*size];
+                byte[] gr = new byte[size*size];
+                byte[] re = new byte[size*size];
+
+                int ctr = 0;
+
+                unsafe
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        byte* row = (byte*)bmd.Scan0 + (y * bmd.Stride);
+
+                        for (int x = 0; x < size; x++)
+                        {
+                            bl[ctr] = row[x * PixelSize];
+                            gr[ctr] = row[x * PixelSize+1];
+                            re[ctr] = row[x * PixelSize+2];
+                            ctr++;
+                        }
+                    }
+                }
+
+                all = Color.FromArgb(re.Sum(x => x) / re.Count(), gr.Sum(x => x) / gr.Count(), bl.Sum(x => x) / bl.Count());
+
+                frame.DesktopImage.UnlockBits(bmd);
+            }
+
+            return all;
+        }
+
         #region
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
@@ -617,9 +654,47 @@ namespace MaxLifx
         public static extern bool SetStretchBltMode(IntPtr hObject, int nStretchMode);
         private class ScreenColorSet
         {
-            public Color topleft, topright, bottomleft, bottomright, left, right, top, bottom, all;
+            public Color all;
         }
 
+        private unsafe ScreenColorSet GetScreenColours(Point tl, Point br, Bitmap screenPixel, Graphics gdest, Graphics gsrc)
+        {
+            IntPtr hSrcDC;
+            IntPtr hDC;
+
+            Color all;
+            ScreenColorSet returnValue;
+            var thumbSize = new Size(1, 1);
+
+            hSrcDC = gsrc.GetHdc();
+            hDC = gdest.GetHdc();
+
+            SetStretchBltMode(hDC, 0x04);
+            StretchBlt(hDC, 0, 0, 1, 1, hSrcDC, tl.X, tl.Y, 10, 10, (int)CopyPixelOperation.SourceCopy);
+
+            gdest.ReleaseHdc();
+            gsrc.ReleaseHdc();
+            
+            var srcData = screenPixel.LockBits(new Rectangle(0, 0, 1, 1), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            var stride = srcData.Stride;
+
+            var scan0 = srcData.Scan0;
+
+            var p = (byte*)(void*)scan0;
+
+            all = Color.FromArgb(255, p[2], p[1], p[0]);
+
+            screenPixel.UnlockBits(srcData);
+            returnValue = new ScreenColorSet
+            {
+                all = all
+            };
+
+            return returnValue;
+        }
+
+        /*
 
         private unsafe ScreenColorSet GetScreenColours(Point tl, Point br, Bitmap screenPixel, Graphics gdest, Graphics gsrc)
         {
@@ -636,65 +711,63 @@ namespace MaxLifx
 
             if (height == 0 || width == 0) return null;
 
-            //var realtlx = 50;//tl.X < br.X ? tl.X : br.X;
-            //var realtly = 50;//tl.Y < br.Y ? tl.Y : br.Y;
             Color topleft, bottomleft, topright, bottomright, top, bottom, left, right, all;
             ScreenColorSet returnValue;
             var thumbSize = new Size(2,2);
 
-                        hSrcDC = gsrc.GetHdc();
-                        hDC = gdest.GetHdc();
-                        //var retval = BitBlt(hDC, 0, 0, width, height, hSrcDC, 0, 0,
-                        //    (int) CopyPixelOperation.SourceCopy);
-                        SetStretchBltMode(hDC, 0x04);
-                        StretchBlt(hDC, 0, 0, thumbSize.Width, thumbSize.Height, hSrcDC, tl.X, tl.Y, width, height, 
-                            (int)CopyPixelOperation.SourceCopy);
+            hSrcDC = gsrc.GetHdc();
+            hDC = gdest.GetHdc();
+            //var retval = BitBlt(hDC, 0, 0, width, height, hSrcDC, 0, 0,
+            //    (int) CopyPixelOperation.SourceCopy);
+            SetStretchBltMode(hDC, 0x04);
+            StretchBlt(hDC, 0, 0, thumbSize.Width, thumbSize.Height, hSrcDC, tl.X, tl.Y, width, height, 
+                (int)CopyPixelOperation.SourceCopy);
                         
-                        gdest.ReleaseHdc();
-                        gsrc.ReleaseHdc();
+            gdest.ReleaseHdc();
+            gsrc.ReleaseHdc();
                 //screenPixel.Save("Pics\\" + DateTime.Now.ToString("hhmmss").Replace("/", "").Replace(":", "") + ".bmp");
-                var srcData = screenPixel.LockBits(
-                    new Rectangle(0, 0, screenPixel.Width, screenPixel.Height),
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppArgb);
+            var srcData = screenPixel.LockBits(
+                new Rectangle(0, 0, screenPixel.Width, screenPixel.Height),
+                ImageLockMode.ReadOnly,
+                PixelFormat.Format32bppArgb);
 
-                var stride = srcData.Stride;
+            var stride = srcData.Stride;
 
-                var scan0 = srcData.Scan0;
+            var scan0 = srcData.Scan0;
 
-                var p = (byte*) (void*) scan0;
+            var p = (byte*) (void*) scan0;
 
-                topleft = Color.FromArgb(255,     p[2], p[1], p[0]);
-                bottomleft = Color.FromArgb(255,  p[stride + 2], p[stride + 1], p[stride+0]);
-                topright = Color.FromArgb(255,    p[4 + 2], p[4 + 1], p[4 + 0]);
-                bottomright = Color.FromArgb(255, p[stride+4+2], p[stride + 4 + 1], p[stride + 4 + 0]);
+            topleft = Color.FromArgb(255,     p[2], p[1], p[0]);
+            bottomleft = Color.FromArgb(255,  p[stride + 2], p[stride + 1], p[stride+0]);
+            topright = Color.FromArgb(255,    p[4 + 2], p[4 + 1], p[4 + 0]);
+            bottomright = Color.FromArgb(255, p[stride+4+2], p[stride + 4 + 1], p[stride + 4 + 0]);
 
-                top = Color.FromArgb(255, (topleft.R + topright.R)/2, (topleft.G + topright.G)/2,
-                    (topleft.B + topright.B)/2);
-                bottom = Color.FromArgb(255, (bottomleft.R + bottomright.R)/2, (bottomleft.G + bottomright.G)/2,
-                    (bottomleft.B + bottomright.B)/2);
-                left = Color.FromArgb(255, (topleft.R + bottomleft.R)/2, (topleft.G + bottomleft.G)/2,
-                    (topleft.B + bottomleft.B)/2);
-                right = Color.FromArgb(255, (bottomright.R + topright.R)/2, (bottomright.G + topright.G)/2,
-                    (bottomright.B + topright.B)/2);
+            top = Color.FromArgb(255, (topleft.R + topright.R)/2, (topleft.G + topright.G)/2,
+                (topleft.B + topright.B)/2);
+            bottom = Color.FromArgb(255, (bottomleft.R + bottomright.R)/2, (bottomleft.G + bottomright.G)/2,
+                (bottomleft.B + bottomright.B)/2);
+            left = Color.FromArgb(255, (topleft.R + bottomleft.R)/2, (topleft.G + bottomleft.G)/2,
+                (topleft.B + bottomleft.B)/2);
+            right = Color.FromArgb(255, (bottomright.R + topright.R)/2, (bottomright.G + topright.G)/2,
+                (bottomright.B + topright.B)/2);
 
-                all = Color.FromArgb(255, (top.R + bottom.R)/2, (top.G + bottom.G)/2, (top.B + bottom.B)/2);
-                screenPixel.UnlockBits(srcData);
-                returnValue = new ScreenColorSet
-                {
-                    topleft = topleft,
-                    topright = topright,
-                    top = top,
-                    bottomleft = bottomleft,
-                    bottomright = bottomright,
-                    bottom = bottom,
-                    left = left,
-                    right = right,
-                    all = all
-                };
+            all = Color.FromArgb(255, (top.R + bottom.R)/2, (top.G + bottom.G)/2, (top.B + bottom.B)/2);
+            screenPixel.UnlockBits(srcData);
+            returnValue = new ScreenColorSet
+            {
+                topleft = topleft,
+                topright = topright,
+                top = top,
+                bottomleft = bottomleft,
+                bottomright = bottomright,
+                bottom = bottom,
+                left = left,
+                right = right,
+                all = all
+            };
 
             return returnValue;
-        }
+        }*/
 
         private unsafe Color? GetScreenColourZones(Rectangle area, BitmapData srcData, Graphics gdest, Graphics gsrc)
         {
@@ -773,10 +846,108 @@ namespace MaxLifx
     }
 
 
-    public class LabelAndLocationType
+    public class BulbSetting
     {
         public string Label { get; set; }
         public int Zones { get; set; }
         public ScreenLocation ScreenLocation { get; set; }
+
+        public Point TopLeft { get; set; }
+        public Point BottomRight { get; set; }
+        public bool Enabled { get; set; }
+    }
+
+    public class GdiInterop
+    {
+        /// <summary>
+        /// Enumeration for the raster operations used in BitBlt.
+        /// In C++ these are actually #define. But to use these
+        /// constants with C#, a new enumeration _type is defined.
+        /// </summary>
+        public enum TernaryRasterOperations
+        {
+            SRCCOPY = 0x00CC0020, // dest = source
+            SRCPAINT = 0x00EE0086, // dest = source OR dest
+            SRCAND = 0x008800C6, // dest = source AND dest
+            SRCINVERT = 0x00660046, // dest = source XOR dest
+            SRCERASE = 0x00440328, // dest = source AND (NOT dest)
+            NOTSRCCOPY = 0x00330008, // dest = (NOT source)
+            NOTSRCERASE = 0x001100A6, // dest = (NOT src) AND (NOT dest)
+            MERGECOPY = 0x00C000CA, // dest = (source AND pattern)
+            MERGEPAINT = 0x00BB0226, // dest = (NOT source) OR dest
+            PATCOPY = 0x00F00021, // dest = pattern
+            PATPAINT = 0x00FB0A09, // dest = DPSnoo
+            PATINVERT = 0x005A0049, // dest = pattern XOR dest
+            DSTINVERT = 0x00550009, // dest = (NOT dest)
+            BLACKNESS = 0x00000042, // dest = BLACK
+            WHITENESS = 0x00FF0062, // dest = WHITE
+        };
+
+        /// <summary>
+        /// Enumeration to be used for those Win32 function 
+        /// that return BOOL
+        /// </summary>
+        public enum Bool
+        {
+            False = 0,
+            True
+        };
+
+        /// <summary>
+        /// Sets the background color.
+        /// </summary>
+        /// <param name="hdc">The HDC.</param>
+        /// <param name="crColor">Color of the cr.</param>
+        /// <returns></returns>
+        [DllImport("gdi32.dll")]
+        public static extern int SetBkColor(IntPtr hdc, int crColor);
+
+        /// <summary>
+        /// CreateCompatibleDC
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+        /// <summary>
+        /// DeleteDC
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern Bool DeleteDC(IntPtr hdc);
+
+        /// <summary>
+        /// SelectObject
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true)]
+        public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+        /// <summary>
+        /// DeleteObject
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern Bool DeleteObject(IntPtr hObject);
+
+        /// <summary>
+        /// CreateCompatibleBitmap
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr CreateCompatibleBitmap(IntPtr hObject, int width, int height);
+
+        /// <summary>
+        /// BitBlt
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern Bool BitBlt(IntPtr hObject, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hObjSource, int nXSrc, int nYSrc, TernaryRasterOperations dwRop);
+
+        /// <summary>
+        /// StretchBlt
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern Bool StretchBlt(IntPtr hObject, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, IntPtr hObjSource, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, TernaryRasterOperations dwRop);
+
+        /// <summary>
+        /// SetStretchBltMode
+        /// </summary>
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern Bool SetStretchBltMode(IntPtr hObject, int nStretchMode);
     }
 }
