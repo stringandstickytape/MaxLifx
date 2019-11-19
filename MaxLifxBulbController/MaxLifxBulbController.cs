@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using MaxLifx.Packets;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MaxLifx.Controllers
 {
@@ -118,30 +120,57 @@ namespace MaxLifx.Controllers
             return a;
         }
 
-        // The following is based on https://github.com/PhilWheat/LIFX-Control
-        public void DiscoverBulbs(string ip = "")
+        private void recv(IAsyncResult res)
         {
-            // Send discovery packet
-            GetServicePayload payload = new GetServicePayload();
-            byte[] sendData = PacketFactory.GetPacket(new byte[8], payload);
-            if (ip != "") _localIp = ip;
+            UdpClient u = (UdpClient)((UdpState)(res.AsyncState)).ut;
+            IPEndPoint e = (IPEndPoint)((UdpState)(res.AsyncState)).e;
 
-            var a = new UdpClient();
-            a.Connect(_sendingEndPoint);
-            a.Send(sendData, sendData.Length);
-            a.Close();
+            byte[] received = u.EndReceive(res, ref e);
+
+            if(Bulbs == null) Bulbs = new List<Bulb>();
+
+                // Get the MAC address of the bulb replying
+                var macAddress = Utils.ByteArrayToString(received).Substring(16, 12);
+                if (macAddress != "000000000000")
+                {
+                    var newBulb = new Bulb() { MacAddress = macAddress, IpAddress = e.Address.ToString() };
+
+                    // Create a new Bulb object
+                    if (Bulbs.Count(x => x.MacAddress == macAddress) == 0)
+                        Bulbs.Add(newBulb);
+                }
+
+            //
+            ////Process codes
+            //
+            //MessageBox.Show(Encoding.UTF8.GetString(received));
+            //Client.BeginReceive(new AsyncCallback(recv), null);
+            
+           //u.BeginReceive(new AsyncCallback(recv), ((UdpState)(res.AsyncState)));
+        }
+
+        UdpClient udpClient;
+
+        // The following is based on https://github.com/PhilWheat/LIFX-Control
+        public void DiscoverBulbs(Form f, string ip = "")
+        {
+            //// Send discovery packet
+            //GetServicePayload payload = new GetServicePayload();
+            //byte[] sendData = PacketFactory.GetPacket(new byte[8], payload);
+            //if (ip != "") _localIp = ip;
+            //
+            //udpClient = new UdpClient();
+            //udpClient.Connect(_sendingEndPoint);
+            //udpClient.Send(sendData, sendData.Length);
+            //udpClient.Close();
 
             //_sendingSocket.SendTo(sendData, _sendingEndPoint);
 
             // Listen for replies
-            IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            _receivingUdpClient = new UdpClient(56700);
 
-            byte[] receivebytes;
 
-            // Pause for a second to allow for slow bulb responses - not uncommmon :/
-            Thread.Sleep(10000);
-            Bulbs = new List<Bulb>();
+
+            /*Bulbs = new List<Bulb>();
             // Now loop through received packets
             while (_receivingUdpClient.Available > 0)
             {
@@ -159,7 +188,7 @@ namespace MaxLifx.Controllers
                         Bulbs.Add(newBulb);
                 }
             }
-
+            
             // Now, find the labels of all the bubs we detected
             GetLabelPayload labelPayload = new GetLabelPayload();
             // and also the version of each bulb
@@ -256,8 +285,139 @@ namespace MaxLifx.Controllers
                      } 
                 }
             }
+            */
+            
+            //_receivingUdpClient.Close();
+        }
 
-            _receivingUdpClient.Close();
+        public void UdpDiscoveryListen(Func<int> callback) {
+            //_receivingUdpClient = new UdpClient(56700);
+
+            Bulbs.Clear();
+            byte[] sendData;
+            Bulb bulb;
+
+            GetServicePayload payload = new GetServicePayload();
+            sendData = PacketFactory.GetPacket(new byte[8], payload);
+            var udpClient2 = new UdpClient();
+            udpClient2.Connect(_sendingEndPoint);
+            udpClient2.Send(sendData, sendData.Length);
+            udpClient2.Close();
+
+            using (var udpClient = new UdpClient())
+            {
+                udpClient.ExclusiveAddressUse = false;
+                udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                udpClient.Client.Bind(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 56700));
+
+
+                while (true)
+                {
+                    //IPEndPoint object will allow us to read datagrams sent from any source.
+                    var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    var receivebytes = udpClient.Receive(ref remoteEndPoint);
+
+                    // Get the MAC address of the bulb replying
+                    var macAddress = Utils.ByteArrayToString(receivebytes).Substring(16, 12);
+                    if (macAddress != "000000000000")
+                    {
+                        System.Diagnostics.Debug.WriteLine($"{macAddress} : {receivebytes[32] + ((receivebytes[33] * 256))}");
+                        switch (receivebytes[32])
+                        {
+                            case 3:
+                                var newBulb = new Bulb() { MacAddress = macAddress, IpAddress = remoteEndPoint.Address.ToString() };
+                            
+                                // Create a new Bulb object
+                                if (Bulbs.Count(x => x.MacAddress == macAddress) == 0)
+                                {
+                                    Bulbs.Add(newBulb);
+
+                                    // Send a GetLabel
+                                    GetLabelPayload labelPayload = new GetLabelPayload();
+                                    sendData = PacketFactory.GetPacket(Utils.StringToByteArray(newBulb.MacAddress + "0000"), labelPayload);
+                                    SendDataPacket(sendData, remoteEndPoint);
+
+                                }
+
+
+                                break;
+                            case 25: // State Label
+                                bulb = Bulbs.FirstOrDefault(x => x.MacAddress == macAddress);
+                            
+                                if (bulb != null)
+                                {
+                                    // Parse the received label and mark it against the bulb
+                                    var label1 = Utils.HexToAscii(Utils.ByteArrayToString(receivebytes).Substring(36 * 2));
+                                    bulb.Label = label1.Substring(0, label1.IndexOf('\0'));
+
+                                    callback.Invoke();
+                                    //f.PopulateBulbListbox();
+                                    //f._suspendUi = false;
+                                    //f.SaveSettings();
+                                    //f._suspendUi = true;
+                                    
+                                    GetColourZonesPayload ColourZonesPayload = new GetColourZonesPayload();
+                            
+                                    sendData = PacketFactory.GetPacket(Utils.StringToByteArray(bulb.MacAddress + "0000"), ColourZonesPayload);
+                                    SendDataPacket(sendData, remoteEndPoint);
+                                }
+                                break;
+                            case 247:
+                            case 250:
+                                if (receivebytes[33] == 1) // 503 Zones
+                                {
+                                    bulb = Bulbs.FirstOrDefault(x => x.MacAddress == macAddress);
+
+                                    if (bulb != null)
+                                    {
+                                        bulb.Zones = receivebytes[36];
+
+                                        callback.Invoke();
+                                    }
+                                }
+                                break;
+                            default:
+
+                                break;
+                        }
+
+                    }
+
+                    //loggingEvent += Encoding.ASCII.GetString(receivedResults);
+                }
+
+            }
+
+//            var udpState = new UdpState { e = remoteIpEndPoint, ut = _receivingUdpClient };
+            /*             UdpClient u = (UdpClient)((UdpState)(res.AsyncState)).ut;
+            IPEndPoint e = (IPEndPoint)((UdpState)(res.AsyncState)).e;
+
+            byte[] received = u.EndReceive(res, ref e);
+
+            if(Bulbs == null) Bulbs = new List<Bulb>();
+
+                // Get the MAC address of the bulb replying
+                var macAddress = Utils.ByteArrayToString(received).Substring(16, 12);
+                if (macAddress != "000000000000")
+                {
+                    var newBulb = new Bulb() { MacAddress = macAddress, IpAddress = e.Address.ToString() };
+
+                    // Create a new Bulb object
+                    if (Bulbs.Count(x => x.MacAddress == macAddress) == 0)
+                        Bulbs.Add(newBulb);
+                } */
+        }
+
+        private static void SendDataPacket(byte[] sendData, IPEndPoint remoteEndPoint)
+        {
+            using (var u2 = new UdpClient())
+            {
+                u2.ExclusiveAddressUse = false;
+                u2.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                u2.Client.Bind(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 56700));
+                u2.Connect(remoteEndPoint.Address, 56700);
+                u2.Send(sendData, sendData.Length);
+            }
         }
 
         // The following is taken verbatim from https://github.com/PhilWheat/LIFX-Control
@@ -280,5 +440,14 @@ namespace MaxLifx.Controllers
             _sendToAddress = IPAddress.Parse(ip);
             _sendingEndPoint = new IPEndPoint(_sendToAddress, 56700);
         }
+    }
+
+    public class UdpState
+    {
+        public UdpClient ut;
+        public IPEndPoint e;
+        public const int BufferSize = 1024;
+        public byte[] buffer = new byte[BufferSize];
+        public int counter = 0;
     }
 }

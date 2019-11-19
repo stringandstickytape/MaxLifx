@@ -8,8 +8,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 using MaxLifx.Controllers;
@@ -26,7 +28,7 @@ namespace MaxLifx
     public partial class MainForm : Form
     {
         private readonly MaxLifxBulbController _bulbController = new MaxLifxBulbController();
-        private bool _suspendUi = true;
+        public bool _suspendUi = true;
         private readonly LightControlThreadCollection _threadCollection = new LightControlThreadCollection();
         private readonly Random _r = new Random();
         private readonly int _thumbSize = 100;
@@ -93,7 +95,9 @@ namespace MaxLifx
                 if (dialogResult == DialogResult.Yes)
                 {
 
-                    _bulbController.DiscoverBulbs();
+
+
+                    DiscoverBulbs();
 
                     if (_bulbController.Bulbs.Count == 0)
                     {
@@ -112,7 +116,24 @@ namespace MaxLifx
             _bulbController.ColourSet += BulbControllerOnColourSet;
         }
 
-        private void BulbControllerOnColourSet(object sender, EventArgs eventArgs)
+        public void DiscoverBulbs(string ip = "")
+        {
+
+            Task.Run(() => _bulbController.UdpDiscoveryListen(
+                () =>
+                {
+                    PopulateBulbListbox();
+                    _suspendUi = false;
+                    SaveSettings();
+                    _suspendUi = true;
+
+                    return 0;
+
+                }
+                ));
+        }
+
+            private void BulbControllerOnColourSet(object sender, EventArgs eventArgs)
         {
             if (InvokeRequired) // Line #1
             {
@@ -223,8 +244,14 @@ namespace MaxLifx
             _bulbController.Bulbs = _settings.Bulbs;
         }
 
-        private void PopulateBulbListbox()
+        public void PopulateBulbListbox()
         {
+            if (InvokeRequired) // Line #1
+            {
+                this.Invoke(new MethodInvoker(PopulateBulbListbox));
+                return;
+            }
+
             lbBulbs.Items.Clear();
             Text = $"MaxLifx-Z : {_bulbController.Bulbs.Count} bulbs (";
             int ctr = 0;
@@ -350,7 +377,7 @@ namespace MaxLifx
             }
         }
 
-        private void SaveSettings(string filename = "Settings.xml")
+        public void SaveSettings(string filename = "Settings.xml")
         {
             if (!_suspendUi)
             {
@@ -361,9 +388,11 @@ namespace MaxLifx
                 {
                     xml.Serialize(stream, _settings);
                     stream.Position = 0;
+
                     var xmlDocument = new XmlDocument();
                     xmlDocument.Load(stream);
                     xmlDocument.Save(filename);
+                    
                     stream.Close();
                 }
             }
@@ -862,7 +891,7 @@ namespace MaxLifx
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            _bulbController.DiscoverBulbs();
+            DiscoverBulbs();
 
             if (_bulbController.Bulbs.Count == 0)
             {
@@ -955,7 +984,7 @@ namespace MaxLifx
 
         private void advancedDiscoverToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _bulbController.DiscoverBulbs(ConfigurationManager.AppSettings["subnet"]);
+            DiscoverBulbs(ConfigurationManager.AppSettings["subnet"]);
 
             if (_bulbController.Bulbs.Count == 0)
             {
