@@ -27,7 +27,14 @@ namespace MaxLifx.UIs
             Settings = settings;
             BulbController = bulbController;
             SetPositionTextBoxesFromSettings();
-            SetupLabels(lbLabels, Settings.BulbSettings.Select(x => x.Label).ToList(), Settings);
+
+            var bulbs = bulbController.Bulbs.Where(x => x.Zones < 2).Select(x => x.Label).ToList();
+
+            foreach (var bulbObj in bulbController.Bulbs.Where(x => x.Zones > 1))
+                for (var i = 0; i < bulbObj.Zones; i++)
+                    bulbs.Add(bulbObj.Label + $" (Zone {(i + 1).ToString().PadLeft(3, '0')})");
+
+            SetupLabels(lbLabels, bulbs, Settings);
             SuspendUI = false;
         }
 

@@ -63,23 +63,25 @@ namespace MaxLifx
             }
 
             _desktopDuplicator = new DesktopDuplicator(SettingsCast.Monitor);
-            
-            foreach (var bulb in bulbController.Bulbs.Select(x => x))
+
+            var bulbs = bulbController.Bulbs.Where(x => x.Zones < 2).Select(x => x.Label).ToList();
+
+            foreach (var bulbObj in bulbController.Bulbs.Where(x => x.Zones > 1))
+                for (var i = 0; i < bulbObj.Zones; i++)
+                    bulbs.Add(bulbObj.Label + $" (Zone {(i + 1).ToString().PadLeft(3, '0')})");
+
+            foreach (var bulbLabel in bulbs)
             {
+                var bulb = bulbController.GetBulbFromLabel(bulbLabel, out int zone);
+
                 if (!SettingsCast.BulbSettings.Select(x => x.Label).Contains(bulb.Label))
                 {
                     // populating SettingsCast fields
                     var l = new BulbSetting();
-                    l.Label = bulb.Label;
+                    l.Label = bulbLabel;
                     l.ScreenLocation = ScreenLocation.All;
                     l.Zones = bulb.Zones;
-                    // default to None if more than 1 zone, so that can proper setup
-                    if (bulb.Zones > 1)
-                    {
-                        l.ScreenLocation = ScreenLocation.None;
-                        // if multizone enabled keep track of number of zones
-                        SettingsCast.MultiColourZones.Add(bulb.Zones);
-                    }
+
                     SettingsCast.BulbSettings.Add(l);
                 }
             }
@@ -453,126 +455,37 @@ namespace MaxLifx
                 if (!bulbSetting.Enabled) continue;
                 if (bulbSetting.TopLeft.X == bulbSetting.BottomRight.X || bulbSetting.TopLeft.Y == bulbSetting.BottomRight.Y) continue;
 
-                var multiFlag = false;
                 var label = bulbSetting.Label;
                 var location = bulbSetting.ScreenLocation;
                 var zones = bulbSetting.Zones;
+
+                // set once
+                var bulb = bulbController.GetBulbFromLabel(label, out int zone);
+
+                //screenColourSet = GetScreenColours(bulbSetting.TopLeft, bulbSetting.BottomRight, screenPixel, gdest, gsrc);
+
+                avgColour = TestDD(bulbSetting, needNewFrame);
+                needNewFrame = false;
+
+                if (avgColour == null) continue;
+
+                // Color isn't HSV, so need to convert
+                double hue = 0;
+                double saturation = 0;
+                double brightness = 0;
+                Utils.ColorToHSV((Color)avgColour, out hue, out saturation, out brightness);
+                brightness = (brightness * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
+                saturation = (saturation * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
+                var payload = new SetColourPayload
+                {
+                    Kelvin = (ushort)SettingsCast.Kelvin,
+                    TransitionDuration = (uint)(SettingsCast.Fade),
+                    Hue = (int)hue,
+                    Saturation = (ushort)saturation,
+                    Brightness = (ushort)brightness
+                };
+                bulbController.SetColour(bulb, zone, payload, true);
                 
-                if (zones > 1)
-                {
-                    List<Rectangle> rectList = null;
-                    bool found = false;
-                    // try and grab the zones
-                    switch (location)
-                    {
-                        case ScreenLocation.SurroundCounterClockwise:
-                            found = ZoneAreas.TryGetValue(zones.ToString() + "ccw", out rectList);
-                            break;
-                        case ScreenLocation.SurroundClockwise:
-                            found = ZoneAreas.TryGetValue(zones.ToString() + "cw", out rectList);
-                            break;
-                         // for all other ScreenLocations we skip
-                    }
-                    if (found)
-                    {
-                        // our average colour pixel
-                        var screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
-                        var gdest = Graphics.FromImage(screenPixel);
-                        var gsrc = Graphics.FromHwnd(IntPtr.Zero);
-                        var srcData = screenPixel.LockBits(
-                                    new Rectangle(0, 0, screenPixel.Width, screenPixel.Height),
-                                    ImageLockMode.ReadOnly,
-                                    PixelFormat.Format32bppArgb);
-                        screenPixel.UnlockBits(srcData);
-                        for (int i = 0; i < zones; i++)
-                        {
-                            var areaColour = GetScreenColourZones(rectList[i], srcData, gdest, gsrc);
-
-                            // code for using most dominant colour; doesn't look very good tbh
-                            /*var bmpScreenshot = new Bitmap(rectList[i].Width, rectList[i].Height, PixelFormat.Format32bppArgb);
-                            var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
-                            gfxScreenshot.CopyFromScreen(rectList[i].X, rectList[i].Y, 0, 0, rectList[i].Size, CopyPixelOperation.SourceCopy);
-                            Bitmap resized = new Bitmap(bmpScreenshot, new Size(bmpScreenshot.Width / 3, bmpScreenshot.Height / 3));
-                            var areaColour = dominantColour(resized);*/
-
-                            if (areaColour != null)
-                            {
-                                Color avgZoneColour = (Color)areaColour;
-                                // Color isn't HSV, so need to convert
-                                double hue = 0;
-                                double saturation = 0;
-                                double brightness = 0;
-                                Utils.ColorToHSV((Color)avgZoneColour, out hue, out saturation, out brightness);
-                                brightness = (brightness * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
-                                saturation = (saturation * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
-                                var zonePayload = new SetColourZonesPayload
-                                {
-                                    start_index = new byte[1] { (byte)(i) },
-                                    end_index = new byte[1] { (byte)(i) },
-                                    Kelvin = (ushort)SettingsCast.Kelvin,
-                                    TransitionDuration = (uint)(SettingsCast.Fade),
-                                    Hue = (int)hue,
-                                    Saturation = (ushort)saturation,
-                                    Brightness = (ushort)brightness,
-                                    // 0 for delayed apply; 1 for immediate (don't wait for other zones);
-                                    apply = new byte[1] { 1 }
-                                };
-                                // send
-                                bulbController.SetColour(bulbController.GetBulbFromLabel(label, out int zone), zone, zonePayload, false);
-                            }
-                        }
-                        multiFlag = true;
-                    }
-                }
-                // only do this calc if necessary
-                if (!multiFlag)
-                {
-                    // set once
-                    var bulb = bulbController.GetBulbFromLabel(label, out int zone);
-
-                    //screenColourSet = GetScreenColours(bulbSetting.TopLeft, bulbSetting.BottomRight, screenPixel, gdest, gsrc);
-
-                    avgColour = TestDD(bulbSetting, needNewFrame);
-                    needNewFrame = false;
-
-                    if (avgColour == null) continue;
-
-                    // Color isn't HSV, so need to convert
-                    double hue = 0;
-                    double saturation = 0;
-                    double brightness = 0;
-                    Utils.ColorToHSV((Color)avgColour, out hue, out saturation, out brightness);
-                    brightness = (brightness * (SettingsCast.Brightness - SettingsCast.MinBrightness) + SettingsCast.MinBrightness);
-                    saturation = (saturation * (SettingsCast.Saturation - SettingsCast.MinSaturation) + SettingsCast.MinSaturation);
-                    var payload = new SetColourPayload
-                    {
-                        Kelvin = (ushort)SettingsCast.Kelvin,
-                        TransitionDuration = (uint)(SettingsCast.Fade),
-                        Hue = (int)hue,
-                        Saturation = (ushort)saturation,
-                        Brightness = (ushort)brightness
-                    };
-                    bulbController.SetColour(bulb, zone, payload, true);
-
-                }
-                // this is for when multizone apply is set to 0: need to send another packet to apply everything
-                /*else {
-                        var payload = new SetColourZonesPayload
-                        {
-                            start_index = new byte[1] { 0 },
-                            end_index = new byte[1] { 0 },
-                            Kelvin = 3500,
-                            TransitionDuration = 0,
-                            Hue = 0,
-                            Saturation = 0,
-                            Brightness = 0,
-                            // ignore this payload and apply previous ones
-                            apply = new byte[1] { 2 }
-                        };
-                        bulbController.SetColourZoneFinder(label, payload);
-                        //bulbController.SetColour(label, payload);
-                    }*/
-              //  }
             }
             Thread.Sleep(SettingsCast.Delay);
         }
@@ -592,7 +505,7 @@ namespace MaxLifx
             {
                 int PixelSize = 4;
 
-                var size = 10;
+                var size = 100;
 
                 var tlx = bulbSetting.TopLeft.X;
                 var tly = bulbSetting.TopLeft.Y;

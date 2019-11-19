@@ -32,7 +32,7 @@ namespace MaxLifx.Controllers
         public void SetColour(Bulb bulb,  int zone, SetColourPayload payload, bool updateBox)
         {
             
-            if (bulb.IsHomebrewDevice)
+            if (bulb.Zones > 1)
             {
                 var newPayload = new SetColourZonesPayload()
                 {

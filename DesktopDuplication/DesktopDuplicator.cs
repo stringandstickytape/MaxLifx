@@ -67,6 +67,11 @@ namespace DesktopDuplication
         public DesktopDuplicator(int whichGraphicsCardAdapter, int whichOutputDevice)
         {
             this.mWhichOutputDevice = whichOutputDevice;
+            Init(whichGraphicsCardAdapter, whichOutputDevice);
+        }
+
+        private void Init(int whichGraphicsCardAdapter, int whichOutputDevice)
+        {
             Adapter1 adapter = null;
             try
             {
@@ -122,9 +127,16 @@ namespace DesktopDuplication
         {
             var frame = new DesktopFrame();
             // Try to get the latest frame; this may timeout
-            bool retrievalTimedOut = RetrieveFrame();
-            if (retrievalTimedOut)
+            bool? retrievalTimedOut = RetrieveFrame();
+            if (retrievalTimedOut != null)
+            {
+                if (retrievalTimedOut.Value)
+                    return null;
+
+                Init(0, this.mWhichOutputDevice);
                 return null;
+            }
+
             try
             {
                 RetrieveFrameMetadata(frame);
@@ -145,7 +157,7 @@ namespace DesktopDuplication
             return frame;
         }
 
-        private bool RetrieveFrame()
+        private bool? RetrieveFrame()
         {
             if (desktopImageTexture == null)
                 desktopImageTexture = new Texture2D(mDevice, mTextureDesc);
@@ -163,13 +175,15 @@ namespace DesktopDuplication
                 }
                 if (ex.ResultCode.Failure)
                 {
+                    return false;
+
                     throw new DesktopDuplicationException("Failed to acquire next frame.");
                 }
             }
             using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
                 mDevice.ImmediateContext.CopyResource(tempTexture, desktopImageTexture);
             desktopResource.Dispose();
-            return false;
+            return null;
         }
 
         private void RetrieveFrameMetadata(DesktopFrame frame)
