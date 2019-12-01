@@ -14,7 +14,7 @@ namespace MaxLifx.Payload
         public new byte[] MessageType { get { return _messageType; } }
 
         public List<GetColourZonesPayload> Zones { get; set; }
-        public Dictionary<int, SetColourPayload> IndividualPayloads { get; set; }
+        public Dictionary<int, SetMaxLifxColourPayload> IndividualPayloads { get; set; }
 
         public new byte[] GetPayload() {
 

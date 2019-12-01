@@ -12,7 +12,7 @@ namespace MaxLifx.Processors.ProcessorSettings
         public int Saturation = 65535;
         public int MinSaturation = 0;
         public int MinBrightness = 0;
-        public Point TopLeft = new Point(0, 0);
+        public Point CentrePoint = new Point(0, 0);
         // keep track of the different number of multizone lights
         public HashSet<int> MultiColourZones = new HashSet<int>();
 

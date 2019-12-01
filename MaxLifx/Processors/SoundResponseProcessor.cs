@@ -128,7 +128,7 @@ namespace MaxLifx
 
                     var bulbCtr = 0;
 
-                    var homebrewDevicePayloadCache = new Dictionary<(Bulb, int), SetColourPayload>();
+                    var homebrewDevicePayloadCache = new Dictionary<(Bulb, int), SetMaxLifxColourPayload>();
 
 
                     foreach (var label in sc.SelectedLabels)
@@ -243,22 +243,34 @@ namespace MaxLifx
                                         ((sc.HueInvert ? 1 - floatValueH : floatValueH)*
                                          sc.HueRanges[bulbNumber]*2 +
                                          (sc.Hues[bulbNumber] - sc.HueRanges[0])) + 720)%360;
-                                var _payload = new SetColourPayload
-                                {
-                                    Hue = _hue,
-                                    Saturation = saturation,
-                                    Brightness = brightness,
-                                    Kelvin = sc.Kelvin,
-                                    TransitionDuration = (uint) sc.TransitionDuration
-                                };
+
 
 
                                 if (bulb.IsHomebrewDevice)
                                 {
+                                    var _payload = new SetMaxLifxColourPayload
+                                    {
+                                        Hue = _hue,
+                                        Saturation = saturation,
+                                        Brightness = brightness,
+                                        Kelvin = sc.Kelvin,
+                                        TransitionDuration = (uint)sc.TransitionDuration
+                                    };
+
                                     homebrewDevicePayloadCache.Add((bulb, zone), _payload);
                                 }
                                 else
                                 {
+                                    var _payload = new SetColourPayload
+                                    {
+                                        Hue = _hue,
+                                        Saturation = saturation,
+                                        Brightness = brightness,
+                                        Kelvin = sc.Kelvin,
+                                        TransitionDuration = (uint)sc.TransitionDuration
+                                    };
+
+
                                     bulbController.SetColour(bulb, zone, _payload, true);
                                     if (sc.Delay > 200)
                                     {
@@ -291,7 +303,7 @@ namespace MaxLifx
                         foreach (var group in homebrewDevicePayloadCache.GroupBy(x => (Bulb)x.Key.Item1))
                         {
                             var payloads = group.Select(x => x.Value);
-                            Dictionary<int, SetColourPayload> individualPayloads = new Dictionary<int, SetColourPayload>();
+                            Dictionary<int, SetMaxLifxColourPayload> individualPayloads = new Dictionary<int, SetMaxLifxColourPayload>();
 
                             int ctr = 0;
                             foreach(var p in group)
@@ -310,8 +322,7 @@ namespace MaxLifx
 
                                     bulbController.SendPayloadToMacAddress(payload, group.Key.MacAddress, group.Key.IpAddress, reusableHomebrewClientDictionary[group.Key.IpAddress]);
                                     
-
-                                    individualPayloads = new Dictionary<int, SetColourPayload>();
+                                    individualPayloads = new Dictionary<int, SetMaxLifxColourPayload>();
                                 }
 
                                 ctr++;

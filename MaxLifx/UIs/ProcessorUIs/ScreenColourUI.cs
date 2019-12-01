@@ -76,6 +76,8 @@ namespace MaxLifx.UIs
         {
             if (_f != null) return;
             _f = new Form2();
+
+
             _f.MouseDown += Borderless_MouseDown;
             _f.MouseUp += Borderless_MouseUp;
             _f.MouseMove += Borderless_MouseMove;
@@ -106,50 +108,9 @@ namespace MaxLifx.UIs
                 bulbSetting.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
                 SetPositionTextBoxesFromSettings(bulbSetting);
             }
-
             
             SuspendUI = false;
-            if (Settings.MultiColourZones.Any()){
-                // send colour to first zone so can match to an area
-                foreach (var label in Settings.SelectedLabels)
-                {
-                    var zones = Settings.BulbSettings.Single(x => x.Label == label).Zones;
-                    var location = Settings.BulbSettings.Single(x => x.Label == label).ScreenLocation;
-                    if (zones > 1 && location == ScreenLocation.None)
-                    {
-                        // set first zone to green
-                        var payload = new SetColourZonesPayload
-                        {
-                            start_index = new byte[1] {0},
-                            end_index = new byte[1] {0},
-                            Kelvin = 3500,
-                            TransitionDuration = 150,
-                            Hue = (int)Color.FromArgb(255, 0, 200, 0).GetHue(),
-                            Saturation = 65535,
-                            Brightness = 65535,
-                            // don't apply yet
-                            apply = new byte[1]{0}
-                        };
-                        var bulb = BulbController.GetBulbFromLabel(label, out int zone);
-                        BulbController.SetColour(bulb, zone, payload, false);
 
-                        // set rest of zones to off
-                        payload = new SetColourZonesPayload
-                        {
-                            start_index = new byte[1] { 1 },
-                            end_index = new byte[1] { (byte) (zones - 1) },
-                            Kelvin = 3500,
-                            TransitionDuration = 150,
-                            Hue = 0,
-                            Saturation = 0,
-                            Brightness = 0,
-                            // apply
-                            apply = new byte[1] { 1 }
-                        };
-                        BulbController.SetColour(bulb, zone, payload, false);
-                    }
-                }
-            }
             ProcessorBase.SaveSettings(Settings, null);
         }
 
@@ -209,7 +170,7 @@ namespace MaxLifx.UIs
             int.TryParse(tbKelvin.Text, out kelvinval);
             int.TryParse(tbMonitor.Text, out monitor);
 
-            Settings.TopLeft = new Point(tlxval, tlyval);
+            Settings.CentrePoint = new Point(tlxval, tlyval);
             Settings.Fade = Math.Max(fadeval ,0);
             Settings.Delay = Math.Max(delayval, 0);
             Settings.Saturation = Math.Min(satval, 65535);
@@ -241,6 +202,11 @@ namespace MaxLifx.UIs
                 tlx.Text = bulbSettings.TopLeft.X.ToString();
                 tly.Text = bulbSettings.TopLeft.Y.ToString();
 
+                if ((Settings.CentrePoint.X != 0 || Settings.CentrePoint.Y != 0) && _f != null && _f.IsDisposed == false  )
+                {
+                    _f.Location = new Point(Settings.CentrePoint.X - (_f.Width/2 + 3), Settings.CentrePoint.Y - (_f.Height / 2 + 1));
+                }
+
             }
         }
 
@@ -260,7 +226,7 @@ namespace MaxLifx.UIs
         bounds1 = monitor.Bounds;
         int y1 = bounds1.Y;
         Point point1 = new Point(x1, y1);
-        settings1.TopLeft = point1;
+        settings1.CentrePoint = point1;
         ScreenColourSettings settings2 = this.Settings;
         Rectangle bounds2 = monitor.Bounds;
         int x2 = bounds2.X;
