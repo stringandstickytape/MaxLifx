@@ -133,6 +133,51 @@ namespace MaxLifx.Controls
             }
             return retVal;
         }
+
+        public (List<int>, List<int>, List<byte>) ShiftUp()
+        {
+            (List<int>, List<int>, List<byte>) retVal;
+            retVal.Item1 = new List<int>();
+            retVal.Item2 = new List<int>();
+            retVal.Item3 = new List<byte>();
+
+            var ctr = 0;
+
+            foreach (var handle in _handles)
+            {
+                handle.Level = (byte)(handle.Level - 10);
+
+                retVal.Item1.Add(handle.Bin);
+                retVal.Item2.Add(handle.Level);
+                retVal.Item3.Add(handle.LevelRange);
+
+                ctr++;
+            }
+            return retVal;
+        }
+
+        public (List<int>, List<int>, List<byte>) ShiftDown()
+        {
+            (List<int>, List<int>, List<byte>) retVal;
+            retVal.Item1 = new List<int>();
+            retVal.Item2 = new List<int>();
+            retVal.Item3 = new List<byte>();
+
+            var ctr = 0;
+
+            foreach (var handle in _handles)
+            {
+                handle.Level = (byte)(handle.Level + 10);
+
+                retVal.Item1.Add(handle.Bin);
+                retVal.Item2.Add(handle.Level);
+                retVal.Item3.Add(handle.LevelRange);
+
+                ctr++;
+            }
+            return retVal;
+        }
+
         private byte GetDefaultLevelForBin(int bin)
         {
             if (bin == 0) return 65;

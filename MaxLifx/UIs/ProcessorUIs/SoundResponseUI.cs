@@ -165,11 +165,42 @@ namespace MaxLifx.UIs
             tbOffTimes.Text = _settings.OffTimes;
         }
 
+        List<int> previouslySelectedIndices = new List<int>();
+        int? lastSelectedIndex;
+
         private void lbLabels_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!_suspendUi && !cbReorder.Checked)
-                UpdateSelectedLabels();
+            if (_suspendUi) return;
 
+            var currentlySelectedIndices = lbLabels.SelectedIndices.Cast<int>().ToList();
+
+            var diff = currentlySelectedIndices.Except(previouslySelectedIndices);
+
+            if (Control.ModifierKeys == Keys.Shift && lastSelectedIndex.HasValue && diff.Count() == 1)
+            {
+                for(int i = lastSelectedIndex.Value+1; i < diff.First(); i++)
+                {
+                    if (!lbLabels.SelectedIndices.Contains(i))
+                    {
+                        var oldSuspend = _suspendUi;
+                        _suspendUi = true;
+                        lbLabels.SelectedIndices.Add(i);
+                        _suspendUi = oldSuspend;
+                    }
+                }
+            }
+
+            if (diff.Count() == 1)
+            {
+                lastSelectedIndex = diff.First();
+                System.Diagnostics.Debug.WriteLine("Index is " + lastSelectedIndex);
+            }
+           // else lastSelectedIndex = null;
+
+            previouslySelectedIndices = lbLabels.SelectedIndices.Cast<int>().ToList();
+
+            if (!_suspendUi && !cbReorder.Checked)
+                UpdateSelectedLabels();
         }
 
         private void UpdateSelectedLabels()
@@ -462,6 +493,22 @@ namespace MaxLifx.UIs
                 lbLabels.SetSelected(i, !lbLabels.GetSelected(i));
                
             }
+        }
+
+        private void bFreqResppUp_Click(object sender, EventArgs e)
+        {
+            var tuple = spectrumAnalyser1.ShiftUp();
+            _settings.Bins = tuple.Item1;
+            _settings.Levels = tuple.Item2;
+            _settings.LevelRanges = tuple.Item3;
+        }
+
+        private void bFreqResppDown_Click(object sender, EventArgs e)
+        {
+            var tuple = spectrumAnalyser1.ShiftDown();
+            _settings.Bins = tuple.Item1;
+            _settings.Levels = tuple.Item2;
+            _settings.LevelRanges = tuple.Item3;
         }
     }
 }

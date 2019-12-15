@@ -12,7 +12,7 @@ namespace MaxLifx.Controllers
             set
             {
                 _macAddress = value;
-                    if (_macAddress.StartsWith("0102030405"))
+                    if (!_macAddress.StartsWith("D0"))
                         IsHomebrewDevice = true;
                     else IsHomebrewDevice = false;
                 }

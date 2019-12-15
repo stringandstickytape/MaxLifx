@@ -48,6 +48,7 @@
     <Compile Include="Bulb.cs" />
     <Compile Include="MaxLifxBulbController.cs" />
     <Compile Include="PacketFactory.cs" />
+    <Compile Include="Payload\SetMaxLifxColourPayload.cs" />
     <Compile Include="Payload\SetHomebrewColourZonesPayload.cs" />
     <Compile Include="Payload\SetPowerPayload.cs" />
     <Compile Include="Payload\GetLabelPayload.cs" />

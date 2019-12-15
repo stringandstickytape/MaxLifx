@@ -56,6 +56,7 @@ namespace MaxLifx.UIs
             this.hueSelector1 = new MaxLifx.Controls.HueSelector.HueSelector();
             this.btnCentreRanges = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.bFreqResppUp = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.cbUpdateAudioResponse = new System.Windows.Forms.CheckBox();
@@ -79,12 +80,13 @@ namespace MaxLifx.UIs
             this.nWaveDuration = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.cbReorder = new System.Windows.Forms.CheckBox();
             this.bDown = new System.Windows.Forms.Button();
             this.bUp = new System.Windows.Forms.Button();
             this.lbLabels = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
+            this.bFreqResppDown = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabHues.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -345,6 +347,8 @@ namespace MaxLifx.UIs
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.bFreqResppDown);
+            this.tabPage2.Controls.Add(this.bFreqResppUp);
             this.tabPage2.Controls.Add(this.button5);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.cbUpdateAudioResponse);
@@ -356,6 +360,17 @@ namespace MaxLifx.UIs
             this.tabPage2.Size = new System.Drawing.Size(1286, 796);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Audio Frequency Response";
+            // 
+            // bFreqResppUp
+            // 
+            this.bFreqResppUp.Location = new System.Drawing.Point(776, 341);
+            this.bFreqResppUp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bFreqResppUp.Name = "bFreqResppUp";
+            this.bFreqResppUp.Size = new System.Drawing.Size(33, 35);
+            this.bFreqResppUp.TabIndex = 116;
+            this.bFreqResppUp.Text = "^";
+            this.bFreqResppUp.UseVisualStyleBackColor = true;
+            this.bFreqResppUp.Click += new System.EventHandler(this.bFreqResppUp_Click);
             // 
             // button5
             // 
@@ -667,6 +682,16 @@ namespace MaxLifx.UIs
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Bulbs to Use:";
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(6, 415);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(72, 35);
+            this.button6.TabIndex = 114;
+            this.button6.Text = "Invert";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // cbReorder
             // 
             this.cbReorder.AutoSize = true;
@@ -730,15 +755,16 @@ namespace MaxLifx.UIs
             this.panel1.TabIndex = 116;
             this.panel1.SizeChanged += new System.EventHandler(this.panel1_SizeChanged);
             // 
-            // button6
+            // bFreqResppDown
             // 
-            this.button6.Location = new System.Drawing.Point(6, 415);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(72, 35);
-            this.button6.TabIndex = 114;
-            this.button6.Text = "Invert";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.bFreqResppDown.Location = new System.Drawing.Point(776, 423);
+            this.bFreqResppDown.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bFreqResppDown.Name = "bFreqResppDown";
+            this.bFreqResppDown.Size = new System.Drawing.Size(33, 35);
+            this.bFreqResppDown.TabIndex = 117;
+            this.bFreqResppDown.Text = "V";
+            this.bFreqResppDown.UseVisualStyleBackColor = true;
+            this.bFreqResppDown.Click += new System.EventHandler(this.bFreqResppDown_Click);
             // 
             // SoundResponseUI
             // 
@@ -823,5 +849,7 @@ namespace MaxLifx.UIs
         private System.Windows.Forms.Button btnCentreRanges;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button bFreqResppUp;
+        private System.Windows.Forms.Button bFreqResppDown;
     }
 }

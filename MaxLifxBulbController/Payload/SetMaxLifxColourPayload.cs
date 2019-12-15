@@ -8,6 +8,6 @@ namespace MaxLifx.Payload
     /// </summary>
     public class SetMaxLifxColourPayload : SetColourPayload, IPayload
     {
-        private byte[] _messageType = new byte[2] { 0x66, 0 };
+        private byte[] _messageType = new byte[2] { 0xF5, 1 };
     }
 }
