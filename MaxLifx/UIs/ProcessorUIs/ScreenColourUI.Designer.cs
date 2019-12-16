@@ -306,6 +306,7 @@
             this.lbLabels.Location = new System.Drawing.Point(10, 29);
             this.lbLabels.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lbLabels.Name = "lbLabels";
+            this.lbLabels.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.lbLabels.Size = new System.Drawing.Size(320, 244);
             this.lbLabels.TabIndex = 87;
             this.lbLabels.SelectedIndexChanged += new System.EventHandler(this.lbLabels_SelectedIndexChanged);

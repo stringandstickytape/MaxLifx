@@ -16,6 +16,8 @@ using MaxLifx.UIs;
 using DesktopDuplication;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using MaxLifxBulbControllerCache;
+using System.Net.Sockets;
 
 namespace MaxLifx
 {
@@ -74,7 +76,7 @@ namespace MaxLifx
             {
                 var bulb = bulbController.GetBulbFromLabel(bulbLabel, out int zone);
 
-                if (!SettingsCast.BulbSettings.Select(x => x.Label).Contains(bulb.Label))
+                if (!SettingsCast.BulbSettings.Select(x => x.Label).Contains(bulbLabel))
                 {
                     // populating SettingsCast fields
                     var l = new BulbSetting();
@@ -429,7 +431,9 @@ namespace MaxLifx
         // this is where the actual colours are determined and set for the bulbs
         private void DoMainLoop(MaxLifxBulbController bulbController, ref int frames, DateTime start)
         {
-            if(_desktopDuplicator.mWhichOutputDevice != SettingsCast.Monitor)
+            var reusableHomebrewClientDictionary = new Dictionary<string, UdpClient>();
+
+            if (_desktopDuplicator.mWhichOutputDevice != SettingsCast.Monitor)
                 _desktopDuplicator = new DesktopDuplicator(SettingsCast.Monitor);
 
             if (ShowUI)
@@ -449,6 +453,8 @@ namespace MaxLifx
             Color? avgColour = null;
 
             bool needNewFrame = true;
+
+            var homebrewDevicePayloadCache = new HomebrewDevicePayloadCache();
 
             foreach (var bulbSetting in SettingsCast.BulbSettings)
             {
@@ -484,9 +490,20 @@ namespace MaxLifx
                     Saturation = (ushort)saturation,
                     Brightness = (ushort)brightness
                 };
-                bulbController.SetColour(bulb, zone, payload, true);
+
+                if (bulb.IsHomebrewDevice)
+                {
+                    homebrewDevicePayloadCache.Payloads.Add((bulb, zone), payload);
+                }
+                else
+                {
+                    bulbController.SetColour(bulb, zone, payload, true);
+                }
                 
             }
+
+            homebrewDevicePayloadCache.Send(reusableHomebrewClientDictionary, bulbController);
+
             Thread.Sleep(SettingsCast.Delay);
         }
 
@@ -505,42 +522,35 @@ namespace MaxLifx
             {
                 int PixelSize = 4;
 
-                var size = 100;
-
                 var tlx = bulbSetting.TopLeft.X;
                 var tly = bulbSetting.TopLeft.Y;
-
-                BitmapData bmd = frame.DesktopImage.LockBits(new Rectangle(tlx, tly, size, size),
+                var brx = bulbSetting.BottomRight.X;
+                var bry = bulbSetting.BottomRight.Y;
+                var hei = bry - tly;
+                var wid = brx - tlx;
+                BitmapData bmd = frame.DesktopImage.LockBits(new Rectangle(tlx, tly, wid, hei),
                                   System.Drawing.Imaging.ImageLockMode.ReadWrite,
                                   frame.DesktopImage.PixelFormat);
 
-                
-
-                
-
-                byte[] bl = new byte[size*size];
-                byte[] gr = new byte[size*size];
-                byte[] re = new byte[size*size];
-
-                int ctr = 0;
+                int rTot = 0, bTot = 0, gTot = 0, ctr = 0;
 
                 unsafe
                 {
-                    for (int y = 0; y < size; y++)
+                    for (int y = 0; y < hei; y++)
                     {
                         byte* row = (byte*)bmd.Scan0 + (y * bmd.Stride);
 
-                        for (int x = 0; x < size; x++)
+                        for (int x = 0; x < wid; x++)
                         {
-                            bl[ctr] = row[x * PixelSize];
-                            gr[ctr] = row[x * PixelSize+1];
-                            re[ctr] = row[x * PixelSize+2];
+                            bTot = bTot + row[x * PixelSize];
+                            gTot = gTot + row[x * PixelSize + 1];
+                            rTot = rTot + row[x * PixelSize + 2];
                             ctr++;
                         }
                     }
                 }
 
-                all = Color.FromArgb(re.Sum(x => x) / re.Count(), gr.Sum(x => x) / gr.Count(), bl.Sum(x => x) / bl.Count());
+                all = Color.FromArgb(rTot/ctr, gTot/ctr, bTot/ctr);
 
                 frame.DesktopImage.UnlockBits(bmd);
             }

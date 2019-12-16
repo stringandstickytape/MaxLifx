@@ -14,7 +14,7 @@ namespace MaxLifxCmd
             {
                 MaxLifxBulbController bulbController = new MaxLifxBulbController();
                 bulbController.SetupNetwork();
-                bulbController.DiscoverBulbs();
+                bulbController.DiscoverBulbs(null);
 
                 foreach (Bulb b in bulbController.Bulbs)
                     Console.WriteLine(b.Label + " - " + b.MacAddress);

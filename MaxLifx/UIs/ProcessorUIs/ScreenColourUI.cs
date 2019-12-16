@@ -17,7 +17,7 @@ namespace MaxLifx.UIs
     {
         private readonly ScreenColourSettings Settings;
         private MaxLifxBulbController BulbController;
-        private Form2 _f;
+        private List<Form2> _f = new List<Form2>();
 
         public ScreenColourUI(ScreenColourSettings settings, MaxLifxBulbController bulbController)
         {
@@ -63,10 +63,11 @@ namespace MaxLifx.UIs
         }
         private void Borderless_MouseMove(object sender, MouseEventArgs e)
         {
+            var form = (Form2)sender;
             if (_dragging)
             {
-                Point currentScreenPos = _f.PointToScreen(e.Location);
-                _f.Location = new Point
+                Point currentScreenPos = form.PointToScreen(e.Location);
+                form.Location = new Point
                     (currentScreenPos.X - _offset.X,
                      currentScreenPos.Y - _offset.Y);
             }
@@ -74,43 +75,70 @@ namespace MaxLifx.UIs
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (_f != null) return;
-            _f = new Form2();
+            var enabledBulbs = Settings.BulbSettings.Where(x => x.Enabled);
+
+            if (_f.Any())
+            {
+                foreach (var form in _f)
+                    form.Dispose();
+
+                _f.Clear();
+            }
+            else
+            {
+
+                foreach (var bulbSetting in enabledBulbs)
+                {
+                    var f = new Form2();
 
 
-            _f.MouseDown += Borderless_MouseDown;
-            _f.MouseUp += Borderless_MouseUp;
-            _f.MouseMove += Borderless_MouseMove;
-            _f.Opacity = .5;
-            _f.ResizeEnd += F_ResizeEnd;
-            _f.Move += F_ResizeEnd;
-            _f.FormClosed += F_FormClosed;
-            _f.Width = 50;
-            _f.Show();
+                    f.MouseDown += Borderless_MouseDown;
+                    f.MouseUp += Borderless_MouseUp;
+                    f.MouseMove += Borderless_MouseMove;
+                    f.Opacity = .5;
+                    f.ResizeEnd += F_ResizeEnd;
+                    f.Move += F_ResizeEnd;
+                    f.FormClosed += F_FormClosed;
+                    f.Width = 50;
+                    f.Controls.Add(new Label() { Text = bulbSetting.Label, AutoSize = true, BackColor = Color.Transparent, ForeColor = Color.Black, TextAlign = ContentAlignment.BottomCenter });
+
+
+
+                    _f.Add(f);
+                    SuspendUI = true;
+                    f.Show();
+                    f.Location = new Point(bulbSetting.TopLeft.X - (f.Width / 2 + 3), bulbSetting.TopLeft.Y - (f.Height / 2 + 1));
+
+
+                    SuspendUI = false;
+
+
+                }
+            }
         }
 
         private void F_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _f.Dispose();
-            _f = null;
+            var form = (Form2)sender;
+            form.Dispose();
         }
 
         private void F_ResizeEnd(object sender, EventArgs e)
         {
+            if (SuspendUI) return;
+            var form = (Form2)sender;
             //if (MouseButtons == MouseButtons.Left) return;
 
             SuspendUI = true;
 
-            if(Settings.SelectedLabels.Count == 1)
-            {
-                var bulbSetting = Settings.BulbSettings.Single(x => x.Label == Settings.SelectedLabels[0]);
-                bulbSetting.TopLeft = new Point(_f.Location.X + 102, _f.Location.Y + 38);
-                bulbSetting.BottomRight = new Point(_f.Location.X + _f.Size.Width - 6, _f.Location.Y + _f.Size.Height - 6);
-                SetPositionTextBoxesFromSettings(bulbSetting);
-            }
+            var bulbSetting = Settings.BulbSettings.Single(x => x.Label == form.Controls[0].Text);
+
+            bulbSetting.TopLeft = new Point(form.Location.X + 102, form.Location.Y + 38);
+            bulbSetting.BottomRight = new Point(form.Location.X + form.Size.Width - 6, form.Location.Y + form.Size.Height - 6);
+            //SetPositionTextBoxesFromSettings(bulbSetting);
             
             SuspendUI = false;
-
+            
             ProcessorBase.SaveSettings(Settings, null);
         }
 
@@ -189,24 +217,23 @@ namespace MaxLifx.UIs
             if (!SuspendUI)
             {
                 var selectedLabels = new List<string>();
-
+            
                 foreach (var q in lbLabels.SelectedItems)
                     selectedLabels.Add(q.ToString());
-
+            
                 Settings.SelectedLabels = selectedLabels;
 
-                var bulbSettings = GetBulbSettingsFromSelectedItemLabel();
-
-                checkBox1.Checked = bulbSettings.Enabled;
-
-                tlx.Text = bulbSettings.TopLeft.X.ToString();
-                tly.Text = bulbSettings.TopLeft.Y.ToString();
-
-                if ((Settings.CentrePoint.X != 0 || Settings.CentrePoint.Y != 0) && _f != null && _f.IsDisposed == false  )
+                foreach(var label in lbLabels.Items)
                 {
-                    _f.Location = new Point(Settings.CentrePoint.X - (_f.Width/2 + 3), Settings.CentrePoint.Y - (_f.Height / 2 + 1));
+                    var bulbSetting = Settings.BulbSettings.Single(x => x.Label == label.ToString());
+                    bulbSetting.Enabled = selectedLabels.Contains(label);
                 }
-
+            
+                //if ((Settings.CentrePoint.X != 0 || Settings.CentrePoint.Y != 0) && _f != null && _f.IsDisposed == false  )
+                //{
+                //    _f.Location = new Point(Settings.CentrePoint.X - (_f.Width/2 + 3), Settings.CentrePoint.Y - (_f.Height / 2 + 1));
+                //}
+            
             }
         }
 

@@ -165,6 +165,7 @@ namespace DesktopDuplication
             frameInfo = new OutputDuplicateFrameInformation();
             try
             {
+
                 mDeskDupl.AcquireNextFrame(500, out frameInfo, out desktopResource);
             }
             catch (SharpDXException ex)
